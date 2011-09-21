@@ -2,3 +2,8 @@
 *.class
 *.iws
 *.iml
+.classpath
+.project
+.settings/
+target/
+.idea/workspace.xml
