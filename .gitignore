@@ -6,4 +6,5 @@
 .project
 .settings/
 .target/
+target/
 .idea/workspace.xml
