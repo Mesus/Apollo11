@@ -10,6 +10,11 @@
             Employee name: <input type="text" name="employee_name" />
             <input type="SUBMIT" value="Add Employee" />
         </form>
+        <p>Delete an employee:</p>
+        <form method="POST" action="deleteEmployee.htm">
+            Employee name: <input type="text" name="employee_name" />
+            <input type="SUBMIT" value="Delete Employee" />
+         </form>
         <c:out value="${message}"/><br />
 
         <p><br />Current employees:</p>

@@ -60,15 +60,38 @@ public class EmployeeController implements Controller {
             try {
                 employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 System.out.print(employees);
-                for(Employee e : employees) {
-                    if(e.getName().equalsIgnoreCase(name)) {
+                for (Employee e : employees) {
+                    if (e.getName().equalsIgnoreCase(name)) {
                         message = "Employee is already registered.";
                         System.out.println(message);
-                        return new ModelAndView("update","message", message);
+                        return new ModelAndView("update", "message", message);
                     }
 
                 }
                 t.update("insert into Employee values(?)", new Object[]{request.getParameter("employee_name")});
+                employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{});
+                return new ModelAndView("employee", "employees", employees);
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (request.getRequestURI().equals("/deleteEmployee.htm")) {
+            String name = request.getParameter("employee_name");
+            System.out.println(name);
+            try {
+                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                System.out.print(employees);
+                for (Employee e : employees) {
+                    if (e.getName().equalsIgnoreCase(name)) {
+                        message = "Successfully deleted " + name + ".";
+                        System.out.println(message);
+                        t.update("delete from Employee where name =? ", new Object[]{request.getParameter("employee_name")});
+                        return new ModelAndView("update", "message", message);
+                    }
+
+                }
+
                 employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{});
                 return new ModelAndView("employee", "employees", employees);
             } catch (EmptyResultDataAccessException e) {

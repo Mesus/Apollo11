@@ -9,6 +9,7 @@
     <bean name="/welcome.htm" class="springapp.web.ViewController" />
     <bean name="/update.htm" class="springapp.web.ViewController" />
     <bean name="/updateEmployee.htm" class="springapp.web.EmployeeController" />
+    <bean name="/deleteEmployee.htm" class="springapp.web.EmployeeController" />
     <bean name="/employee.htm" class="springapp.web.EmployeeController"/>
     <bean name="/champ.htm" class="springapp.web.ViewController"/>
     <bean name="/findChamp.htm" class="springapp.web.FindChampController"/>
