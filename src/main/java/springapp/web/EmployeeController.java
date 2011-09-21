@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Employee;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,10 +43,39 @@ public class EmployeeController implements Controller {
         }
         SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
         List<Employee> employees = new ArrayList<Employee>();
+        String message = "test";
 
-        employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{} );
-        System.out.println(employees.size());
-        return new ModelAndView("employee", "employees", employees);
+        if (request.getRequestURI().equals("/employee.htm")) {
+            try {
+                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                return new ModelAndView("employee", "employees", employees);
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (request.getRequestURI().equals("/updateEmployee.htm")) {
+            String name = request.getParameter("employee_name");
+            System.out.println(name);
+            try {
+                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                System.out.print(employees);
+                for(Employee e : employees) {
+                    if(e.getName().equalsIgnoreCase(name)) {
+                        message = "Employee is already registered.";
+                        System.out.println(message);
+                        return new ModelAndView("update","message", message);
+                    }
+
+                }
+                t.update("insert into Employee values(?)", new Object[]{request.getParameter("employee_name")});
+                employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{});
+                return new ModelAndView("employee", "employees", employees);
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return new ModelAndView("welcome");
     }
 
     class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
