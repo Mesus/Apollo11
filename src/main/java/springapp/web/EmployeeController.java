@@ -54,23 +54,30 @@ public class EmployeeController implements Controller {
             }
         }
 
+        if (request.getRequestURI().equals("/showEmployees.htm")) {
+            try {
+                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                return new ModelAndView("update", "employees", employees);
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (request.getRequestURI().equals("/updateEmployee.htm")) {
             String name = request.getParameter("employee_name");
-            System.out.println(name);
             try {
                 employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 System.out.print(employees);
                 for (Employee e : employees) {
                     if (e.getName().equalsIgnoreCase(name)) {
                         message = "Employee is already registered.";
-                        System.out.println(message);
                         return new ModelAndView("update", "message", message);
                     }
 
                 }
                 t.update("insert into Employee values(?)", new Object[]{request.getParameter("employee_name")});
-                employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{});
-                return new ModelAndView("employee", "employees", employees);
+                message = "Successfully added " + name + " to Employees.";
+                return new ModelAndView("update","message", message);
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
@@ -85,7 +92,6 @@ public class EmployeeController implements Controller {
                 for (Employee e : employees) {
                     if (e.getName().equalsIgnoreCase(name)) {
                         message = "Successfully deleted " + name + ".";
-                        System.out.println(message);
                         t.update("delete from Employee where name =? ", new Object[]{request.getParameter("employee_name")});
                         return new ModelAndView("update", "message", message);
                     }

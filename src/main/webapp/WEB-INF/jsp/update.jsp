@@ -18,8 +18,11 @@
         <c:out value="${message}"/><br />
 
         <p><br />Current employees:</p>
-        <form method ="POST" action ="employee.htm">
+        <form method ="POST" action ="showEmployees.htm">
         <input type="SUBMIT" value="Show Employees" />
         </form>
+        <c:forEach items="${employees}" var="emp">
+        <c:out value="${emp.name}"/><br />
+        </c:forEach>
     </body>
 </html>
