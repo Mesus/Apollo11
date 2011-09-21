@@ -6,10 +6,10 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <!-- the application context definition for the springapp DispatcherServlet -->
-    <bean name="/welcome.htm" class="springapp.web.UpdateViewController" />
-    <bean name="/update.htm" class="springapp.web.UpdateViewController" />
+    <bean name="/welcome.htm" class="springapp.web.ViewController" />
+    <bean name="/update.htm" class="springapp.web.ViewController" />
     <bean name="/employee.htm" class="springapp.web.EmployeeController"/>
-    <bean name="/champ.htm" class="springapp.web.UpdateViewController"/>
+    <bean name="/champ.htm" class="springapp.web.ViewController"/>
     <bean name="/findChamp.htm" class="springapp.web.FindChampController"/>
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
