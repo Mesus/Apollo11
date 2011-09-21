@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Employee;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.mvc.Controller;
@@ -77,7 +78,7 @@ public class EmployeeController implements Controller {
                 }
                 t.update("insert into Employee values(?)", new Object[]{request.getParameter("employee_name")});
                 message = "Successfully added " + name + " to Employees.";
-                return new ModelAndView("update","message", message);
+                return new ModelAndView("update", "message", message);
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
@@ -88,23 +89,26 @@ public class EmployeeController implements Controller {
             System.out.println(name);
             try {
                 employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                System.out.print(employees);
                 for (Employee e : employees) {
                     if (e.getName().equalsIgnoreCase(name)) {
                         message = "Successfully deleted " + name + ".";
                         t.update("delete from Employee where name =? ", new Object[]{request.getParameter("employee_name")});
                         return new ModelAndView("update", "message", message);
                     }
-
                 }
-
-                employees = t.query("SELECT * FROM EMPLOYEE;", new EmployeeRowMapper(), new Object[]{});
-                return new ModelAndView("employee", "employees", employees);
+                message = "Could not find employee " + name + "." ;
+                return new ModelAndView("update", "message", message);
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
+                message = "Cannot delete " + name + ".";
+                return new ModelAndView("update", "message", message);
+            } catch (DataIntegrityViolationException e) {
+                e.printStackTrace();
+                message = "Cannot delete " + name + ".";
+                return new ModelAndView("update", "message", message);
             }
         }
-        return new ModelAndView("welcome");
+        return new ModelAndView("update");
     }
 
     class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
