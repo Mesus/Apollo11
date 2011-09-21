@@ -1,0 +1,355 @@
+Apache Maven 3.0.1 (r1038046; 2010-11-23 11:58:32+0100)
+Java version: 1.6.0_23
+Java home: c:\Program Files (x86)\Java\jdk1.6.0_23\jre
+Default locale: no_NO, platform encoding: Cp1252
+OS name: "windows 7" version: "6.1" arch: "x86" Family: "windows"
+[INFO] Error stacktraces are turned on.
+[DEBUG] Reading global settings from c:\Users\glennn\java\apache-maven-3.0.1\bin\..\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\glennn\.m2\settings.xml
+[DEBUG] Using local repository at C:\Users\glennn\.m2\repository
+[INFO] Scanning for projects...
+[DEBUG] Extension realms for project com.glennbech:simplerest:war:1.0-SNAPSHOT: (none)
+[DEBUG] Looking up lifecyle mappings for packaging war from ClassRealm[plexus.core, parent: null]
+[DEBUG] Resolving plugin prefix war from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix war to org.apache.maven.plugins:maven-war-plugin from POM com.glennbech:simplerest:war:1.0-SNAPSHOT
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: com.glennbech:simplerest:war:1.0-SNAPSHOT
+[DEBUG] Tasks:   [clean, war:war]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building simplerest Maven Webapp 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Resolving plugin prefix war from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix war to org.apache.maven.plugins:maven-war-plugin from POM com.glennbech:simplerest:war:1.0-SNAPSHOT
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       com.glennbech:simplerest:1.0-SNAPSHOT
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): [runtime]
+[DEBUG] Repositories (dependencies): [central (http://repo1.maven.org/maven2, releases=true, snapshots=false, managed=false)]
+[DEBUG] Repositories (plugins)     : [central (http://repo1.maven.org/maven2, releases=true, snapshots=false, managed=false)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-clean-plugin:2.4.1:clean (default-clean)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <directory default-value="${project.build.directory}"/>
+  <excludeDefaultDirectories default-value="false">${clean.excludeDefaultDirectories}</excludeDefaultDirectories>
+  <failOnError default-value="true">${maven.clean.failOnError}</failOnError>
+  <followSymLinks default-value="false">${clean.followSymLinks}</followSymLinks>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <reportDirectory default-value="${project.reporting.outputDirectory}"/>
+  <skip default-value="false">${clean.skip}</skip>
+  <testOutputDirectory default-value="${project.build.testOutputDirectory}"/>
+  <verbose>${clean.verbose}</verbose>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-war-plugin:2.1.1:war (default-cli)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <archiveClasses default-value="false">${archiveClasses}</archiveClasses>
+  <attachClasses default-value="false"/>
+  <cacheFile default-value="${project.build.directory}/war/work/webapp-cache.xml"/>
+  <classesClassifier default-value="classes"/>
+  <classesDirectory default-value="${project.build.outputDirectory}"/>
+  <containerConfigXML>${maven.war.containerConfigXML}</containerConfigXML>
+  <escapeString>${maven.war.escapeString}</escapeString>
+  <escapedBackslashesInFilePath default-value="false">${maven.war.escapedBackslashesInFilePath}</escapedBackslashesInFilePath>
+  <failOnMissingWebXml default-value="true">${failOnMissingWebXml}</failOnMissingWebXml>
+  <filteringDeploymentDescriptors default-value="false">${maven.war.filteringDeploymentDescriptors}</filteringDeploymentDescriptors>
+  <outputDirectory default-value="${project.build.directory}"/>
+  <primaryArtifact default-value="true">${primaryArtifact}</primaryArtifact>
+  <project default-value="${project}"/>
+  <session default-value="${session}"/>
+  <useCache default-value="false">${useCache}</useCache>
+  <warName default-value="${project.build.finalName}"/>
+  <warSourceDirectory default-value="${basedir}/src/main/webapp"/>
+  <warSourceIncludes default-value="**"/>
+  <webXml>${maven.war.webxml}</webXml>
+  <webappDirectory default-value="${project.build.directory}/${project.build.finalName}"/>
+  <workDirectory default-value="${project.build.directory}/war/work"/>
+</configuration>
+[DEBUG] =======================================================================
+[DEBUG] com.glennbech:simplerest:war:1.0-SNAPSHOT
+[DEBUG]    com.sun.jersey:jersey-server:jar:1.9:compile
+[DEBUG]       asm:asm:jar:3.1:compile
+[DEBUG]       com.sun.jersey:jersey-core:jar:1.9:compile
+[DEBUG]    com.sun.jersey:jersey-json:jar:1.9:compile
+[DEBUG]       org.codehaus.jettison:jettison:jar:1.1:compile
+[DEBUG]       org.codehaus.jackson:jackson-core-asl:jar:1.8.3:compile
+[DEBUG]       org.codehaus.jackson:jackson-mapper-asl:jar:1.8.3:compile
+[DEBUG]       org.codehaus.jackson:jackson-jaxrs:jar:1.8.3:compile
+[DEBUG]       org.codehaus.jackson:jackson-xc:jar:1.8.3:compile
+[DEBUG]    mysql:mysql-connector-java:jar:5.1.17:compile
+[INFO] 
+[INFO] --- maven-clean-plugin:2.4.1:clean (default-clean) @ simplerest ---
+[DEBUG] org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1:
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:2.0.6:compile
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:2.0.5:compile
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.transfer < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.metadata < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.collection < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.version < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.artifact < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.spi < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.graph < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.impl < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.deployment < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.installation < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.resolution < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-clean-plugin:2.4.1
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-clean-plugin:2.4.1
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-clean-plugin:2.4.1
+[DEBUG]   Included: org.apache.maven.plugins:maven-clean-plugin:jar:2.4.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.5
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG] Configuring mojo org.apache.maven.plugins:maven-clean-plugin:2.4.1:clean from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-clean-plugin:2.4.1, parent: sun.misc.Launcher$AppClassLoader@11b86e7]
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-clean-plugin:2.4.1:clean' with basic configurator -->
+[DEBUG]   (f) directory = C:\Users\glennn\git\simplerest\target
+[DEBUG]   (f) excludeDefaultDirectories = false
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) followSymLinks = false
+[DEBUG]   (f) outputDirectory = C:\Users\glennn\git\simplerest\target\classes
+[DEBUG]   (f) reportDirectory = C:\Users\glennn\git\simplerest\target\site
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) testOutputDirectory = C:\Users\glennn\git\simplerest\target\test-classes
+[DEBUG] -- end configuration --
+[INFO] Deleting C:\Users\glennn\git\simplerest\target
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest.war
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\web.xml
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\mysql-connector-java-5.1.17.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jettison-1.1.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jersey-server-1.9.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jersey-json-1.9.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jersey-core-1.9.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jaxb-impl-2.2.3-1.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jaxb-api-2.2.2.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jackson-xc-1.8.3.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jackson-mapper-asl-1.8.3.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jackson-jaxrs-1.8.3.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\jackson-core-asl-1.8.3.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\asm-3.1.jar
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib\activation-1.1.jar
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\lib
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\jetty-env.xml
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF\classes
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\simplerest\WEB-INF
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\simplerest\META-INF
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\simplerest
+[INFO] Deleting file C:\Users\glennn\git\simplerest\target\maven-archiver\pom.properties
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target\maven-archiver
+[INFO] Deleting directory C:\Users\glennn\git\simplerest\target
+[DEBUG] Skipping non-existing directory C:\Users\glennn\git\simplerest\target\classes
+[DEBUG] Skipping non-existing directory C:\Users\glennn\git\simplerest\target\test-classes
+[DEBUG] Skipping non-existing directory C:\Users\glennn\git\simplerest\target\site
+[INFO] 
+[INFO] --- maven-war-plugin:2.1.1:war (default-cli) @ simplerest ---
+[DEBUG] org.apache.maven.plugins:maven-war-plugin:jar:2.1.1:
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-artifact:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-model:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-project:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-profile:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-artifact-manager:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-registry:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-core:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6:compile
+[DEBUG]       org.apache.maven.reporting:maven-reporting-api:jar:2.0.6:compile
+[DEBUG]          org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-error-diagnostics:jar:2.0.6:compile
+[DEBUG]       commons-cli:commons-cli:jar:1.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-descriptor:jar:2.0.6:compile
+[DEBUG]       org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:compile
+[DEBUG]       classworlds:classworlds:jar:1.1:compile
+[DEBUG]    org.apache.maven:maven-settings:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-monitor:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-archiver:jar:2.4.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-archiver:jar:1.2:compile
+[DEBUG]       org.codehaus.plexus:plexus-io:jar:1.0.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-interpolation:jar:1.13:compile
+[DEBUG]    org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:compile
+[DEBUG]       junit:junit:jar:3.8.1:compile
+[DEBUG]    com.thoughtworks.xstream:xstream:jar:1.3.1:compile
+[DEBUG]       xpp3:xpp3_min:jar:1.1.4c:compile
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:2.0.5:compile
+[DEBUG]    org.apache.maven.shared:maven-filtering:jar:1.0-beta-2:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-war-plugin:2.1.1
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-war-plugin:2.1.1
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-war-plugin:2.1.1
+[DEBUG]   Included: org.apache.maven.plugins:maven-war-plugin:jar:2.1.1
+[DEBUG]   Included: org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   Included: org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7
+[DEBUG]   Included: commons-cli:commons-cli:jar:1.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   Included: org.apache.maven:maven-archiver:jar:2.4.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-archiver:jar:1.2
+[DEBUG]   Included: org.codehaus.plexus:plexus-io:jar:1.0.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.13
+[DEBUG]   Included: junit:junit:jar:3.8.1
+[DEBUG]   Included: com.thoughtworks.xstream:xstream:jar:1.3.1
+[DEBUG]   Included: xpp3:xpp3_min:jar:1.1.4c
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.5
+[DEBUG]   Included: org.apache.maven.shared:maven-filtering:jar:1.0-beta-2
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-core:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-error-diagnostics:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-descriptor:jar:2.0.6
+[DEBUG]   Excluded: classworlds:classworlds:jar:1.1
+[DEBUG]   Excluded: org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   Excluded: org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG] Configuring mojo org.apache.maven.plugins:maven-war-plugin:2.1.1:war from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-war-plugin:2.1.1, parent: sun.misc.Launcher$AppClassLoader@11b86e7]
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-war-plugin:2.1.1:war' with basic configurator -->
+[DEBUG]   (s) archiveClasses = false
+[DEBUG]   (s) attachClasses = false
+[DEBUG]   (s) cacheFile = C:\Users\glennn\git\simplerest\target\war\work\webapp-cache.xml
+[DEBUG]   (s) classesClassifier = classes
+[DEBUG]   (s) classesDirectory = C:\Users\glennn\git\simplerest\target\classes
+[DEBUG]   (f) escapedBackslashesInFilePath = false
+[DEBUG]   (s) failOnMissingWebXml = true
+[DEBUG]   (f) filteringDeploymentDescriptors = false
+[DEBUG]   (s) outputDirectory = C:\Users\glennn\git\simplerest\target
+[DEBUG]   (s) primaryArtifact = true
+[DEBUG]   (s) project = MavenProject: com.glennbech:simplerest:1.0-SNAPSHOT @ C:\Users\glennn\git\simplerest\pom.xml
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@1320a41
+[DEBUG]   (s) useCache = false
+[DEBUG]   (s) warName = simplerest
+[DEBUG]   (s) warSourceDirectory = C:\Users\glennn\git\simplerest\src\main\webapp
+[DEBUG]   (s) warSourceIncludes = **
+[DEBUG]   (s) webappDirectory = C:\Users\glennn\git\simplerest\target\simplerest
+[DEBUG]   (s) workDirectory = C:\Users\glennn\git\simplerest\target\war\work
+[DEBUG] -- end configuration --
+[INFO] Packaging webapp
+[INFO] Assembling webapp [simplerest] in [C:\Users\glennn\git\simplerest\target\simplerest]
+[DEBUG] properties used {java.vendor=Sun Microsystems Inc., env.SYSTEMROOT=C:\Windows, sun.java.launcher=SUN_STANDARD, sun.management.compiler=HotSpot Client Compiler, env.PROMPT=$P$G, os.name=Windows 7, env.FP_NO_HOST_CHECK=NO, sun.boot.class.path=c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\resources.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\rt.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\sunrsasign.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\jsse.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\jce.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\charsets.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\modules\jdk.boot.jar;c:\Program Files (x86)\Java\jdk1.6.0_23\jre\classes, env.COMPUTERNAME=GLENNN-PC, env.ALLUSERSPROFILE=C:\ProgramData, sun.desktop=windows, java.vm.specification.vendor=Sun Microsystems Inc., java.runtime.version=1.6.0_23-b05, env.HOMEPATH=\Users\glennn, user.name=glennn, env.PATH=C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\DMIX;c:\Program Files\WIDCOMM\Bluetooth Software\;c:\Program Files\WIDCOMM\Bluetooth Software\syswow64;c:\Program Files\Intel\WiFi\bin\;c:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\Wave Systems Corp\Gemalto\Access Client\v5\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Subversion\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\IDM Computer Solutions\UltraEdit\;c:\Program Files (x86)\Java\jdk1.6.0_23\BIN;C:\Program Files (x86)\Subversion\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\DMIX;c:\Program Files\WIDCOMM\Bluetooth Software\;c:\Program Files\WIDCOMM\Bluetooth Software\syswow64;c:\Program Files\Intel\WiFi\bin\;c:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\Wave Systems Corp\Gemalto\Access Client\v5\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Subversion\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\IDM Computer Solutions\UltraEdit\;c:\Users\glennn\java\apache-maven-3.0.1\bin;c:\users\glennn\java\apache-ant-1.8.2\bin;"c:\Program Files (x86)\Android\android-sdk-windows\platform-tools";C:\Program Files (x86)\GnuWin32\bin;C:\users\glennn\tools\spring-roo-1.1.1.RELEASE\BIN;c:\users\glennn\tools;C:\Users\glennn\tools\osmosis-0.38\bin;c:\tools\, user.language=no, env.WINDIR=C:\Windows, sun.boot.library.path=c:\Program Files (x86)\Java\jdk1.6.0_23\jre\bin, classworlds.conf=c:\Users\glennn\java\apache-maven-3.0.1\bin\..\bin\m2.conf, java.version=1.6.0_23, env.PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 23 Stepping 10, GenuineIntel, user.timezone=, env.TEMP=C:\Users\glennn\AppData\Local\Temp, sun.arch.data.model=32, env.APR_ICONV_PATH=C:\Program Files (x86)\Subversion\iconv, java.endorsed.dirs=c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\endorsed, env.PROCESSOR_ARCHITEW6432=AMD64, sun.cpu.isalist=pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86, env.HOMEDRIVE=C:, sun.jnu.encoding=Cp1252, file.encoding.pkg=sun.io, env.SYSTEMDRIVE=C:, file.separator=\, java.specification.name=Java Platform API Specification, java.class.version=50.0, user.country=NO, java.home=c:\Program Files (x86)\Java\jdk1.6.0_23\jre, env.ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk-windows, env.APPDATA=C:\Users\glennn\AppData\Roaming, env.PUBLIC=C:\Users\Public, java.vm.info=mixed mode, sharing, env.OS=Windows_NT, os.version=6.1, env.=::=::\, path.separator=;, java.vm.version=19.0-b09, user.variant=, env.USERPROFILE=C:\Users\glennn, env.JAVA_HOME=c:\Program Files (x86)\Java\jdk1.6.0_23, java.awt.printerjob=sun.awt.windows.WPrinterJob, env.TMP=C:\Users\glennn\AppData\Local\Temp, env.PROGRAMFILES=C:\Program Files (x86), sun.io.unicode.encoding=UnicodeLittle, awt.toolkit=sun.awt.windows.WToolkit, user.home=C:\Users\glennn, env.COMMONPROGRAMFILES=C:\Program Files (x86)\Common Files, env.=EXITCODE=00000000, env.SESSIONNAME=Console, java.specification.vendor=Sun Microsystems Inc., env.M2_HOME=c:\Users\glennn\java\apache-maven-3.0.1\bin\.., env.NUMBER_OF_PROCESSORS=2, java.library.path=c:\Program Files (x86)\Java\jdk1.6.0_23\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\DMIX;c:\Program Files\WIDCOMM\Bluetooth Software\;c:\Program Files\WIDCOMM\Bluetooth Software\syswow64;c:\Program Files\Intel\WiFi\bin\;c:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\Wave Systems Corp\Gemalto\Access Client\v5\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Subversion\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\IDM Computer Solutions\UltraEdit\;c:\Program Files (x86)\Java\jdk1.6.0_23\BIN;C:\Program Files (x86)\Subversion\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\DMIX;c:\Program Files\WIDCOMM\Bluetooth Software\;c:\Program Files\WIDCOMM\Bluetooth Software\syswow64;c:\Program Files\Intel\WiFi\bin\;c:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\NTRU Cryptosystems\NTRU TCG Software Stack\bin\;C:\Program Files\Wave Systems Corp\Gemalto\Access Client\v5\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Subversion\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files\TortoiseHg\;C:\Program Files (x86)\IDM Computer Solutions\UltraEdit\;c:\Users\glennn\java\apache-maven-3.0.1\bin;c:\users\glennn\java\apache-ant-1.8.2\bin;"c:\Program Files (x86)\Android\android-sdk-windows\platform-tools";C:\Program Files (x86)\GnuWin32\bin;C:\users\glennn\tools\spring-roo-1.1.1.RELEASE\BIN;c:\users\glennn\tools;C:\Users\glennn\tools\osmosis-0.38\bin;c:\tools\, java.vendor.url=http://java.sun.com/, env.COMMONPROGRAMFILES(X86)=C:\Program Files (x86)\Common Files, env.PSMODULEPATH=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\, env.CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher, env.MAVEN_CMD_LINE_ARGS=-e -X clean war:war, java.vm.vendor=Sun Microsystems Inc., maven.home=c:\Users\glennn\java\apache-maven-3.0.1\bin\.., java.runtime.name=Java(TM) SE Runtime Environment, java.class.path=c:\Users\glennn\java\apache-maven-3.0.1\bin\..\boot\plexus-classworlds-2.4.jar, env.PROGRAMW6432=C:\Program Files, env.ANT_OPTS=-Dfile.encoding=ISO-8859-1, env.MAVEN_JAVA_EXE="c:\Program Files (x86)\Java\jdk1.6.0_23\bin\java.exe", env.PROGRAMFILES(X86)=C:\Program Files (x86), java.vm.specification.name=Java Virtual Machine Specification, env.LOGONSERVER=\\GLENNN-PC, env.PROCESSOR_ARCHITECTURE=x86, java.vm.specification.version=1.0, env.COMMONPROGRAMW6432=C:\Program Files\Common Files, sun.os.patch.level=, sun.cpu.endian=little, env.HOME=C:\Users\glennn, env.ROO_HOME=C:\users\glennn\tools\spring-roo-1.1.1.RELEASE, env.ANT_HOME=c:\users\glennn\java\apache-ant-1.8.2, env.PROCESSOR_REVISION=170a, java.io.tmpdir=C:\Users\glennn\AppData\Local\Temp\, java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport.cgi, env.COMSPEC=C:\Windows\system32\cmd.exe, env.PROGRAMDATA=C:\ProgramData, java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment, os.arch=x86, java.ext.dirs=c:\Program Files (x86)\Java\jdk1.6.0_23\jre\lib\ext;C:\Windows\Sun\Java\lib\ext, user.dir=C:\Users\glennn\git\simplerest, env.LOCALAPPDATA=C:\Users\glennn\AppData\Local, env.MAVEN_HOME=c:\Users\glennn\java\apache-maven-3.0.1, line.separator=
+, java.vm.name=Java HotSpot(TM) Client VM, env.CLASSWORLDS_JAR="c:\Users\glennn\java\apache-maven-3.0.1\bin\..\boot\plexus-classworlds-2.4.jar", env.PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC, env.ERROR_CODE=0, env.USERNAME=glennn, file.encoding=Cp1252, env.USERDOMAIN=glennn-PC, java.specification.version=1.6, env.=C:=C:\Users\glennn\git\simplerest, env.PROCESSOR_LEVEL=6}
+[INFO] Processing war project
+[INFO] Copying webapp resources [C:\Users\glennn\git\simplerest\src\main\webapp]
+[DEBUG]  + WEB-INF/jetty-env.xml has been copied.
+[DEBUG]  + WEB-INF/web.xml has been copied.
+[DEBUG] Dump of the current build pathSet content -->
+[DEBUG] WEB-INF/jetty-env.xml
+[DEBUG] WEB-INF/web.xml
+[DEBUG] -- end of dump --
+[DEBUG] Processing: jersey-server-1.9.jar
+[DEBUG]  + WEB-INF/lib/jersey-server-1.9.jar has been copied.
+[DEBUG] Processing: asm-3.1.jar
+[DEBUG]  + WEB-INF/lib/asm-3.1.jar has been copied.
+[DEBUG] Processing: jersey-core-1.9.jar
+[DEBUG]  + WEB-INF/lib/jersey-core-1.9.jar has been copied.
+[DEBUG] Processing: jersey-json-1.9.jar
+[DEBUG]  + WEB-INF/lib/jersey-json-1.9.jar has been copied.
+[DEBUG] Processing: jettison-1.1.jar
+[DEBUG]  + WEB-INF/lib/jettison-1.1.jar has been copied.
+[DEBUG] Processing: jackson-core-asl-1.8.3.jar
+[DEBUG]  + WEB-INF/lib/jackson-core-asl-1.8.3.jar has been copied.
+[DEBUG] Processing: jackson-mapper-asl-1.8.3.jar
+[DEBUG]  + WEB-INF/lib/jackson-mapper-asl-1.8.3.jar has been copied.
+[DEBUG] Processing: jackson-jaxrs-1.8.3.jar
+[DEBUG]  + WEB-INF/lib/jackson-jaxrs-1.8.3.jar has been copied.
+[DEBUG] Processing: jackson-xc-1.8.3.jar
+[DEBUG]  + WEB-INF/lib/jackson-xc-1.8.3.jar has been copied.
+[DEBUG] Processing: mysql-connector-java-5.1.17.jar
+[DEBUG]  + WEB-INF/lib/mysql-connector-java-5.1.17.jar has been copied.
+[INFO] Webapp assembled in [127 msecs]
+[DEBUG] Excluding [] from the generated webapp archive.
+[DEBUG] Including [**] in the generated webapp archive.
+[INFO] Building war: C:\Users\glennn\git\simplerest\target\simplerest.war
+[DEBUG] adding directory META-INF/
+[DEBUG] adding entry META-INF/MANIFEST.MF
+[DEBUG] adding directory WEB-INF/
+[DEBUG] adding directory WEB-INF/classes/
+[DEBUG] adding directory WEB-INF/lib/
+[DEBUG] adding entry WEB-INF/jetty-env.xml
+[DEBUG] adding entry WEB-INF/lib/asm-3.1.jar
+[DEBUG] adding entry WEB-INF/lib/jackson-core-asl-1.8.3.jar
+[DEBUG] adding entry WEB-INF/lib/jackson-jaxrs-1.8.3.jar
+[DEBUG] adding entry WEB-INF/lib/jackson-mapper-asl-1.8.3.jar
+[DEBUG] adding entry WEB-INF/lib/jackson-xc-1.8.3.jar
+[DEBUG] adding entry WEB-INF/lib/jersey-core-1.9.jar
+[DEBUG] adding entry WEB-INF/lib/jersey-json-1.9.jar
+[DEBUG] adding entry WEB-INF/lib/jersey-server-1.9.jar
+[DEBUG] adding entry WEB-INF/lib/jettison-1.1.jar
+[DEBUG] adding entry WEB-INF/lib/mysql-connector-java-5.1.17.jar
+[DEBUG] adding entry WEB-INF/web.xml
+[WARNING] Warning: selected war files include a WEB-INF/web.xml which will be ignored 
+(webxml attribute is missing from war task, or ignoreWebxml attribute is specified as 'true')
+[DEBUG] adding directory META-INF/maven/
+[DEBUG] adding directory META-INF/maven/com.glennbech/
+[DEBUG] adding directory META-INF/maven/com.glennbech/simplerest/
+[DEBUG] adding entry META-INF/maven/com.glennbech/simplerest/pom.xml
+[DEBUG] adding entry META-INF/maven/com.glennbech/simplerest/pom.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.750s
+[INFO] Finished at: Sat Sep 10 22:16:13 CEST 2011
+[INFO] Final Memory: 3M/15M
+[INFO] ------------------------------------------------------------------------
