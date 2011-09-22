@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<% request.setCharacterEncoding("UTF8"); %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
     <head><title>Result</title></head>

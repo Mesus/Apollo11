@@ -6,6 +6,7 @@ import com.sun.org.apache.xpath.internal.operations.And;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,10 +55,14 @@ public class FindChampController implements Controller {
 
         String champName = null;
         try {
-        champName = (String) t.queryForObject("Select employee_name from Monthly_champ where month_name =? and the_year =?", String.class, new Object[]{month, year});
-        System.out.println(champName);
-        }catch (EmptyResultDataAccessException e) { e.printStackTrace();}
-        if(champName == null || champName.equals("")){
+            champName = (String) t.queryForObject("Select employee_name from Monthly_champ where month_name =? and the_year =?", String.class, new Object[]{month, year});
+            System.out.println(champName);
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
+        } catch (IncorrectResultSizeDataAccessException e) {
+            e.printStackTrace();
+        }
+        if (champName == null || champName.equals("")) {
             champName = "Ingen";
         }
         Employee e = new Employee(champName);

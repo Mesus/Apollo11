@@ -1,13 +1,14 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<% request.setCharacterEncoding("UTF8"); %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
-    <head><title>Inmeta Java-Champ of the Month</title></head>
+    <head>
+    <title>Inmeta Java-Champ of the Month</title></head>
         <body>
-            <h1 align="center">Champ of the Month</h1>
+            <h1 align="center">Champion of the Month</h1>
             <form method="POST"
                 action="findChamp.htm">
-            <p>Choose month and year to display the champ:</p>
+            <p>Choose month and year to display the champ: æøå</p>
             Month:
             <select name="Month" size="1">
                 <option value="Januar"> Januar </option>
