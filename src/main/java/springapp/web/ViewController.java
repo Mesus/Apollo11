@@ -31,6 +31,7 @@ public class ViewController implements Controller {
         if (request.getRequestURI().equals("/champ.htm"))
             return new ModelAndView("champ");
 
+
         else return new ModelAndView("welcome");
     }
 }

@@ -10,13 +10,13 @@ package com.gurilunnan.champs.model;
 public class Champion {
     Employee employee;
     String month;
-    String year;
+    int year;
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

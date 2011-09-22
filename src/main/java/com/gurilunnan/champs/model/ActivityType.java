@@ -12,6 +12,7 @@ package com.gurilunnan.champs.model;
 public class ActivityType {
     String activityType;
 
+
     public ActivityType(String aType) {
         activityType = aType;
     }

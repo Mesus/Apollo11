@@ -13,13 +13,16 @@ public class Activity {
     private ActivityType activityType;
     private String month;
     private Employee employee;
-    private String year;
+    private int year;
 
-    public Activity(Employee e, ActivityType a, String mnd) {
-        employee = e;
-        activityType = a;
-        month = mnd;
+    public Activity(ActivityType activityType,  Employee employee, String month, int year) {
+        this.activityType = activityType;
+        this.employee = employee;
+        this.month = month;
+        this.year = year;
     }
+
+    public Activity() {}
 
     public ActivityType getActivityType() {
         return activityType;
@@ -29,8 +32,17 @@ public class Activity {
         this.activityType = activityType;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     public String getMonth() {
         return month;
+
     }
 
     public void setMonth(String month) {

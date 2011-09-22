@@ -50,12 +50,12 @@ public class FindChampController implements Controller {
         String month = request.getParameter("Month");
         String year = request.getParameter("Year");
         Champion champion = new Champion();
-        champion.setYear(year);
+        champion.setYear(Integer.parseInt(year));
         champion.setMonth(month);
 
         String champName = null;
         try {
-            champName = (String) t.queryForObject("Select employee_name from Monthly_champ where month_name =? and the_year =?", String.class, new Object[]{month, year});
+            champName = (String) t.queryForObject("Select employee_name from Activity where month_name =? and the_year =? and activity_name = 'Maanedens Champ'", String.class, new Object[]{month, year});
             System.out.println(champName);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();

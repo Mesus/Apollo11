@@ -23,5 +23,11 @@
         <p>Update the Employee List</p>
         <input type="SUBMIT" align="center" value="Update Employees">
         </form>
+        <br />
+        <form method ="POST"
+            action="activities.htm">
+        <p>View and update activities</p>
+        <input type="SUBMIT" align="center" value="View Activities">
+        </form>
     </body>
 </html>
