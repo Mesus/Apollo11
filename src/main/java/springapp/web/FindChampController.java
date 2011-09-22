@@ -60,7 +60,7 @@ public class FindChampController implements Controller {
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         } catch (IncorrectResultSizeDataAccessException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO Må gjøre om slik at den tar ut en liste, og lese av, pga kan ha fler champion of the month...
         }
         if (champName == null || champName.equals("")) {
             champName = "Ingen";

@@ -26,21 +26,9 @@ public class ViewController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        InitialContext initialContext;
-        DataSource dataSource;
-
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-        SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
-
-        if(request.getRequestURI().equals("/update.htm"))
+        if (request.getRequestURI().equals("/update.htm"))
             return new ModelAndView("update");
-        if(request.getRequestURI().equals("/champ.htm"))
+        if (request.getRequestURI().equals("/champ.htm"))
             return new ModelAndView("champ");
 
         else return new ModelAndView("welcome");
