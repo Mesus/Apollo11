@@ -10,18 +10,22 @@ package com.gurilunnan.champs.model;
 
 
 public class ActivityType {
-    String activityType;
+    String activityName;
+    String category;
 
-
-    public ActivityType(String aType) {
-        activityType = aType;
+    public String getCategory() {
+        return category;
     }
 
-    public String getActivityType() {
-        return activityType;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
     }
 }
