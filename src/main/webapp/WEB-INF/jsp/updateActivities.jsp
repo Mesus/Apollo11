@@ -6,12 +6,9 @@
   <body>
   <c:set var="Year" value="${activityList[0].year}" />
   <c:set var="Month" value="${activityList[0].month}" />
-
-  <form method ="POST" action="updateActivities.htm" >
-
-    <h3>Activities for <c:out value="${Month}"/> <c:out value="${Year}"/></h3>
-
-    <table border="1">
+    <form method ="POST" action="updateActivities.htm" >
+    <h3> Updated - Activities for <c:out value="${Month}"/> <c:out value="${Year}"/></h3>
+<table border="1">
       <tr>
         <th>Konsulent</th>
         <c:forEach items="${activityTypeList}" var="acttype">
