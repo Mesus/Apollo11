@@ -25,8 +25,8 @@
             <c:choose>
             <c:when test="${emp.name == act.employee.name}" >
                 <c:choose>
-                <c:when test="${acttype.category == act.activityType.category}" >
-                    <c:out value="${act.activityType.activityName}" />  <br />
+                <c:when test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <input type="text" name="${act.activityType.activityName},${acttype.category},${emp.name},${Month},${Year}" value="${act.activityType.activityName}" />  <br />
                 </c:when>
 
                 </c:choose>

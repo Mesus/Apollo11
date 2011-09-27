@@ -69,24 +69,50 @@ public class UpdateActivityController implements Controller {
                         inputFromTextboxes.add(s);
                     }
                 }
+                for (Activity a : activityList) {
+                    String s = a.getActivityType().getActivityName() + "," + a.getActivityType().getCategory() + "," + a.getEmployee().getName() + "," + a.getMonth() + "," + a.getYear();
+                    inputFromTextboxes.add(s);
+                }
+
                 for (String s : inputFromTextboxes) {
+                    System.out.println(s);
                     String activityName = request.getParameter(s);
-                    if (!(activityName.equals("")) && !(activityName == null)) {
-
-
-                        String[] tmp = s.split(",");
-                        boolean registered = false;
-                        List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
-                        for (ActivityType activityType : activityNames) {
-                            if (activityType.getActivityName().equals(activityName)) {
-                                registered = true;
+                    String[] tmp = s.split(",");
+                    if (tmp.length == 5) {
+                        System.out.println("fem parametre!");
+                        if (!(activityName.equals(tmp[0]))) {
+                            t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{tmp[0], tmp[2], tmp[3], tmp[4]});
+                            boolean registered = false;
+                            if (!activityName.equals("")) {
+                                List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
+                                for (ActivityType activityType : activityNames) {
+                                    if (activityType.getActivityName().equals(activityName)) {
+                                        registered = true;
+                                    }
+                                }
+                                if (!registered) {
+                                    t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[1]});
+                                    System.out.println("successfully updated activity_type!");
+                                }
+                                t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[2], month, year});
                             }
                         }
-                        if (!registered) {
-                            t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[0]});
-                            System.out.println("successfully updated activity_type!");
+                    }
+                    if (!(activityName.equals("")) && !(activityName == null)) {
+                        if (tmp.length == 4) {
+                            boolean registered = false;
+                            List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
+                            for (ActivityType activityType : activityNames) {
+                                if (activityType.getActivityName().equals(activityName)) {
+                                    registered = true;
+                                }
+                            }
+                            if (!registered) {
+                                t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[0]});
+                                System.out.println("successfully updated activity_type!");
+                            }
+                            t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], month, year});
                         }
-                        t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], month, year});
                     }
                     activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
                     activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
