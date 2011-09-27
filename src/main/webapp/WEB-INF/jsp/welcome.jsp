@@ -25,8 +25,10 @@
         </form>
         <br />
         <form method ="POST"
-            action="activities.htm">
+            action="activitiesPrMonth.htm">
         <p>View and update activities</p>
+        <input type="hidden" name="Month" value="">
+        <input type="hidden" name="Year" value=0>
         <input type="SUBMIT" align="center" value="View Activities">
         </form>
     </body>
