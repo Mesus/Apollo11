@@ -28,7 +28,7 @@
             <c:choose>
             <c:when test="${emp.name == act.employee.name}" >
                 <c:choose>
-                <c:when test="${acttype.category == act.activityType.category}" >
+                <c:when test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
                     <c:out value="${act.activityType.activityName}" />  <br />
                 </c:when>
 
