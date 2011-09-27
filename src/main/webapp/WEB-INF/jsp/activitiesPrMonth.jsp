@@ -72,6 +72,26 @@
     <input type="hidden" name="Month" value="${Month}" />
     <input type="SUBMIT" value="Avbryt" />
     </form>
+    <br /><br />
+
+    <h3>All activity types:</h3>
+    <table border="1">
+    <c:forEach items="${activityTypeList}" var="acttype">
+    <tr>
+     <td>
+      <c:out value="${acttype.category}"/>
+    </td>
+    <td>
+    <form method="POST" action="updateActivityTypes.htm">
+    <input type="hidden" name="Year" value="${Year}" >
+    <input type="hidden" name="Month" value="${Month}" >
+    <input type="SUBMIT" value="Delete">
+    </td>
+    </form>
+    </tr>
+    </c:forEach>
+    </table>
+
 
   </body>
 </html>

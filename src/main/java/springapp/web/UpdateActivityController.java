@@ -152,6 +152,24 @@ public class UpdateActivityController implements Controller {
             return new ModelAndView("activitiesPrMonth", "activity", activity);
         }
 
+        if (request.getRequestURI().equals("/updateActivityTypes.htm")) {
+            year = Integer.parseInt(request.getParameter("Year"));
+            month = request.getParameter("Month");
+            try {
+                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
+                System.out.println(activityList);
+                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+                modelAndView.addObject(activityList);
+                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                modelAndView.addObject(activityTypeList);
+                modelAndView.addObject(employeeList);
+                return modelAndView;
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return new ModelAndView("updateActivities");
 
