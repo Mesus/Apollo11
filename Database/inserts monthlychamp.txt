@@ -1,0 +1,9 @@
+INSERT INTO MONTHLY_CHAMP values ('Klaus Myrseth', 'Oktober', '2010');
+INSERT INTO MONTHLY_CHAMP values ('Stein Morten Hugubakken', 'November', '2010');
+INSERT INTO MONTHLY_CHAMP values ('Yngve Nilsen Bakken', 'Desember', '2010');
+INSERT INTO MONTHLY_CHAMP values ('Frode Nilsen', 'Januar', '2011');
+INSERT INTO MONTHLY_CHAMP values ('Ragnar Westad', 'Januar', '2011');
+INSERT INTO MONTHLY_CHAMP values ('Bjorn Erik Pedersen', 'April', '2011');
+INSERT INTO MONTHLY_CHAMP values ('Ragnar Westad', 'Mai', '2011');
+INSERT INTO MONTHLY_CHAMP values ('Stein Morten Hugubakken', 'Juni', '2011');
+INSERT INTO MONTHLY_CHAMP values ('Bjorn Erik Pedersen', 'August', '2011');

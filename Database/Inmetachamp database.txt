@@ -1,0 +1,35 @@
+CREATE SCHEMA INMETACHAMP
+DEFAULT CHARACTER SET = 'UTF8';
+
+CREATE TABLE EMPLOYEE (
+	name 	varchar(100) not null primary key
+);
+
+CREATE TABLE MONTH (
+	month_name varchar(10) not null primary key
+				check(month_name in ('Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember')),
+	month_number int not null unique
+);
+
+CREATE TABLE ACTIVITY (
+	activity_name varchar(100) not null,
+	employee_name varchar(100) not null,
+	month_name varchar(10) not null,
+	the_year int not null,
+	FOREIGN KEY (activity_name)
+		REFERENCES ACTIVITY_TYPE (activity_name),
+	FOREIGN KEY (employee_name)
+		REFERENCES EMPLOYEE (name),
+	FOREIGN KEY (month_name)
+		REFERENCES MONTH (month_name),
+	primary key (activity_name, employee_name, month_name, the_year)
+);
+
+CREATE TABLE ACTIVITY_TYPE (
+	activity_name varchar(100) not null,
+	act_type varchar(100) not null 
+	check(act_type in ('Arrangement internt', 'Arrangement eksternt', 'Foredrag internt', 'Foredrag eksternt', 'Boktips', 'Kurs og Sertifisering', 'Rekruttering/tips', 'Pet Projects', 'Maanedens Champ')),
+	primary key(activity_name, act_type)
+);
+
+
