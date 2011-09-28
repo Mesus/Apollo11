@@ -1,10 +1,13 @@
 package springapp.web;
 
+import com.sun.xml.internal.ws.api.streaming.XMLStreamWriterFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import sun.security.x509.CertAttrSet;
+import sun.util.calendar.LocalGregorianCalendar;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,8 +36,10 @@ public class ViewController implements Controller {
         if (request.getRequestURI().equals("/champ.htm"))
             return new ModelAndView("champ");
 
+        ModelAndView modelAndView = new ModelAndView("welcome");
 
-        else return new ModelAndView("welcome");
+        return modelAndView;
+
     }
 }
 

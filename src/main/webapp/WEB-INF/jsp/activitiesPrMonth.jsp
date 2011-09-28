@@ -95,7 +95,16 @@
     <input type="SUBMIT" value="Lagre" />
     </form>
 
-   <p>Message:  <c:out value="${message}" /> </p>
+   <p><c:out value="${message}" /> </p>
+   <br />
+
+   <h3>Legg til kategori:</h3>
+   <form method="POST" action="addActivityType.htm">
+   <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" />
+   <input type="hidden" name="Year" value="${Year}" >
+   <input type="hidden" name="Month" value="${Month}" >
+   <input type="SUBMIT" value="Lagre" />  </p>
+   </form>
 
 
   </body>

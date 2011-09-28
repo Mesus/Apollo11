@@ -4,8 +4,10 @@ import com.gurilunnan.champs.model.Activity;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -171,7 +173,7 @@ public class UpdateActivityController implements Controller {
 
                 for (ActivityType a : activityTypeList) {
                     if ((request.getParameter("Delete").equals(a.getCategory()))) {
-                       toBeDeleted = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?" ,new ActivityRowMapper(), new Object[]{a.getCategory()});
+                        toBeDeleted = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{a.getCategory()});
                         if (toBeDeleted != null) {
                             for (Activity activity : toBeDeleted) {
                                 t.update("Delete from Activity where activity_name = ?", new Object[]{activity.getActivityType().getActivityName()});
@@ -179,7 +181,7 @@ public class UpdateActivityController implements Controller {
                             }
                         }
                         t.update("Delete from activity_type where act_type = ?", new Object[]{a.getCategory()});
-                        message = "Successfully deleted the category " + a.getCategory() + " from the database." ;
+                        message = "Successfully deleted the category " + a.getCategory() + " from the database.";
                         System.out.println(message);
                     }
                 }
@@ -197,6 +199,32 @@ public class UpdateActivityController implements Controller {
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
+        }
+
+        if (request.getRequestURI().equals("/addActivityType.htm")) {
+            year = Integer.parseInt(request.getParameter("Year"));
+            month = request.getParameter("Month");
+            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+            try {
+                if ((request.getParameter("CategoryName")) != "" && (request.getParameter("ActivityName")) != "") {
+                    t.update("insert into activity_type values(?,?)", new Object[]{request.getParameter("ActivityName"), request.getParameter("CategoryName")});
+                    message = "La til kategori " + request.getParameter("CategoryName") + ".";
+                }
+                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
+                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                modelAndView.addObject(activityList);
+                modelAndView.addObject(activityTypeList);
+                modelAndView.addObject(employeeList);
+                modelAndView.addObject("message",message);
+                return modelAndView;
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+            } catch (DuplicateKeyException e) {
+                e.printStackTrace();
+            }
+            return modelAndView;
+
         }
 
 

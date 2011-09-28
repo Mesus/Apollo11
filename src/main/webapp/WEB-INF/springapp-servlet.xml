@@ -19,6 +19,7 @@
     <bean name="/updateActivities.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/activitiesCancel.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/updateActivityTypes.htm" class="springapp.web.UpdateActivityController" />
+    <bean name="/addActivityType.htm" class="springapp.web.UpdateActivityController" />
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
         <property name="prefix" value="/WEB-INF/jsp/"></property>
