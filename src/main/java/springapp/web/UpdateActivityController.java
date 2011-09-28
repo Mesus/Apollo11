@@ -55,8 +55,8 @@ public class UpdateActivityController implements Controller {
         List<ActivityType> activityTypeList;
         int year = Integer.parseInt(request.getParameter("Year"));
         String month = request.getParameter("Month");
-        String message = "Kom igjen, slett i vei!";
-        ModelAndView mav = new ModelAndView("/updateActivities.htm");
+        String message = "";
+        ModelAndView mav = new ModelAndView("/activitiesPrMonth");
 
         if (request.getRequestURI().equals("/updateActivities.htm")) {
             List<String> inputFromTextboxes = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class UpdateActivityController implements Controller {
                         System.out.println("fem parametre!");
                         if (!(activityName.equals(tmp[0]))) {
                             t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{tmp[0], tmp[2], tmp[3], tmp[4]});
-                            message = "Slettet fra activity" + activityName + ". ";
+                            message = "Slettet aktivitet " + tmp[0] + ". ";
                             boolean registered = false;
                             if (!activityName.equals("")) {
                                 List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
@@ -94,11 +94,11 @@ public class UpdateActivityController implements Controller {
                                 }
                                 if (!registered) {
                                     t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[1]});
-                                    message = message + "Oppdaterte activity - la til " + activityName + ". ";
+                                    message = message + "Oppdaterte aktiviteter - la til " + activityName + ". ";
                                     System.out.println("successfully updated activity_type!");
                                 }
                                 t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[2], month, year});
-                                message = message + "Oppdaterte activity - la til " + activityName + ". ";
+                                message = "Oppdaterte activiteter - la til " + activityName + " under kategori " + tmp[1] + " for konsulent " + tmp[2] + ".";
                             }
                         }
                     }
@@ -117,7 +117,7 @@ public class UpdateActivityController implements Controller {
                                 message = message + "Oppdaterte activity - la til " + activityName + ". ";
                             }
                             t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], month, year});
-                            message = message + "Oppdaterte activity - la til " + activityName + ". ";
+                            message = "Oppdaterte activiteter - la til " + activityName + " under kategori " + tmp[0] + " for konsulent " + tmp[1] + ".";
                         }
                     }
                     activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
@@ -132,11 +132,14 @@ public class UpdateActivityController implements Controller {
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
+            } catch (DuplicateKeyException e) {
+                e.printStackTrace();
             }
-            Activity activity = new Activity();
-            activity.setMonth(month);
-            activity.setYear(year);
-            return new ModelAndView("activitiesPrMonth", "activity", activity);
+            mav.addObject("Year", year);
+            mav.addObject("Month", month);
+            mav.addObject("message", message);
+            return mav;
+
         }
 
         if (request.getRequestURI().equals("/activitiesCancel.htm")) {

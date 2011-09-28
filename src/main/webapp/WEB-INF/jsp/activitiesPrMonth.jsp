@@ -11,7 +11,6 @@
   <form method ="POST" action="activitiesPrMonth.htm" >
 
     <h3>Find activities for <select name="Month" size="1">
-            <option value="">Month:</option>
             <option value="Januar"> Januar </option>
             <option value="Februar"> Februar </option>
             <option value="Mars"> Mars </option>
@@ -25,7 +24,6 @@
             <option value="November"> November </option>
             <option value="Desember"> Desember </option>
         </select> <select name="Year" size="1">
-            <option value="">Year:</option>
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
         </select><input type="SUBMIT" align="center" value="Go"></h3>
@@ -91,7 +89,7 @@
     </table>
     <input type="hidden" name="Year" value="${Year}" >
     <input type="hidden" name="Month" value="${Month}" >
-    <input type="SUBMIT" value="Lagre" />
+    <input type="SUBMIT" value="Slett" />
     </form>
 
    <br />
