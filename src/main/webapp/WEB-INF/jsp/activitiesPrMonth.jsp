@@ -4,8 +4,6 @@
 <html>
   <head><title>Activities</title></head>
   <body>
-  <c:set var="Year" value="${activityList[0].year}" />
-  <c:set var="Month" value="${activityList[0].month}" />
 
   <h3>Activities for ${Month} ${Year}</h3>
 

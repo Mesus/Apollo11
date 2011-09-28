@@ -128,6 +128,8 @@ public class UpdateActivityController implements Controller {
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                modelAndView.addObject("Year", year);
+                modelAndView.addObject("Month", month);
                 modelAndView.addObject("message", message);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
@@ -192,6 +194,8 @@ public class UpdateActivityController implements Controller {
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                modelAndView.addObject("Month", month);
+                modelAndView.addObject("Year", year);
                 System.out.println(message);
                 modelAndView.addObject("message", message);
 
@@ -206,7 +210,7 @@ public class UpdateActivityController implements Controller {
             month = request.getParameter("Month");
             ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             try {
-                if ((request.getParameter("CategoryName")) != "" && (request.getParameter("ActivityName")) != "") {
+                if ((request.getParameter("CategoryName")) != "") {
                     t.update("insert into activity_type values(?,?)", new Object[]{request.getParameter("ActivityName"), request.getParameter("CategoryName")});
                     message = "La til kategori " + request.getParameter("CategoryName") + ".";
                 }
@@ -216,7 +220,9 @@ public class UpdateActivityController implements Controller {
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
-                modelAndView.addObject("message",message);
+                modelAndView.addObject("Month", month);
+                modelAndView.addObject("Year", year);
+                modelAndView.addObject("message", message);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();

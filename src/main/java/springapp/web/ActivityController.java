@@ -53,9 +53,11 @@ public class ActivityController implements Controller {
         List<ActivityType> activityTypeList;
         int year;
         String month;
+        String message = "Velkommen.";
 
         if (request.getRequestURI().equals("/activitiesPrMonth.htm")) {
-            year = Integer.parseInt(request.getParameter("Year"));
+            String str_year = request.getParameter("Year");
+            year = Integer.parseInt(str_year);
             month = request.getParameter("Month");
             try {
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
@@ -66,17 +68,22 @@ public class ActivityController implements Controller {
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                modelAndView.addObject("message", message);
+                modelAndView.addObject("Year", year);
+                modelAndView.addObject("Month", month);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
-            String message = "Velkommen.";
+
             Activity activity = new Activity();
             activity.setMonth(month);
             activity.setYear(year);
             ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             modelAndView.addObject(activity);
-            modelAndView.addObject(message);
+            modelAndView.addObject("message", message);
+            modelAndView.addObject("Year", year);
+            modelAndView.addObject("Month", month);
             return modelAndView;
         }
         return new ModelAndView("activities");
