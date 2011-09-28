@@ -27,8 +27,7 @@ CREATE TABLE ACTIVITY (
 
 CREATE TABLE ACTIVITY_TYPE (
 	activity_name varchar(100) not null,
-	act_type varchar(100) not null 
-	check(act_type in ('Arrangement internt', 'Arrangement eksternt', 'Foredrag internt', 'Foredrag eksternt', 'Boktips', 'Kurs og Sertifisering', 'Rekruttering/tips', 'Pet Projects', 'Maanedens Champ')),
+	act_type varchar(100) not null,
 	primary key(activity_name, act_type)
 );
 

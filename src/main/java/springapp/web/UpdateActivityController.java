@@ -53,17 +53,16 @@ public class UpdateActivityController implements Controller {
         List<Activity> activityList;
         List<Employee> employeeList;
         List<ActivityType> activityTypeList;
-        int year;
-        String month;
+        int year = Integer.parseInt(request.getParameter("Year"));
+        String month = request.getParameter("Month");
         String message = "Kom igjen, slett i vei!";
+        ModelAndView mav = new ModelAndView("/updateActivities.htm");
 
         if (request.getRequestURI().equals("/updateActivities.htm")) {
-            year = Integer.parseInt(request.getParameter("Year"));
-            month = request.getParameter("Month");
             List<String> inputFromTextboxes = new ArrayList<String>();
             try {
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                ModelAndView modelAndView = new ModelAndView("updateActivities");
+                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
                 activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 for (ActivityType activityType : activityTypeList) {
@@ -78,7 +77,6 @@ public class UpdateActivityController implements Controller {
                 }
 
                 for (String s : inputFromTextboxes) {
-                    System.out.println(s);
                     String activityName = request.getParameter(s);
                     String[] tmp = s.split(",");
                     if (tmp.length == 5) {
@@ -142,17 +140,18 @@ public class UpdateActivityController implements Controller {
         }
 
         if (request.getRequestURI().equals("/activitiesCancel.htm")) {
-            year = Integer.parseInt(request.getParameter("Year"));
-            month = request.getParameter("Month");
             try {
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                System.out.println(activityList);
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
                 modelAndView.addObject(activityList);
                 activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                message = "Canceled changes.";
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                modelAndView.addObject("Year", year);
+                modelAndView.addObject("Month", month);
+                modelAndView.addObject("message", message);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
@@ -165,8 +164,6 @@ public class UpdateActivityController implements Controller {
 
         //Checkboxes sendes bare hvis de er checked, så kan sjekke for om navnet på de fins som parameter for å se om noe skal slettes.
         if (request.getRequestURI().equals("/updateActivityTypes.htm")) {
-            year = Integer.parseInt(request.getParameter("Year"));
-            month = request.getParameter("Month");
             try {
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
 
@@ -206,8 +203,6 @@ public class UpdateActivityController implements Controller {
         }
 
         if (request.getRequestURI().equals("/addActivityType.htm")) {
-            year = Integer.parseInt(request.getParameter("Year"));
-            month = request.getParameter("Month");
             ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             try {
                 if ((request.getParameter("CategoryName")) != "") {
@@ -233,8 +228,10 @@ public class UpdateActivityController implements Controller {
 
         }
 
-
-        return new ModelAndView("updateActivities");
+        mav.addObject("Year", year);
+        mav.addObject("Month", month);
+        mav.addObject("message", message);
+        return mav;
 
     }
 

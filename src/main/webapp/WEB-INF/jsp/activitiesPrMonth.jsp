@@ -6,6 +6,7 @@
   <body>
 
   <h3>Activities for ${Month} ${Year}</h3>
+  <p><c:out value="${message}" /> </p>
 
   <form method ="POST" action="activitiesPrMonth.htm" >
 
@@ -93,7 +94,6 @@
     <input type="SUBMIT" value="Lagre" />
     </form>
 
-   <p><c:out value="${message}" /> </p>
    <br />
 
    <h3>Legg til kategori:</h3>
