@@ -72,5 +72,26 @@
     <input type="SUBMIT" value="Avbryt" />
     </form>
 
+    <h3>Alle aktivitetstyper:</h3>
+    <table border="1">
+    <tr><th>Kategori</th><th>Slett</th></tr>
+    <c:forEach items="${activityTypeList}" var="acttype">
+    <tr>
+     <td>
+      <c:out value="${acttype.category}"/>
+    </td>
+    <td>
+    <form method="POST" action="updateActivityTypes.htm">
+    <input type="CHECKBOX" name="Delete" value="${acttype.category}">
+    </td>
+    </tr>
+    </c:forEach>
+    </table>
+    <input type="hidden" name="Year" value="${Year}" >
+    <input type="hidden" name="Month" value="${Month}" >
+    <input type="SUBMIT" value="Lagre" />
+    </form>
+
+  <p>Message:  <c:out value="${Message}" /> </p>
   </body>
 </html>

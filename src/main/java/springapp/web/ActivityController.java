@@ -70,10 +70,14 @@ public class ActivityController implements Controller {
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
+            String message = "Velkommen.";
             Activity activity = new Activity();
             activity.setMonth(month);
             activity.setYear(year);
-            return new ModelAndView("activitiesPrMonth", "activity", activity);
+            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+            modelAndView.addObject(activity);
+            modelAndView.addObject(message);
+            return modelAndView;
         }
         return new ModelAndView("activities");
     }

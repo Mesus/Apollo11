@@ -6,6 +6,7 @@
   <body>
   <c:set var="Year" value="${activityList[0].year}" />
   <c:set var="Month" value="${activityList[0].month}" />
+
   <h3>Activities for ${Month} ${Year}</h3>
 
   <form method ="POST" action="activitiesPrMonth.htm" >
@@ -74,8 +75,9 @@
     </form>
     <br /><br />
 
-    <h3>All activity types:</h3>
+    <h3>Alle aktivitetstyper:</h3>
     <table border="1">
+    <tr><th>Kategori</th><th>Slett</th></tr>
     <c:forEach items="${activityTypeList}" var="acttype">
     <tr>
      <td>
@@ -83,14 +85,17 @@
     </td>
     <td>
     <form method="POST" action="updateActivityTypes.htm">
-    <input type="hidden" name="Year" value="${Year}" >
-    <input type="hidden" name="Month" value="${Month}" >
-    <input type="SUBMIT" value="Delete">
+    <input type="CHECKBOX" name="Delete" value="${acttype.category}">
     </td>
-    </form>
     </tr>
     </c:forEach>
     </table>
+    <input type="hidden" name="Year" value="${Year}" >
+    <input type="hidden" name="Month" value="${Month}" >
+    <input type="SUBMIT" value="Lagre" />
+    </form>
+
+   <p>Message:  <c:out value="${message}" /> </p>
 
 
   </body>

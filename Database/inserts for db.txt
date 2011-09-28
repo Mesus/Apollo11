@@ -37,3 +37,4 @@ INSERT INTO ACTIVITY_TYPE values ('Android', 'Pet Projects');
 INSERT INTO ACTIVITY_TYPE values ('OCR/Neurale nettverk', 'Pet Projects');
 INSERT INTO ACTIVITY_TYPE values ('JavaZone App', 'Pet Projects');
 INSERT INTO ACTIVITY_TYPE values ('Cloud Foundry', 'Pet Projects');
+INSERT INTO ACTIVITY_TYPE values ('Maanedens Champ', 'Maanedens Champ');

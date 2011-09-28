@@ -53,6 +53,7 @@ public class UpdateActivityController implements Controller {
         List<ActivityType> activityTypeList;
         int year;
         String month;
+        String message = "Kom igjen, slett i vei!";
 
         if (request.getRequestURI().equals("/updateActivities.htm")) {
             year = Integer.parseInt(request.getParameter("Year"));
@@ -82,6 +83,7 @@ public class UpdateActivityController implements Controller {
                         System.out.println("fem parametre!");
                         if (!(activityName.equals(tmp[0]))) {
                             t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{tmp[0], tmp[2], tmp[3], tmp[4]});
+                            message = "Slettet fra activity" + activityName + ". ";
                             boolean registered = false;
                             if (!activityName.equals("")) {
                                 List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
@@ -92,9 +94,11 @@ public class UpdateActivityController implements Controller {
                                 }
                                 if (!registered) {
                                     t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[1]});
+                                    message = message + "Oppdaterte activity - la til " + activityName + ". ";
                                     System.out.println("successfully updated activity_type!");
                                 }
                                 t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[2], month, year});
+                                message = message + "Oppdaterte activity - la til " + activityName + ". ";
                             }
                         }
                     }
@@ -110,8 +114,10 @@ public class UpdateActivityController implements Controller {
                             if (!registered) {
                                 t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[0]});
                                 System.out.println("successfully updated activity_type!");
+                                message = message + "Oppdaterte activity - la til " + activityName + ". ";
                             }
                             t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], month, year});
+                            message = message + "Oppdaterte activity - la til " + activityName + ". ";
                         }
                     }
                     activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
@@ -120,6 +126,7 @@ public class UpdateActivityController implements Controller {
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                modelAndView.addObject("message", message);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
@@ -152,18 +159,40 @@ public class UpdateActivityController implements Controller {
             return new ModelAndView("activitiesPrMonth", "activity", activity);
         }
 
+        //Checkboxes sendes bare hvis de er checked, så kan sjekke for om navnet på de fins som parameter for å se om noe skal slettes.
         if (request.getRequestURI().equals("/updateActivityTypes.htm")) {
             year = Integer.parseInt(request.getParameter("Year"));
             month = request.getParameter("Month");
             try {
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                System.out.println(activityList);
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-                modelAndView.addObject(activityList);
+
                 activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                List<Activity> toBeDeleted = new ArrayList<Activity>();
+
+                for (ActivityType a : activityTypeList) {
+                    if ((request.getParameter("Delete").equals(a.getCategory()))) {
+                       toBeDeleted = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?" ,new ActivityRowMapper(), new Object[]{a.getCategory()});
+                        if (toBeDeleted != null) {
+                            for (Activity activity : toBeDeleted) {
+                                t.update("Delete from Activity where activity_name = ?", new Object[]{activity.getActivityType().getActivityName()});
+                                message = message + "Slettet oppforinger fra database hvor kategori = " + activity.getActivityType().getActivityName() + ". ";
+                            }
+                        }
+                        t.update("Delete from activity_type where act_type = ?", new Object[]{a.getCategory()});
+                        message = "Successfully deleted the category " + a.getCategory() + " from the database." ;
+                        System.out.println(message);
+                    }
+                }
+                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+
+                modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
+                System.out.println(message);
+                modelAndView.addObject("message", message);
+
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
