@@ -58,8 +58,8 @@ public class ActivityListController implements Controller {
 
         try {
             employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-            activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-            activityListHelpers = t.query("select e.name, a.month_name, t.act_type, count(a.activity_name), a.the_year from employee e join activity a, activity_type t where e.name = a.employee_name and a.activity_name = t.activity_name and a.the_year = ? group by e.name, t.act_type, a.month_name", new ActivityListHelperRowMapper(), new Object[]{year});
+            activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type where isvisible_year=1 group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+            activityListHelpers = t.query("select e.name, a.month_name, t.act_type, a.activity_name, count(a.activity_name), a.the_year from employee e join activity a, activity_type t where e.name = a.employee_name and a.activity_name = t.activity_name and a.the_year = ? group by e.name, t.act_type, a.month_name", new ActivityListHelperRowMapper(), new Object[]{year});
 
             int count;
             Employee employee;
@@ -71,7 +71,11 @@ public class ActivityListController implements Controller {
                     count = 0;
                     for (ActivityListHelper activityListHelper : activityListHelpers) {
                         if (e.getName().equals(activityListHelper.getEmployee().getName()) && aType.getCategory().equals(activityListHelper.getActivityType().getCategory())) {
-                            count = count + activityListHelper.getCount();
+                            if (activityType.isNumeric()) {
+                                count = count + Integer.parseInt(activityListHelper.getActivityType().getActivityName());
+                            } else {
+                                count = count + activityListHelper.getCount();
+                            }
                         }
                     }
                     if (count > 0) {
@@ -117,6 +121,16 @@ public class ActivityListController implements Controller {
         public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityType activityType = new ActivityType();
             activityType.setCategory(resultSet.getString(1));
+            boolean numeric = false;
+            boolean visible = false;
+            if (resultSet.getInt(2) == 1) {
+                numeric = true;
+            }
+            if (resultSet.getInt(3) == 1) {
+                visible = true;
+            }
+            activityType.setVisible(visible);
+            activityType.setNumeric(numeric);
             return activityType;
         }
     }
@@ -127,11 +141,12 @@ public class ActivityListController implements Controller {
             ActivityListHelper activityListHelper = new ActivityListHelper();
             ActivityType activityType = new ActivityType();
             activityType.setCategory(resultSet.getString(3));
+            activityType.setActivityName(resultSet.getString(4));
             activityListHelper.setActivityType(activityType);
             Employee employee = new Employee(resultSet.getString(1));
             activityListHelper.setEmployee(employee);
-            activityListHelper.setYear(resultSet.getInt(5));
-            activityListHelper.setCount(resultSet.getInt(4));
+            activityListHelper.setYear(resultSet.getInt(6));
+            activityListHelper.setCount(resultSet.getInt(5));
             return activityListHelper;
 
         }

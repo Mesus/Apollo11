@@ -64,7 +64,7 @@ public class ActivityController implements Controller {
                 System.out.println(activityList);
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
                 modelAndView.addObject(activityList);
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
@@ -104,11 +104,19 @@ public class ActivityController implements Controller {
     }
 
     class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-
-
         public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityType activityType = new ActivityType();
             activityType.setCategory(resultSet.getString(1));
+            boolean numeric = false;
+            boolean visible = false;
+            if (resultSet.getInt(2) == 1) {
+                numeric = true;
+            }
+            if (resultSet.getInt(3) == 1) {
+                visible = true;
+            }
+            activityType.setVisible(visible);
+            activityType.setNumeric(numeric);
             return activityType;
         }
     }

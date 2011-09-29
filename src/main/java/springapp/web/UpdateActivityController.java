@@ -3,8 +3,6 @@ package springapp.web;
 import com.gurilunnan.champs.model.Activity;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -19,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import javax.swing.text.DefaultEditorKit;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,7 +60,7 @@ public class UpdateActivityController implements Controller {
             try {
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 for (ActivityType activityType : activityTypeList) {
                     for (Employee employee : employeeList) {
@@ -93,7 +90,21 @@ public class UpdateActivityController implements Controller {
                                     }
                                 }
                                 if (!registered) {
-                                    t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[1]});
+                                    int isnumeric = 0;
+                                    int isvisible = 0;
+                                    for (ActivityType activityType : activityTypeList) {
+                                        if (activityType.getCategory().equals(tmp[1])) {
+                                            if (activityType.isNumeric()) {
+                                                isnumeric = 1;
+                                            }
+                                            if (activityType.isVisible()) {
+                                                isvisible = 1;
+                                            }
+                                            break;
+                                        }
+
+                                    }
+                                    t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], isnumeric, isvisible});
                                     message = message + "Oppdaterte aktiviteter - la til " + activityName + ". ";
                                     System.out.println("successfully updated activity_type!");
                                 }
@@ -112,7 +123,20 @@ public class UpdateActivityController implements Controller {
                                 }
                             }
                             if (!registered) {
-                                t.update("insert into activity_type values (?, ?)", new Object[]{activityName, tmp[0]});
+                                int isnumeric = 0;
+                                int isvisible = 0;
+                                for (ActivityType activityType : activityTypeList) {
+                                    if (activityType.getCategory().equals(tmp[0])) {
+                                        if (activityType.isNumeric()) {
+                                            isnumeric = 1;
+                                        }
+                                        if (activityType.isVisible()) {
+                                            isvisible = 1;
+                                        }
+                                        break;
+                                    }
+                                }
+                                t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, tmp[0], isnumeric, isvisible});
                                 System.out.println("successfully updated activity_type!");
                                 message = message + "Oppdaterte activity - la til " + activityName + ". ";
                             }
@@ -121,7 +145,7 @@ public class UpdateActivityController implements Controller {
                         }
                     }
                     activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                    activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                    activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 }
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
@@ -170,7 +194,7 @@ public class UpdateActivityController implements Controller {
             try {
                 ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
 
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 List<Activity> toBeDeleted = new ArrayList<Activity>();
 
                 message = "";
@@ -188,7 +212,7 @@ public class UpdateActivityController implements Controller {
                         System.out.println(message);
                     }
                 }
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
 
@@ -210,11 +234,19 @@ public class UpdateActivityController implements Controller {
             ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             try {
                 if ((request.getParameter("CategoryName")) != "") {
-                    t.update("insert into activity_type values(?,?)", new Object[]{request.getParameter("ActivityName"), request.getParameter("CategoryName")});
+                    int isnumeric = 0;
+                    int isvisible = 0;
+                    if ((request.getParameter("number") != null) && (request.getParameter("number").equals("1"))) {
+                        isnumeric = 1;
+                    }
+                    if((request.getParameter("visible") != null) && (request.getParameter("visible").equals("1"))) {
+                        isvisible = 1;
+                    }
+                    t.update("insert into activity_type values(?,?,?,?)", new Object[]{request.getParameter("ActivityName"), request.getParameter("CategoryName"), isnumeric, isvisible});
                     message = "La til kategori " + request.getParameter("CategoryName") + ".";
                 }
                 activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
@@ -254,11 +286,19 @@ public class UpdateActivityController implements Controller {
     }
 
     class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-
-
         public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityType activityType = new ActivityType();
             activityType.setCategory(resultSet.getString(1));
+            boolean numeric = false;
+            boolean visible = false;
+            if (resultSet.getInt(2) == 1) {
+                numeric = true;
+            }
+            if (resultSet.getInt(3) == 1) {
+                visible = true;
+            }
+            activityType.setVisible(visible);
+            activityType.setNumeric(numeric);
             return activityType;
         }
     }

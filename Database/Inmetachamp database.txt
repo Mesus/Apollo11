@@ -28,6 +28,8 @@ CREATE TABLE ACTIVITY (
 CREATE TABLE ACTIVITY_TYPE (
 	activity_name varchar(100) not null,
 	act_type varchar(100) not null,
+	isnumeric boolean,
+	isvisible boolean,
 	primary key(activity_name, act_type)
 );
 
