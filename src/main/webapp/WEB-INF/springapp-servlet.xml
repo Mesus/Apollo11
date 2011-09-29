@@ -12,14 +12,13 @@
     <bean name="/deleteEmployee.htm" class="springapp.web.EmployeeController" />
     <bean name="/showEmployees.htm" class="springapp.web.EmployeeController" />
     <bean name="/employee.htm" class="springapp.web.EmployeeController"/>
-    <bean name="/champ.htm" class="springapp.web.ViewController"/>
-    <bean name="/findChamp.htm" class="springapp.web.FindChampController"/>
     <bean name="/activities.htm" class="springapp.web.ActivityController" />
     <bean name="/activitiesPrMonth.htm" class="springapp.web.ActivityController" />
     <bean name="/updateActivities.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/activitiesCancel.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/updateActivityTypes.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/addActivityType.htm" class="springapp.web.UpdateActivityController" />
+    <bean name="/activityList.htm" class="springapp.web.ActivityListController" />
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
         <property name="prefix" value="/WEB-INF/jsp/"></property>

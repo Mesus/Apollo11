@@ -5,12 +5,12 @@
   <head><title>Activities</title></head>
   <body>
 
-  <h3>Activities for ${Month} ${Year}</h3>
+  <h3>Aktiviteter ${Month} ${Year}</h3>
   <p><c:out value="${message}" /> </p>
 
   <form method ="POST" action="activitiesPrMonth.htm" >
 
-    <h3>Find activities for <select name="Month" size="1">
+    <h3>Finn aktiviteter for <select name="Month" size="1">
             <option value="Januar"> Januar </option>
             <option value="Februar"> Februar </option>
             <option value="Mars"> Mars </option>
@@ -26,6 +26,7 @@
         </select> <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
+            <option value="2012"> 2012 </option>
         </select><input type="SUBMIT" align="center" value="Go"></h3>
     </form>
     <form method ="POST" action="updateActivities.htm">

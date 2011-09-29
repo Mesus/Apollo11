@@ -173,6 +173,7 @@ public class UpdateActivityController implements Controller {
                 activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 List<Activity> toBeDeleted = new ArrayList<Activity>();
 
+                message = "";
                 for (ActivityType a : activityTypeList) {
                     if ((request.getParameter("Delete").equals(a.getCategory()))) {
                         toBeDeleted = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{a.getCategory()});
@@ -183,7 +184,7 @@ public class UpdateActivityController implements Controller {
                             }
                         }
                         t.update("Delete from activity_type where act_type = ?", new Object[]{a.getCategory()});
-                        message = "Successfully deleted the category " + a.getCategory() + " from the database.";
+                        message += "Successfully deleted the category " + a.getCategory() + " from the database.";
                         System.out.println(message);
                     }
                 }

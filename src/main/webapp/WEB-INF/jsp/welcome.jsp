@@ -7,9 +7,14 @@
         <h1>Inmeta Java Champion Webpage</h1>
         <p>What do you want to do?</p>
         <form method="POST"
-            action="champ.htm">
-        <p>Find Champion of the Month: </p>
-        <input type="SUBMIT" align="center" value="Find Champion">
+            action="activityList.htm">
+        <p>View activities for year:
+        <select name="Year" size="1">
+            <option value="2010"> 2010 </option>
+            <option value="2011"> 2011 </option>
+            <option value="2012"> 2012 </option>
+        </select> </p>
+        <input type="SUBMIT" align="center" value="View activities">
         </form>
         <br />
         <form method="POST"
@@ -45,6 +50,7 @@
         <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
+            <option value="2012"> 2012 </option>
         </select>
    <input type="SUBMIT" align="center" value="Find Activities">
     </p>
