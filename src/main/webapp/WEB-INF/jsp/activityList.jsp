@@ -36,8 +36,13 @@
                 </tr>
             </c:forEach>
         </table>
-        <input type="hidden" name="Year" value="${Year}" />
-        <input type="SUBMIT"  align="center" value="Go" />
+
+       <p> Aktiviteter for <select name="Year" size="1">
+            <option value="2010"> 2010 </option>
+            <option value="2011"> 2011 </option>
+            <option value="2012"> 2012 </option>
+        </select> </p>
+        <input type="SUBMIT"  align="center" value="Hent aktiviteter" />
         </form>
     </body>
 </html>
