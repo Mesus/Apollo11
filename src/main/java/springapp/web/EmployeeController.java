@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Employee;
+import com.gurilunnan.champs.persistence.ActivityRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -31,93 +32,45 @@ public class EmployeeController implements Controller {
     protected final Log logger = LogFactory.getLog(getClass());
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ActivityRepository activityRepository = new ActivityRepository();
+        List<Employee> employees;
+        String message = "";
+        ModelAndView modelAndView = new ModelAndView("updateEmployees");
 
-        InitialContext initialContext;
-        DataSource dataSource;
-
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-        SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
-        List<Employee> employees = new ArrayList<Employee>();
-        String message = "test";
-
-        if (request.getRequestURI().equals("/employee.htm")) {
-            try {
-                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                return new ModelAndView("employee", "employees", employees);
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-            }
+        if(request.getRequestURI().equals("/updateEmployees.htm")) {
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            return modelAndView;
         }
 
-        if (request.getRequestURI().equals("/showEmployees.htm")) {
-            try {
-                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                return new ModelAndView("update", "employees", employees);
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (request.getRequestURI().equals("/updateEmployee.htm")) {
+        if (request.getRequestURI().equals("/addEmployee.htm")) {
             String name = request.getParameter("employee_name");
-            try {
-                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                System.out.print(employees);
-                for (Employee e : employees) {
-                    if (e.getName().equalsIgnoreCase(name)) {
-                        message = "Employee is already registered.";
-                        return new ModelAndView("update", "message", message);
-                    }
-
+            employees = activityRepository.findEmployees();
+            for (Employee e : employees) {
+                if (e.getName().equalsIgnoreCase(name)) {
+                    message = "Employee is already registered.";
                 }
-                t.update("insert into Employee values(?)", new Object[]{request.getParameter("employee_name")});
-                message = "Successfully added " + name + " to Employees.";
-                return new ModelAndView("update", "message", message);
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
             }
+            message = activityRepository.addEmployee(name);
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            modelAndView.addObject("message", message);
+            return modelAndView;
         }
 
         if (request.getRequestURI().equals("/deleteEmployee.htm")) {
-            String name = request.getParameter("employee_name");
-            System.out.println(name);
-            try {
-                employees = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                for (Employee e : employees) {
-                    if (e.getName().equalsIgnoreCase(name)) {
-                        message = "Successfully deleted " + name + ".";
-                        t.update("delete from Employee where name =? ", new Object[]{request.getParameter("employee_name")});
-                        return new ModelAndView("update", "message", message);
-                    }
+            String name = request.getParameter("Delete");
+            employees = activityRepository.findEmployees();
+            for (Employee e : employees) {
+                if (e.getName().equalsIgnoreCase(name)) {
+                    message = activityRepository.deleteEmployee(name);
                 }
-                message = "Could not find employee " + name + "." ;
-                return new ModelAndView("update", "message", message);
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-                message = "Cannot delete " + name + ".";
-                return new ModelAndView("update", "message", message);
-            } catch (DataIntegrityViolationException e) {
-                e.printStackTrace();
-                message = "Cannot delete " + name + ".";
-                return new ModelAndView("update", "message", message);
             }
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            modelAndView.addObject("message", message);
+            return modelAndView;
         }
-        return new ModelAndView("update");
+        return new ModelAndView("welcome");
     }
-
-    class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
-
-
-        public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
-            Employee e = new Employee(resultSet.getString(1));
-            return e;
-        }
-    }
-
 }

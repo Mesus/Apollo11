@@ -81,9 +81,9 @@ public class UpdateActivityController implements Controller {
                                         break;
                                     }
                                 }
-                                message = activityRepository.insertActivityType(activityName, tmp[1], isNumeric, isVisible);
+                                message = activityRepository.addActivityType(activityName, tmp[1], isNumeric, isVisible);
                             }
-                            message = activityRepository.insertActivity(activityName, tmp[2], month, year);
+                            message = activityRepository.addActivity(activityName, tmp[2], month, year);
                         }
                     }
                 }
@@ -110,9 +110,9 @@ public class UpdateActivityController implements Controller {
                                     break;
                                 }
                             }
-                            message = activityRepository.insertActivityType(activityName, tmp[0], isNumeric, isVisible);
+                            message = activityRepository.addActivityType(activityName, tmp[0], isNumeric, isVisible);
                         }
-                        message = activityRepository.insertActivity(activityName, tmp[1], month, year);
+                        message = activityRepository.addActivity(activityName, tmp[1], month, year);
                     }
                 }
                 activityList = activityRepository.findActivities(year, month);
@@ -182,7 +182,7 @@ public class UpdateActivityController implements Controller {
                 if ((request.getParameter("visible") != null) && (request.getParameter("visible").equals("1"))) {
                     isVisible = 1;
                 }
-                message = activityRepository.insertActivityType(request.getParameter("ActivityName"), request.getParameter("CategoryName"), isNumeric, isVisible);
+                message = activityRepository.addActivityType(request.getParameter("ActivityName"), request.getParameter("CategoryName"), isNumeric, isVisible);
             }
             activityList = activityRepository.findActivities(year, month);
             activityTypeList = activityRepository.findActivityTypes();

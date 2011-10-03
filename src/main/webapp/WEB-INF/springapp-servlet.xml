@@ -7,11 +7,9 @@
 
     <!-- the application context definition for the springapp DispatcherServlet -->
     <bean name="/welcome.htm" class="springapp.web.ViewController" />
-    <bean name="/update.htm" class="springapp.web.ViewController" />
-    <bean name="/updateEmployee.htm" class="springapp.web.EmployeeController" />
+    <bean name="/updateEmployees.htm" class="springapp.web.EmployeeController" />
+    <bean name="/addEmployee.htm" class="springapp.web.EmployeeController" />
     <bean name="/deleteEmployee.htm" class="springapp.web.EmployeeController" />
-    <bean name="/showEmployees.htm" class="springapp.web.EmployeeController" />
-    <bean name="/employee.htm" class="springapp.web.EmployeeController"/>
     <bean name="/activities.htm" class="springapp.web.ActivityController" />
     <bean name="/activitiesPrMonth.htm" class="springapp.web.ActivityController" />
     <bean name="/updateActivities.htm" class="springapp.web.UpdateActivityController" />

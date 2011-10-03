@@ -6,8 +6,7 @@
     <body>
         <h1>Inmeta Java Champion Webpage</h1>
         <p>What do you want to do?</p>
-        <form method="POST"
-            action="activityList.htm">
+        <form method="POST" action="activityList.htm">
         <p>View activities for year:
         <select name="Year" size="1">
             <option value="2010"> 2010 </option>
@@ -17,20 +16,12 @@
         <input type="SUBMIT" align="center" value="View activities">
         </form>
         <br />
-        <form method="POST"
-            action="employee.htm">
-        <p>Print a list of the Inmeta Java Employees:</p>
-        <input type="SUBMIT" align="center" value="Print Employees">
-        </form>
-        <br />
-        <form method="POST"
-            action="update.htm">
+        <form method="POST" action="updateEmployees.htm">
         <p>Update the Employee List</p>
         <input type="SUBMIT" align="center" value="Update Employees">
         </form>
         <br />
-        <form method ="POST"
-            action="activitiesPrMonth.htm">
+        <form method ="POST" action="activitiesPrMonth.htm">
         <p>View and update activities</p>
         <select name="Month" size="1">
             <option value="Januar"> Januar </option>

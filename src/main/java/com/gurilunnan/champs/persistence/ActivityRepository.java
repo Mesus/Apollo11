@@ -4,6 +4,7 @@ import com.gurilunnan.champs.model.Activity;
 import com.gurilunnan.champs.model.ActivityResult;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -32,6 +33,7 @@ public class ActivityRepository {
     private List<Employee> employeeList;
     private List<ActivityType> activityTypeList;
     private List<ActivityResult> activityResultList;
+    private String message = "";
 
     public ActivityRepository() throws ServletException, IOException {
         try {
@@ -100,59 +102,84 @@ public class ActivityRepository {
     }
 
     public String deleteActivity(String activityName, String employeeName, String month, int year) {
-        String message = "";
         try {
             t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{activityName, employeeName, month, year});
             message = "Slettet aktivitet " + activityName + " for " + employeeName + ".";
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
+            message = "Cannot delete " + activityName + " for employee " + employeeName + " from the database.";
             e.printStackTrace();
         }
         return message;
     }
 
     public String deleteActivity(String activityName) {
-        String message = "";
         try {
             t.update("Delete from Activity where activity_name = ?", new Object[]{activityName});
             message = "Slettet aktivitet " + activityName + ".";
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
+            message = "Cannot delete " + activityName + " from the database.";
             e.printStackTrace();
         }
         return message;
     }
 
     public String deleteActivityType(String category) {
-        String message = "";
         try {
             t.update("Delete from activity_type where act_type = ?", new Object[]{category});
             message = "Successfully deleted the category " + category + " from the database.";
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataIntegrityViolationException e) {
+            message = "Cannot delete " + category + " from the database.";
             e.printStackTrace();
         }
         return message;
     }
 
-    public String insertActivityType(String activityName, String category, int isNumeric, int isVisible) {
-        String message = "";
+    public String deleteEmployee(String employeeName) {
+        try {
+            t.update("Delete from activity where employee_name = ?", new Object[] {employeeName});
+            t.update("Delete from employee where name = ?", new Object[] {employeeName});
+            message = "Deleted " + employeeName + " from the database.";
+        } catch (DataIntegrityViolationException e) {
+            message = "Cannot delete " + employeeName + " from the database.";
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    public String addActivityType(String activityName, String category, int isNumeric, int isVisible) {
         try {
             t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, category, isNumeric, isVisible});
             message = "Oppdaterte aktiviteter - la til " + activityName + ". ";
         } catch (DuplicateKeyException e) {
+            message = "Error - finnes allerede i databasen.";
             e.printStackTrace();
         }
         return message;
     }
 
-    public String insertActivity(String activityName, String employeeName, String month, int year) {
-        String message = "";
+    public String addActivity(String activityName, String employeeName, String month, int year) {
         try {
             t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, employeeName, month, year});
             message = "Oppdaterte activiteter - la til " + activityName + " for konsulent " + employeeName + ".";
         } catch (DuplicateKeyException e) {
+            message = "Error - finnes allerede i databasen.";
             e.printStackTrace();
         }
         return message;
     }
+
+    public String addEmployee(String employeeName) {
+        try {
+            t.update("insert into Employee values(?)", new Object[]{employeeName});
+            message = "Successfully added " + employeeName + " to Employees.";
+        } catch (DuplicateKeyException e) {
+            message = "Error - finnes allerede i databasen.";
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+
 
 
     class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
