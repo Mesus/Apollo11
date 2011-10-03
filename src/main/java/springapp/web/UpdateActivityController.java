@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Activity;
+import com.gurilunnan.champs.model.ActivityRepository;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import org.apache.commons.logging.Log;
@@ -35,290 +36,172 @@ public class UpdateActivityController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        InitialContext initialContext;
-        DataSource dataSource;
-
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-        SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
-
+        ActivityRepository activityRepository = new ActivityRepository();
         List<Activity> activityList;
         List<Employee> employeeList;
         List<ActivityType> activityTypeList;
         int year = Integer.parseInt(request.getParameter("Year"));
         String month = request.getParameter("Month");
         String message = "";
-        ModelAndView mav = new ModelAndView("/activitiesPrMonth");
+        ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
 
         if (request.getRequestURI().equals("/updateActivities.htm")) {
-            List<String> inputFromTextboxes = new ArrayList<String>();
-            try {
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                for (ActivityType activityType : activityTypeList) {
-                    for (Employee employee : employeeList) {
-                        String s = activityType.getCategory() + "," + employee.getName() + "," + month + "," + year;
-                        inputFromTextboxes.add(s);
-                    }
+            List<String> inputFromTextBoxes = new ArrayList<String>();
+            activityList = activityRepository.findActivities(year, month);
+            activityTypeList = activityRepository.findActivityTypes();
+            employeeList = activityRepository.findEmployees();
+            for (ActivityType activityType : activityTypeList) {
+                for (Employee employee : employeeList) {
+                    String textBoxName = activityType.getCategory() + "," + employee.getName() + "," + month + "," + year;
+                    inputFromTextBoxes.add(textBoxName);
                 }
-                for (Activity a : activityList) {
-                    String s = a.getActivityType().getActivityName() + "," + a.getActivityType().getCategory() + "," + a.getEmployee().getName() + "," + a.getMonth() + "," + a.getYear();
-                    inputFromTextboxes.add(s);
-                }
-
-                for (String s : inputFromTextboxes) {
-                    String activityName = request.getParameter(s);
-                    String[] tmp = s.split(",");
-                    if (tmp.length == 5) {
-                        System.out.println("fem parametre!");
-                        if (!(activityName.equals(tmp[0]))) {
-                            t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{tmp[0], tmp[2], tmp[3], tmp[4]});
-                            message = "Slettet aktivitet " + tmp[0] + ". ";
-                            boolean registered = false;
-                            if (!activityName.equals("")) {
-                                List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
-                                for (ActivityType activityType : activityNames) {
-                                    if (activityType.getActivityName().equals(activityName)) {
-                                        registered = true;
-                                    }
-                                }
-                                if (!registered) {
-                                    int isnumeric = 0;
-                                    int isvisible = 0;
-                                    for (ActivityType activityType : activityTypeList) {
-                                        if (activityType.getCategory().equals(tmp[1])) {
-                                            if (activityType.isNumeric()) {
-                                                isnumeric = 1;
-                                            }
-                                            if (activityType.isVisible()) {
-                                                isvisible = 1;
-                                            }
-                                            break;
-                                        }
-
-                                    }
-                                    t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], isnumeric, isvisible});
-                                    message = message + "Oppdaterte aktiviteter - la til " + activityName + ". ";
-                                    System.out.println("successfully updated activity_type!");
-                                }
-                                t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[2], month, year});
-                                message = "Oppdaterte activiteter - la til " + activityName + " under kategori " + tmp[1] + " for konsulent " + tmp[2] + ".";
-                            }
-                        }
-                    }
-                    if (!(activityName.equals("")) && !(activityName == null)) {
-                        if (tmp.length == 4) {
-                            boolean registered = false;
-                            List<ActivityType> activityNames = t.query("select activity_name from activity_type where activity_name = ?", new ActivityNameRowMapper(), new Object[]{activityName});
+            }
+            for (Activity a : activityList) {
+                String textBoxName = a.getActivityType().getActivityName() + "," + a.getActivityType().getCategory() + "," + a.getEmployee().getName() + "," + a.getMonth() + "," + a.getYear();
+                inputFromTextBoxes.add(textBoxName);
+            }
+            for (String textBoxName : inputFromTextBoxes) {
+                String activityName = request.getParameter(textBoxName);
+                String[] tmp = textBoxName.split(",");
+                if (tmp.length == 5) {
+                    if (!(activityName.equals(tmp[0]))) {
+                        message = activityRepository.deleteActivity(tmp[0], tmp[2], tmp[3], Integer.parseInt(tmp[4]));
+                        boolean registered = false;
+                        if (!activityName.equals("")) {
+                            List<ActivityType> activityNames = activityRepository.findActivityTypes();
                             for (ActivityType activityType : activityNames) {
                                 if (activityType.getActivityName().equals(activityName)) {
                                     registered = true;
                                 }
                             }
                             if (!registered) {
-                                int isnumeric = 0;
-                                int isvisible = 0;
+                                int isNumeric = 0;
+                                int isVisible = 0;
                                 for (ActivityType activityType : activityTypeList) {
-                                    if (activityType.getCategory().equals(tmp[0])) {
+                                    if (activityType.getCategory().equals(tmp[1])) {
                                         if (activityType.isNumeric()) {
-                                            isnumeric = 1;
+                                            isNumeric = 1;
                                         }
                                         if (activityType.isVisible()) {
-                                            isvisible = 1;
+                                            isVisible = 1;
                                         }
                                         break;
                                     }
                                 }
-                                t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, tmp[0], isnumeric, isvisible});
-                                System.out.println("successfully updated activity_type!");
-                                message = message + "Oppdaterte activity - la til " + activityName + ". ";
+                                message = activityRepository.insertActivityType(activityName, tmp[1], isNumeric, isVisible);
                             }
-                            t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, tmp[1], month, year});
-                            message = "Oppdaterte activiteter - la til " + activityName + " under kategori " + tmp[0] + " for konsulent " + tmp[1] + ".";
+                            message = activityRepository.insertActivity(activityName, tmp[2], month, year);
                         }
                     }
-                    activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                    activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
                 }
-                modelAndView.addObject(activityList);
-                modelAndView.addObject(activityTypeList);
-                modelAndView.addObject(employeeList);
-                modelAndView.addObject("Year", year);
-                modelAndView.addObject("Month", month);
-                modelAndView.addObject("message", message);
-                return modelAndView;
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-            } catch (DuplicateKeyException e) {
-                e.printStackTrace();
+                if (!(activityName.equals("")) && !(activityName == null)) {
+                    if (tmp.length == 4) {
+                        boolean registered = false;
+                        activityTypeList = activityRepository.findActivityTypes();
+                        for (ActivityType activityType : activityTypeList) {
+                            if (activityType.getActivityName().equals(activityName)) {
+                                registered = true;
+                            }
+                        }
+                        if (!registered) {
+                            int isNumeric = 0;
+                            int isVisible = 0;
+                            for (ActivityType activityType : activityTypeList) {
+                                if (activityType.getCategory().equals(tmp[0])) {
+                                    if (activityType.isNumeric()) {
+                                        isNumeric = 1;
+                                    }
+                                    if (activityType.isVisible()) {
+                                        isVisible = 1;
+                                    }
+                                    break;
+                                }
+                            }
+                            message = activityRepository.insertActivityType(activityName, tmp[0], isNumeric, isVisible);
+                        }
+                        message = activityRepository.insertActivity(activityName, tmp[1], month, year);
+                    }
+                }
+                activityList = activityRepository.findActivities(year, month);
+                activityTypeList = activityRepository.findActivityTypes();
             }
-            mav.addObject("Year", year);
-            mav.addObject("Month", month);
-            mav.addObject("message", message);
-            return mav;
-
+            modelAndView.addObject(activityList);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("Year", year);
+            modelAndView.addObject("Month", month);
+            modelAndView.addObject("message", message);
         }
 
         if (request.getRequestURI().equals("/activitiesCancel.htm")) {
             try {
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-                modelAndView.addObject(activityList);
-                activityTypeList = t.query("Select act_type from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+                activityList = activityRepository.findActivities(year, month);
+                activityTypeList = activityRepository.findActivityTypes();
+                employeeList = activityRepository.findEmployees();
                 message = "Canceled changes.";
+                modelAndView.addObject(activityList);
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
                 modelAndView.addObject("Year", year);
                 modelAndView.addObject("Month", month);
                 modelAndView.addObject("message", message);
-                return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
-            Activity activity = new Activity();
-            activity.setMonth(month);
-            activity.setYear(year);
-            return new ModelAndView("activitiesPrMonth", "activity", activity);
         }
 
         //Checkboxes sendes bare hvis de er checked, så kan sjekke for om navnet på de fins som parameter for å se om noe skal slettes.
         if (request.getRequestURI().equals("/updateActivityTypes.htm")) {
-            try {
-                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
 
-                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                List<Activity> toBeDeleted = new ArrayList<Activity>();
+            activityTypeList = activityRepository.findActivityTypes();
+            List<Activity> toBeDeleted = new ArrayList<Activity>();
 
-                message = "";
-                for (ActivityType a : activityTypeList) {
-                    if ((request.getParameter("Delete").equals(a.getCategory()))) {
-                        toBeDeleted = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{a.getCategory()});
-                        if (toBeDeleted != null) {
-                            for (Activity activity : toBeDeleted) {
-                                t.update("Delete from Activity where activity_name = ?", new Object[]{activity.getActivityType().getActivityName()});
-                                message = message + "Slettet oppforinger fra database hvor kategori = " + activity.getActivityType().getActivityName() + ". ";
-                            }
+            for (ActivityType a : activityTypeList) {
+                if ((request.getParameter("Delete").equals(a.getCategory()))) {
+                    toBeDeleted = activityRepository.findActivities(a.getCategory());
+                    if (toBeDeleted != null) {
+                        for (Activity activity : toBeDeleted) {
+                            message = activityRepository.deleteActivity(activity.getActivityType().getActivityName());
                         }
-                        t.update("Delete from activity_type where act_type = ?", new Object[]{a.getCategory()});
-                        message += "Successfully deleted the category " + a.getCategory() + " from the database.";
-                        System.out.println(message);
                     }
+                    message = activityRepository.deleteActivityType(a.getCategory());
                 }
-                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-
-                modelAndView.addObject(activityList);
-                modelAndView.addObject(activityTypeList);
-                modelAndView.addObject(employeeList);
-                modelAndView.addObject("Month", month);
-                modelAndView.addObject("Year", year);
-                System.out.println(message);
-                modelAndView.addObject("message", message);
-
-                return modelAndView;
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
             }
+            activityTypeList = activityRepository.findActivityTypes();
+            activityList = activityRepository.findActivities(year, month);
+            employeeList = activityRepository.findEmployees();
+
+            modelAndView.addObject(activityList);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("Month", month);
+            modelAndView.addObject("Year", year);
+            modelAndView.addObject("message", message);
         }
 
         if (request.getRequestURI().equals("/addActivityType.htm")) {
-            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-            try {
-                if ((request.getParameter("CategoryName")) != "") {
-                    int isnumeric = 0;
-                    int isvisible = 0;
-                    if ((request.getParameter("number") != null) && (request.getParameter("number").equals("1"))) {
-                        isnumeric = 1;
-                    }
-                    if((request.getParameter("visible") != null) && (request.getParameter("visible").equals("1"))) {
-                        isvisible = 1;
-                    }
-                    t.update("insert into activity_type values(?,?,?,?)", new Object[]{request.getParameter("ActivityName"), request.getParameter("CategoryName"), isnumeric, isvisible});
-                    message = "La til kategori " + request.getParameter("CategoryName") + ".";
+            if ((request.getParameter("CategoryName")) != "") {
+                int isNumeric = 0;
+                int isVisible = 0;
+                if ((request.getParameter("number") != null) && (request.getParameter("number").equals("1"))) {
+                    isNumeric = 1;
                 }
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-                modelAndView.addObject(activityList);
-                modelAndView.addObject(activityTypeList);
-                modelAndView.addObject(employeeList);
-                modelAndView.addObject("Month", month);
-                modelAndView.addObject("Year", year);
-                modelAndView.addObject("message", message);
-                return modelAndView;
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-            } catch (DuplicateKeyException e) {
-                e.printStackTrace();
+                if ((request.getParameter("visible") != null) && (request.getParameter("visible").equals("1"))) {
+                    isVisible = 1;
+                }
+                message = activityRepository.insertActivityType(request.getParameter("ActivityName"), request.getParameter("CategoryName"), isNumeric, isVisible);
             }
-            return modelAndView;
-
+            activityList = activityRepository.findActivities(year, month);
+            activityTypeList = activityRepository.findActivityTypes();
+            employeeList = activityRepository.findEmployees();
+            modelAndView.addObject(activityList);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("Month", month);
+            modelAndView.addObject("Year", year);
+            modelAndView.addObject("message", message);
         }
 
-        mav.addObject("Year", year);
-        mav.addObject("Month", month);
-        mav.addObject("message", message);
-        return mav;
-
-    }
-
-    class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
-
-
-        public Activity mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(1));
-            activityType.setActivityName(resultSet.getString(2));
-            Employee employee = null;
-            employee = new Employee(resultSet.getString(3));
-            Activity activity = new Activity(activityType, employee, resultSet.getString(4), resultSet.getInt(5));
-            return activity;
-        }
-    }
-
-    class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-        public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(1));
-            boolean numeric = false;
-            boolean visible = false;
-            if (resultSet.getInt(2) == 1) {
-                numeric = true;
-            }
-            if (resultSet.getInt(3) == 1) {
-                visible = true;
-            }
-            activityType.setVisible(visible);
-            activityType.setNumeric(numeric);
-            return activityType;
-        }
-    }
-
-    class ActivityNameRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-
-
-        public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setActivityName(resultSet.getString(1));
-            return activityType;
-        }
-    }
-
-    class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
-
-
-        public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
-            Employee e = new Employee(resultSet.getString(1));
-            return e;
-        }
+        return modelAndView;
     }
 }

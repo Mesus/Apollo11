@@ -1,23 +1,15 @@
 package springapp.web;
 
-import com.gurilunnan.champs.model.Activity;
-import com.gurilunnan.champs.model.ActivityListHelper;
-import com.gurilunnan.champs.model.ActivityType;
-import com.gurilunnan.champs.model.Employee;
+import com.gurilunnan.champs.model.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,120 +27,54 @@ public class ActivityListController implements Controller {
     protected final Log logger = LogFactory.getLog(getClass());
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        InitialContext initialContext;
-        DataSource dataSource;
-
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-        SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
-        List<ActivityListHelper> activityListHelpers;
-        List<ActivityListHelper> resultList = new ArrayList<ActivityListHelper>();
+        ActivityRepository activityRepository = new ActivityRepository();
+        List<ActivityResult> activityResults;
+        List<ActivityResult> resultList = new ArrayList<ActivityResult>();
         List<Employee> employeeList;
         List<ActivityType> activityTypeList;
         ModelAndView modelAndView = new ModelAndView("activityList");
+        boolean isVisible = true;
 
-        String str_year = request.getParameter("Year");
-        int year = Integer.parseInt(str_year);
+        int count;
 
-        try {
-            employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
-            activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type where isvisible_year=1 group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-            activityListHelpers = t.query("select e.name, a.month_name, t.act_type, a.activity_name, count(a.activity_name), a.the_year from employee e join activity a, activity_type t where e.name = a.employee_name and a.activity_name = t.activity_name and a.the_year = ? group by e.name, t.act_type, a.month_name", new ActivityListHelperRowMapper(), new Object[]{year});
+        int year = Integer.parseInt(request.getParameter("Year"));
 
-            int count;
-            Employee employee;
-            ActivityType activityType;
-            for (Employee e : employeeList) {
-                employee = e;
-                for (ActivityType aType : activityTypeList) {
-                    activityType = aType;
+        employeeList = activityRepository.findEmployees();
+        activityTypeList = activityRepository.findActivityTypes(isVisible);
+        activityResults = activityRepository.findActivityResults(year);
+
+        for (Employee employee : employeeList) {
+            for (ActivityType activityType : activityTypeList) {
+                if (activityType.isVisible()) {
                     count = 0;
-                    for (ActivityListHelper activityListHelper : activityListHelpers) {
-                        if (e.getName().equals(activityListHelper.getEmployee().getName()) && aType.getCategory().equals(activityListHelper.getActivityType().getCategory())) {
+                    for (ActivityResult a : activityResults) {
+                        if (employee.getName().equals(a.getEmployee().getName()) && activityType.getCategory().equals(a.getActivityType().getCategory())) {
                             if (activityType.isNumeric()) {
-                                count = count + Integer.parseInt(activityListHelper.getActivityType().getActivityName());
+                                count = count + Integer.parseInt(a.getActivityType().getActivityName());
                             } else {
-                                count = count + activityListHelper.getCount();
+                                count = count + a.getCount();
                             }
                         }
                     }
                     if (count > 0) {
-                        ActivityListHelper helper = new ActivityListHelper();
-                        helper.setCount(count);
-                        helper.setActivityType(activityType);
-                        helper.setEmployee(employee);
-                        helper.setYear(year);
-                        resultList.add(helper);
+                        ActivityResult activityResult = new ActivityResult();
+                        activityResult.setCount(count);
+                        activityResult.setActivityType(activityType);
+                        activityResult.setEmployee(employee);
+                        activityResult.setYear(year);
+                        resultList.add(activityResult);
                     }
                 }
-
             }
-            for (ActivityListHelper h : resultList) {
-                System.out.println(h.getEmployee().getName() + h.getActivityType().getCategory() + h.getCount());
-            }
-            modelAndView.addObject(activityTypeList);
-            modelAndView.addObject(employeeList);
-            modelAndView.addObject("resultList", resultList);
-            modelAndView.addObject("Year", year);
-            return modelAndView;
-        } catch (
-                EmptyResultDataAccessException e
-                )
 
-        {
-            e.printStackTrace();
         }
-
+        for (ActivityResult h : resultList) {
+            System.out.println(h.getEmployee().getName() + h.getActivityType().getCategory() + h.getCount());
+        }
+        modelAndView.addObject(activityTypeList);
+        modelAndView.addObject(employeeList);
+        modelAndView.addObject("resultList", resultList);
+        modelAndView.addObject("Year", year);
         return modelAndView;
-
-    }
-
-
-    class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
-        public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
-            Employee e = new Employee(resultSet.getString(1));
-            return e;
-        }
-    }
-
-    class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-        public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(1));
-            boolean numeric = false;
-            boolean visible = false;
-            if (resultSet.getInt(2) == 1) {
-                numeric = true;
-            }
-            if (resultSet.getInt(3) == 1) {
-                visible = true;
-            }
-            activityType.setVisible(visible);
-            activityType.setNumeric(numeric);
-            return activityType;
-        }
-    }
-
-    class ActivityListHelperRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityListHelper> {
-
-        public ActivityListHelper mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityListHelper activityListHelper = new ActivityListHelper();
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(3));
-            activityType.setActivityName(resultSet.getString(4));
-            activityListHelper.setActivityType(activityType);
-            Employee employee = new Employee(resultSet.getString(1));
-            activityListHelper.setEmployee(employee);
-            activityListHelper.setYear(resultSet.getInt(6));
-            activityListHelper.setCount(resultSet.getInt(5));
-            return activityListHelper;
-
-        }
     }
 }

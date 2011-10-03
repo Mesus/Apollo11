@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Activity;
+import com.gurilunnan.champs.model.ActivityRepository;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -37,96 +38,27 @@ public class ActivityController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        InitialContext initialContext;
-        DataSource dataSource;
-
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-        SimpleJdbcTemplate t = new SimpleJdbcTemplate(dataSource);
-        List<Activity> activityList;
-        List<Employee> employeeList;
-        List<ActivityType> activityTypeList;
-        int year;
-        String month;
-        String message = "Velkommen.";
+        ActivityRepository activityRepository = new ActivityRepository();
 
         if (request.getRequestURI().equals("/activitiesPrMonth.htm")) {
+            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             String str_year = request.getParameter("Year");
-            year = Integer.parseInt(str_year);
-            month = request.getParameter("Month");
+            int year = Integer.parseInt(str_year);
+            String month = request.getParameter("Month");
             try {
-                activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
-                System.out.println(activityList);
-                ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+                List<Activity> activityList = activityRepository.findActivities(year, month);
+                List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+                List<Employee> employeeList = activityRepository.findEmployees();
                 modelAndView.addObject(activityList);
-                activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
-                employeeList = t.query("SELECT * FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
                 modelAndView.addObject(activityTypeList);
                 modelAndView.addObject(employeeList);
-                modelAndView.addObject("message", message);
                 modelAndView.addObject("Year", year);
                 modelAndView.addObject("Month", month);
                 return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
-
-            Activity activity = new Activity();
-            activity.setMonth(month);
-            activity.setYear(year);
-            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
-            modelAndView.addObject(activity);
-            modelAndView.addObject("message", message);
-            modelAndView.addObject("Year", year);
-            modelAndView.addObject("Month", month);
-            return modelAndView;
         }
         return new ModelAndView("activities");
-    }
-
-    class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
-
-
-        public Activity mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(1));
-            activityType.setActivityName(resultSet.getString(2));
-            Employee employee = null;
-            employee = new Employee(resultSet.getString(3));
-            Activity activity = new Activity(activityType, employee, resultSet.getString(4), resultSet.getInt(5));
-            return activity;
-        }
-    }
-
-    class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
-        public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
-            ActivityType activityType = new ActivityType();
-            activityType.setCategory(resultSet.getString(1));
-            boolean numeric = false;
-            boolean visible = false;
-            if (resultSet.getInt(2) == 1) {
-                numeric = true;
-            }
-            if (resultSet.getInt(3) == 1) {
-                visible = true;
-            }
-            activityType.setVisible(visible);
-            activityType.setNumeric(numeric);
-            return activityType;
-        }
-    }
-
-    class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
-
-
-        public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
-            Employee e = new Employee(resultSet.getString(1));
-            return e;
-        }
     }
 }

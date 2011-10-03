@@ -7,7 +7,7 @@ package com.gurilunnan.champs.model;
  * Time: 09:27
  * To change this template use File | Settings | File Templates.
  */
-public class ActivityListHelper {
+public class ActivityResult {
     private Employee employee;
     private int year;
     private ActivityType activityType;
