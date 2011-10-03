@@ -2,14 +2,16 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
-  <head><title>Activities</title></head>
+  <head>
+  <link rel="stylesheet" type="text/css" href="minstil.css" />
+  <title>Activities</title></head>
   <body>
 
-  <h3>Aktiviteter ${Month} ${Year}</h3>
+  <h2>Aktiviteter ${Month} ${Year}</h2>
   <p><c:out value="${message}" /> </p>
 
   <form method ="POST" action="activitiesPrMonth.htm" >
-    <h3>Finn aktiviteter for <select name="Month" size="1">
+    <p>Finn aktiviteter for <select name="Month" size="1">
             <option value="Januar"> Januar </option>
             <option value="Februar"> Februar </option>
             <option value="Mars"> Mars </option>
@@ -26,7 +28,7 @@
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
-        </select><input type="SUBMIT" align="center" value="Go"></h3>
+        </select><input type="SUBMIT" align="center" value="Go"></p>
     </form>
 
     <form method ="POST" action="updateActivities.htm">
@@ -73,7 +75,7 @@
     </form>
     <br /><br />
 
-    <h3>Alle aktivitetstyper:</h3>
+    <h2>Alle aktivitetstyper:</h2>
     <table border="1">
     <tr><th>Kategori</th><th>Slett</th></tr>
     <c:forEach items="${activityTypeList}" var="acttype">
@@ -81,7 +83,7 @@
      <td>
       <c:out value="${acttype.category}"/>
     </td>
-    <td>
+    <td class="center">
     <form method="POST" action="updateActivityTypes.htm">
     <input type="CHECKBOX" name="Delete" value="${acttype.category}">
     </td>
@@ -94,7 +96,7 @@
     </form>
     <br /><br />
 
-    <h3>Legg til kategori:</h3>
+    <h2>Legg til kategori:</h2>
     <form method="POST" action="addActivityType.htm">
     <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i aarsoversikt? <input type="checkbox" name="visible" value="1" />
     <input type="hidden" name="Year" value="${Year}" >

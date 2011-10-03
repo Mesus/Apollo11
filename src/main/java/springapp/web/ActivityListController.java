@@ -67,9 +67,6 @@ public class ActivityListController implements Controller {
             }
 
         }
-        for (ActivityResult h : resultList) {
-            System.out.println(h.getEmployee().getName() + h.getActivityType().getCategory() + h.getCount());
-        }
         category = request.getParameter("Category");
         if (category == null) {
             category = "Konsulent";

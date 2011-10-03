@@ -2,9 +2,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
-    <head><title>Activities</title></head>
+    <head>
+    <link rel="stylesheet" type="text/css" href="minstil.css" />
+    <title>Activities</title></head>
     <body>
-        <h3>Aktiviteter for ${Year}</h3>
+        <h1>Aktiviteter for ${Year}</h1>
         <form method="POST" action="/activityList.htm" >
             <input type="hidden" name="Year" value="${Year}" />
             <table border="1">
@@ -18,7 +20,7 @@
                     <tr>
                         <td><c:out value="${emp.name}" /></td>
                         <c:forEach items="${activityTypeList}" var="acttype">
-                            <td>
+                            <td class="center">
                                 <c:forEach items="${resultList}" var="res">
                                     <c:choose>
                                         <c:when test="${emp.name == res.employee.name}" >
@@ -37,13 +39,13 @@
             </table>
         </form>
 
-        <form method ="POST" action="/activityList.htm" >
+        <form method ="POST" action="/activityList.htm" > <br /> <br />
         <p> Aktiviteter for <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
-        </select> </p>
-        <input type="SUBMIT"  align="center" value="Hent aktiviteter" />
+        </select>
+        <input type="SUBMIT"  align="center" value="Hent aktiviteter" /> </p>
         </form>
     </body>
 </html>

@@ -2,7 +2,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <html>
-    <head><title>INMETA CHAMPIONS</title></head>
+    <head>
+    <link rel="stylesheet" type="text/css" href="minstil.css" />
+    <title>INMETA CHAMPIONS</title></head>
     <body>
         <h1>Inmeta Java Champion Webpage</h1>
         <p>What do you want to do?</p>
