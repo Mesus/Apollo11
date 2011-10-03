@@ -29,9 +29,9 @@ public class ActivityController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ActivityRepository activityRepository = new ActivityRepository();
+        ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
 
         if (request.getRequestURI().equals("/activitiesPrMonth.htm")) {
-            ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
             String str_year = request.getParameter("Year");
             int year = Integer.parseInt(str_year);
             String month = request.getParameter("Month");
@@ -44,11 +44,10 @@ public class ActivityController implements Controller {
                 modelAndView.addObject(employeeList);
                 modelAndView.addObject("Year", year);
                 modelAndView.addObject("Month", month);
-                return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
             }
         }
-        return new ModelAndView("activities");
+        return modelAndView;
     }
 }

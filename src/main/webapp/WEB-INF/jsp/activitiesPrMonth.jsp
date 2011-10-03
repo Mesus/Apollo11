@@ -9,7 +9,6 @@
   <p><c:out value="${message}" /> </p>
 
   <form method ="POST" action="activitiesPrMonth.htm" >
-
     <h3>Finn aktiviteter for <select name="Month" size="1">
             <option value="Januar"> Januar </option>
             <option value="Februar"> Februar </option>
@@ -29,6 +28,7 @@
             <option value="2012"> 2012 </option>
         </select><input type="SUBMIT" align="center" value="Go"></h3>
     </form>
+
     <form method ="POST" action="updateActivities.htm">
     <table border="1">
       <tr>
@@ -62,9 +62,9 @@
         </c:forEach>
     </table>
     <br />
-      <input type="hidden" name="Year" value="${Year}" />
+    <input type="hidden" name="Year" value="${Year}" />
     <input type="hidden" name="Month" value="${Month}" />
-     <input type="SUBMIT" value="Lagre" />
+    <input type="SUBMIT" value="Lagre" />
     </form>
     <form method="POST" action="activitiesCancel.htm">
     <input type="hidden" name="Year" value="${Year}" />
@@ -92,17 +92,15 @@
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Slett" />
     </form>
+    <br /><br />
 
-   <br />
-
-   <h3>Legg til kategori:</h3>
-   <form method="POST" action="addActivityType.htm">
-   <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i aarsoversikt? <input type="checkbox" name="visible" value="1" />
-   <input type="hidden" name="Year" value="${Year}" >
-   <input type="hidden" name="Month" value="${Month}" >
-   <input type="SUBMIT" value="Lagre" />  </p>
-   </form>
-
+    <h3>Legg til kategori:</h3>
+    <form method="POST" action="addActivityType.htm">
+    <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i aarsoversikt? <input type="checkbox" name="visible" value="1" />
+    <input type="hidden" name="Year" value="${Year}" >
+    <input type="hidden" name="Month" value="${Month}" >
+    <input type="SUBMIT" value="Lagre" />  </p>
+    </form>
 
   </body>
 </html>

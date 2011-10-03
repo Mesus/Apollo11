@@ -10,7 +10,6 @@
     <bean name="/updateEmployees.htm" class="springapp.web.EmployeeController" />
     <bean name="/addEmployee.htm" class="springapp.web.EmployeeController" />
     <bean name="/deleteEmployee.htm" class="springapp.web.EmployeeController" />
-    <bean name="/activities.htm" class="springapp.web.ActivityController" />
     <bean name="/activitiesPrMonth.htm" class="springapp.web.ActivityController" />
     <bean name="/updateActivities.htm" class="springapp.web.UpdateActivityController" />
     <bean name="/activitiesCancel.htm" class="springapp.web.UpdateActivityController" />
