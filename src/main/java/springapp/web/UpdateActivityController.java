@@ -1,6 +1,7 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Activity;
+import com.gurilunnan.champs.model.ActivityResult;
 import com.gurilunnan.champs.persistence.ActivityRepository;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
@@ -197,4 +198,5 @@ public class UpdateActivityController implements Controller {
 
         return modelAndView;
     }
+
 }

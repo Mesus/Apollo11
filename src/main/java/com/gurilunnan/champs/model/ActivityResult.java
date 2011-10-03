@@ -7,7 +7,7 @@ package com.gurilunnan.champs.model;
  * Time: 09:27
  * To change this template use File | Settings | File Templates.
  */
-public class ActivityResult {
+public class ActivityResult implements Comparable<ActivityResult> {
     private Employee employee;
     private int year;
     private ActivityType activityType;
@@ -15,6 +15,18 @@ public class ActivityResult {
 
     public Employee getEmployee() {
         return employee;
+    }
+
+    public int compareTo(ActivityResult activityResult) {
+        if(this.count < activityResult.getCount()) {
+            return 1;
+        }
+        if(this.count == activityResult.getCount()) {
+          return 0;
+        }
+        else {
+            return -1;
+        }
     }
 
     public void setEmployee(Employee employee) {

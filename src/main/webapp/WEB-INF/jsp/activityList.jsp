@@ -4,40 +4,41 @@
 <html>
     <head><title>Activities</title></head>
     <body>
-
         <h3>Aktiviteter for ${Year}</h3>
-
         <form method="POST" action="/activityList.htm" >
-        <table border="1">
-            <tr>
-                <th>Konsulent</th>
-                <c:forEach items="${activityTypeList}" var="acttype">
-                    <th><c:out value="${acttype.category}" /></th>
-                </c:forEach>
-            </tr>
-            <c:forEach items="${employeeList}" var="emp">
+            <input type="hidden" name="Year" value="${Year}" />
+            <table border="1">
                 <tr>
-                    <td><c:out value="${emp.name}" /></td>
+                    <th><input type="SUBMIT" name="Category" value="Konsulent" /></th>
                     <c:forEach items="${activityTypeList}" var="acttype">
-                        <td>
-                            <c:forEach items="${resultList}" var="res">
-                                <c:choose>
-                                    <c:when test="${emp.name == res.employee.name}" >
-                                        <c:choose>
-                                            <c:when test="${acttype.category == res.activityType.category}" >
-                                                <c:out value="${res.count}" />
-                                            </c:when>
-                                        </c:choose>
-                                    </c:when>
-                                </c:choose>
-                            </c:forEach>
-                        </td>
+                        <th><input type="SUBMIT" name="Category" value="${acttype.category}" /></th>
                     </c:forEach>
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach items="${employeeList}" var="emp">
+                    <tr>
+                        <td><c:out value="${emp.name}" /></td>
+                        <c:forEach items="${activityTypeList}" var="acttype">
+                            <td>
+                                <c:forEach items="${resultList}" var="res">
+                                    <c:choose>
+                                        <c:when test="${emp.name == res.employee.name}" >
+                                            <c:choose>
+                                                <c:when test="${acttype.category == res.activityType.category}" >
+                                                    <c:out value="${res.count}" />
+                                                </c:when>
+                                            </c:choose>
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>
+                            </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+            </table>
+        </form>
 
-       <p> Aktiviteter for <select name="Year" size="1">
+        <form method ="POST" action="/activityList.htm" >
+        <p> Aktiviteter for <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
