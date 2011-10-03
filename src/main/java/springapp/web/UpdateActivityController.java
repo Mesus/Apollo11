@@ -1,26 +1,19 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Activity;
-import com.gurilunnan.champs.model.ActivityRepository;
+import com.gurilunnan.champs.persistence.ActivityRepository;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

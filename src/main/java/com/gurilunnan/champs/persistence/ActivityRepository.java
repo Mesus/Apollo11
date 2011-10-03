@@ -1,5 +1,9 @@
-package com.gurilunnan.champs.model;
+package com.gurilunnan.champs.persistence;
 
+import com.gurilunnan.champs.model.Activity;
+import com.gurilunnan.champs.model.ActivityResult;
+import com.gurilunnan.champs.model.ActivityType;
+import com.gurilunnan.champs.model.Employee;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
