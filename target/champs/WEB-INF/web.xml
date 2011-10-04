@@ -3,12 +3,12 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns="http://java.sun.com/xml/ns/javaee"
-   xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-   id="YourWebAppID"
-   version="2.5">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        id="YourWebAppID"
+        version="2.5">
     <display-name>My first REST Application</display-name>
 
     <!-- springapp servlet -->
@@ -23,11 +23,57 @@
     </servlet-mapping>
 
 
-     <resource-ref>
+    <resource-ref>
         <description>My DataSource Reference</description>
         <res-ref-name>jdbc/SimpleDS</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>login.htm</form-login-page>
+            <form-error-page>loginError.htm</form-error-page>
+        </form-login-config>
+        <realm-name>Apollo11</realm-name>
+    </login-config>
+
+    <security-role>
+        <description>An authenticated user</description>
+        <role-name>ROLE_USER</role-name>
+    </security-role>
+
+    <security-role>
+        <description>An administrator of the web server</description>
+        <role-name>ROLE_ADMIN</role-name>
+    </security-role>
+
+    <!-- Secured resources -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>ForceLogin</web-resource-name>
+            <description>Secured page for forcing the container to request login</description>
+            <url-pattern>/home.htm</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ROLE_USER</role-name>
+        </auth-constraint>
+
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminPages</web-resource-name>
+            <description>Administrator-only pages</description>
+            <url-pattern>/activitiesPrMonth.htm</url-pattern>
+            <url-pattern>/updateEmployees.htm</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ROLE_ADMIN</role-name>
+        </auth-constraint>
+
+    </security-constraint>
 
 </web-app>

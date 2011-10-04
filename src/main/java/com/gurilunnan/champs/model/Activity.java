@@ -1,7 +1,5 @@
 package com.gurilunnan.champs.model;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.MonthDayDV;
-
 /**
  * Created by IntelliJ IDEA.
  * User: gurlunna

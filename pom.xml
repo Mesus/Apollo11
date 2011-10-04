@@ -114,6 +114,17 @@
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>
+                    <userRealms>
+                        <userRealm implementation="org.mortbay.jetty.security.HashUserRealm">
+                          <name>Apollo11</name>
+                          <!-- Searchs the file with the login informations in the same directory as the pom.xml:
+                            In this file you can define users with a password and their roles in the format:
+                            username: password [,rolename ...]
+                            Siehe http://jetty.codehaus.org/jetty/jetty-6/apidocs/org/mortbay/jetty/security/HashUserRealm.html
+                          -->
+                          <config>jetty-login.properties</config>
+                        </userRealm>
+                    </userRealms>
                 </configuration>
 
             </plugin>

@@ -1,23 +1,15 @@
 package springapp.web;
 
-import com.sun.xml.internal.ws.api.streaming.XMLStreamWriterFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
-import sun.security.x509.CertAttrSet;
-import sun.util.calendar.LocalGregorianCalendar;
+import sun.java2d.opengl.OGLContext;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,13 +23,18 @@ public class ViewController implements Controller {
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        if (request.getRequestURI().equals("/update.htm"))
-            return new ModelAndView("update");
-        if (request.getRequestURI().equals("/champ.htm"))
-            return new ModelAndView("champ");
+        ModelAndView modelAndView = new ModelAndView("home");
 
-        ModelAndView modelAndView = new ModelAndView("welcome");
+        if (request.getRequestURI().equals("/updateEmployees.htm"))
+            return new ModelAndView("updateEmployees");
 
+        if(request.getRequestURI().equals("/login.htm")) {
+            return new ModelAndView("login");
+        }
+
+        if(request.getRequestURI().equals("/loginError.htm")) {
+            return new ModelAndView("loginError") ;
+        }
         return modelAndView;
 
     }

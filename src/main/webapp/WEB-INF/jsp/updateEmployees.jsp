@@ -1,24 +1,25 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <html>
     <head>
     <link rel="stylesheet" type="text/css" href="minstil.css" />
-    <title>Update Employees</title></head>
+    <title>Oppdater liste over konsulenter</title></head>
     <body>
-        <h1>Update Employees</h1>
-        <p>Add an employee:</p>
+        <h2>Oppdater konsulentliste</h2>
+          <p><a href="/home.htm">Til forsiden</a></p> <br />
+        <p><b>Legg til konsulent:</b></p>
         <form method="POST" action="addEmployee.htm">
-            Employee name: <input type="text" name="employee_name" />
-            <input type="SUBMIT" value="Add Employee" />
+            Navn på konsulent: <input type="text" name="employee_name" />
+            <input type="SUBMIT" value="Legg til" />
         </form>
 
         <c:out value="${message}"/><br />
 
-        <h2>Current employees:</h2>
+        <h2>Registrerte konsulenter:</h2>
         <form method="POST" action="deleteEmployee.htm">
         <table border="1">
-        <tr><th>Employee</th><th>Delete</th></tr>
+        <tr><th>Konsulent</th><th>Delete</th></tr>
         <c:forEach items="${employees}" var="emp">
         <tr><td>
         <c:out value="${emp.name}"/></td>
@@ -27,7 +28,7 @@
         </c:forEach>
         </table>
         <br />
-        <input type="SUBMIT" value="Delete employee"/>
+        <input type="SUBMIT" value="Slett konsulent"/>
         </form>
     </body>
 </html>

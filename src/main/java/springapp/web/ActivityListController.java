@@ -1,18 +1,21 @@
 package springapp.web;
 
-import com.gurilunnan.champs.model.*;
+import com.gurilunnan.champs.model.ActivityResult;
+import com.gurilunnan.champs.model.ActivityType;
+import com.gurilunnan.champs.model.Employee;
 import com.gurilunnan.champs.persistence.ActivityRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
-import sun.text.normalizer.IntTrie;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

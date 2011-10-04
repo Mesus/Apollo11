@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<% request.setCharacterEncoding("UTF8"); %>
+<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <%-- Redirected because we can't set the welcome page to a virtual URL. --%>
-<c:redirect url="/welcome.htm"/>
+<c:redirect url="/home.htm"/>

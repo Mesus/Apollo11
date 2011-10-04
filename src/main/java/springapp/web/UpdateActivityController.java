@@ -1,10 +1,9 @@
 package springapp.web;
 
 import com.gurilunnan.champs.model.Activity;
-import com.gurilunnan.champs.model.ActivityResult;
-import com.gurilunnan.champs.persistence.ActivityRepository;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
+import com.gurilunnan.champs.persistence.ActivityRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -64,7 +63,7 @@ public class UpdateActivityController implements Controller {
                         if (!activityName.equals("")) {
                             List<ActivityType> activityNames = activityRepository.findActivityTypes();
                             for (ActivityType activityType : activityNames) {
-                                if (activityType.getActivityName().equals(activityName)) {
+                                if (activityType.getActivityName() != null && activityType.getActivityName().equals(activityName)) {
                                     registered = true;
                                 }
                             }
@@ -93,7 +92,7 @@ public class UpdateActivityController implements Controller {
                         boolean registered = false;
                         activityTypeList = activityRepository.findActivityTypes();
                         for (ActivityType activityType : activityTypeList) {
-                            if (activityType.getActivityName().equals(activityName)) {
+                            if (activityType.getActivityName() != null && activityType.getActivityName().equals(activityName)) {
                                 registered = true;
                             }
                         }

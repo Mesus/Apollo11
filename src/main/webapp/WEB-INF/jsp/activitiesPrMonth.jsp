@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <html>
   <head>
@@ -30,6 +30,8 @@
             <option value="2012"> 2012 </option>
         </select><input type="SUBMIT" align="center" value="Go"></p>
     </form>
+
+      <p><a href="/home.htm">Til forsiden</a></p>
 
     <form method ="POST" action="updateActivities.htm">
     <table border="1">
@@ -89,7 +91,7 @@
     </td>
     </tr>
     </c:forEach>
-    </table>
+    </table> <br />
     <input type="hidden" name="Year" value="${Year}" >
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Slett" />
@@ -98,7 +100,7 @@
 
     <h2>Legg til kategori:</h2>
     <form method="POST" action="addActivityType.htm">
-    <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i aarsoversikt? <input type="checkbox" name="visible" value="1" />
+    <p>Kategori: <input type="text" name="CategoryName" /> Aktivitetsnavn: <input type="text" name="ActivityName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i årsoversikt? <input type="checkbox" name="visible" value="1" />
     <input type="hidden" name="Year" value="${Year}" >
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Lagre" />  </p>

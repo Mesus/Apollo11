@@ -1,7 +1,6 @@
 package com.gurilunnan.champs.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
 
 /**
  * @author Glenn Bech

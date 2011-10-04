@@ -1,12 +1,13 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <html>
     <head>
     <link rel="stylesheet" type="text/css" href="minstil.css" />
-    <title>Activities</title></head>
+    <title>Aktiviteter</title></head>
     <body>
         <h1>Aktiviteter for ${Year}</h1>
+          <p><a href="/home.htm">Til forsiden</a></p>
         <form method="POST" action="/activityList.htm" >
             <input type="hidden" name="Year" value="${Year}" />
             <table border="1">
@@ -46,6 +47,6 @@
             <option value="2012"> 2012 </option>
         </select>
         <input type="SUBMIT"  align="center" value="Hent aktiviteter" /> </p>
-        </form>
+        </form> <br />
     </body>
 </html>
