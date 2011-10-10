@@ -6,10 +6,10 @@
     <title>INMETA CHAMPIONS</title></head>
     <body>
         <h2>Inmeta Java Champion Webpage</h2>
-        <p>Velkommen til Inmeta Java sin Champion administrerings-side. <br /> Velg hva du vil gjÃ¸re:</p>
+        <p>Velkommen til Inmeta Java sin Champion administrerings-side. <br /> Velg hva du vil gjøre:</p>
         <form method="POST" action="activityList.htm">
         <h3>Se aktivitetsoversikt:</h3>
-        Ã…r: <select name="Year" size="1">
+        År: <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
@@ -25,7 +25,7 @@
         <br />
         <form method ="POST" action="activitiesPrMonth.htm">
         <h3>Se og oppdater liste over aktiviteter:</h3>
-        MÃ¥ned: <select name="Month" size="1">
+        Måned: <select name="Month" size="1">
             <option value="Januar"> Januar </option>
             <option value="Februar"> Februar </option>
             <option value="Mars"> Mars </option>
@@ -39,7 +39,7 @@
             <option value="November"> November </option>
             <option value="Desember"> Desember </option>
         </select>
-     Ã…r:
+     År:
         <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
