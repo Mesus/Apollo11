@@ -10,14 +10,16 @@
     <bean name="/home.htm" class="springapp.web.ViewController"/>
     <bean name="/login.htm" class="springapp.web.ViewController"/>
     <bean name="/loginError.htm" class="springapp.web.ViewController" />
-    <bean name="/updateEmployees.htm" class="springapp.web.EmployeeController"/>
-    <bean name="/addEmployee.htm" class="springapp.web.EmployeeController"/>
-    <bean name="/deleteEmployee.htm" class="springapp.web.EmployeeController"/>
-    <bean name="/activitiesPrMonth.htm" class="springapp.web.ActivityController"/>
-    <bean name="/updateActivities.htm" class="springapp.web.UpdateActivityController"/>
-    <bean name="/activitiesCancel.htm" class="springapp.web.UpdateActivityController"/>
-    <bean name="/updateActivityTypes.htm" class="springapp.web.UpdateActivityController"/>
-    <bean name="/addActivityType.htm" class="springapp.web.UpdateActivityController"/>
+    <bean name="/admin/adminhome.htm" class="springapp.web.ViewController" />
+    <bean name="/admin/updateEmployees.htm" class="springapp.web.EmployeeController"/>
+    <bean name="/admin/addEmployee.htm" class="springapp.web.EmployeeController"/>
+    <bean name="/admin/deleteEmployee.htm" class="springapp.web.EmployeeController"/>
+    <bean name="/admin/activitiesPrMonth.htm" class="springapp.web.ActivityController"/>
+    <bean name="/admin/updateActivities.htm" class="springapp.web.UpdateActivityController"/>
+    <bean name="/admin/activitiesCancel.htm" class="springapp.web.UpdateActivityController"/>
+    <bean name="/admin/updateActivityTypes.htm" class="springapp.web.UpdateActivityController"/>
+    <bean name="/admin/addActivityType.htm" class="springapp.web.UpdateActivityController"/>
+    <bean name="/admin/activityList.htm" class="springapp.web.ActivityListController" />
     <bean name="/activityList.htm" class="springapp.web.ActivityListController"/>
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>

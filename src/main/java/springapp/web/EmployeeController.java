@@ -21,15 +21,15 @@ public class EmployeeController implements Controller {
         ActivityRepository activityRepository = new ActivityRepository();
         List<Employee> employees;
         String message = "";
-        ModelAndView modelAndView = new ModelAndView("updateEmployees");
+        ModelAndView modelAndView = new ModelAndView("admin/updateEmployees");
 
-        if(request.getRequestURI().equals("/updateEmployees.htm")) {
+        if(request.getRequestURI().equals("/admin/updateEmployees.htm")) {
             employees = activityRepository.findEmployees();
             modelAndView.addObject("employees", employees);
             return modelAndView;
         }
 
-        if (request.getRequestURI().equals("/addEmployee.htm")) {
+        if (request.getRequestURI().equals("/admin/addEmployee.htm")) {
             String name = request.getParameter("employee_name");
             employees = activityRepository.findEmployees();
             for (Employee e : employees) {
@@ -44,7 +44,7 @@ public class EmployeeController implements Controller {
             return modelAndView;
         }
 
-        if (request.getRequestURI().equals("/deleteEmployee.htm")) {
+        if (request.getRequestURI().equals("/admin/deleteEmployee.htm")) {
             String name = request.getParameter("Delete");
             employees = activityRepository.findEmployees();
             for (Employee e : employees) {
@@ -57,6 +57,6 @@ public class EmployeeController implements Controller {
             modelAndView.addObject("message", message);
             return modelAndView;
         }
-        return new ModelAndView("welcome");
+        return new ModelAndView("home");
     }
 }

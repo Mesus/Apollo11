@@ -27,11 +27,11 @@ public class ActivityController implements Controller {
     protected final Log logger = LogFactory.getLog(getClass());
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String message = "";
         ActivityRepository activityRepository = new ActivityRepository();
-        ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+        ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
 
-        if (request.getRequestURI().equals("/activitiesPrMonth.htm")) {
+        if (request.getRequestURI().equals("/admin/activitiesPrMonth.htm")) {
             String str_year = request.getParameter("Year");
             int year = Integer.parseInt(str_year);
             String month = request.getParameter("Month");
@@ -44,10 +44,13 @@ public class ActivityController implements Controller {
                 modelAndView.addObject(employeeList);
                 modelAndView.addObject("Year", year);
                 modelAndView.addObject("Month", month);
+                return modelAndView;
             } catch (EmptyResultDataAccessException e) {
                 e.printStackTrace();
+                message = "Tomt resultat fra databasen.";
             }
         }
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 }

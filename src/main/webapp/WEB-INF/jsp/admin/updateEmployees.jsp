@@ -1,9 +1,8 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <html>
     <head>
-    <link rel="stylesheet" type="text/css" href="minstil.css" />
+    <link rel="stylesheet" type="text/css" href="../minstil.css" />
     <title>Oppdater liste over konsulenter</title></head>
     <body>
         <h2>Oppdater konsulentliste</h2>

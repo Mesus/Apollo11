@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/main/java/com/gurilunnan/champs/model/Activity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/gurilunnan/champs/model/ActivityResult.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/gurilunnan/champs/model/ActivityType.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/gurilunnan/champs/model/Employee.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/gurilunnan/champs/persistence/ActivityRepository.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/springapp/web/ActivityController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/springapp/web/ActivityListController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/springapp/web/EmployeeController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/springapp/web/UpdateActivityController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/springapp/web/ViewController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/jsp/login.jsp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/index.jsp" charset="UTF-8" />
+  </component>
 </project>
 

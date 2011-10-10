@@ -25,7 +25,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ActivityListController implements Controller {
-    protected final Log logger = LogFactory.getLog(getClass());
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ActivityRepository activityRepository = new ActivityRepository();

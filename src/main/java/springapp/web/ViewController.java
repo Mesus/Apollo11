@@ -25,16 +25,26 @@ public class ViewController implements Controller {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
-        if (request.getRequestURI().equals("/updateEmployees.htm"))
-            return new ModelAndView("updateEmployees");
+        if (request.isUserInRole("ROLE_ADMIN") && request.getRequestURI().equals("/admin/adminhome.htm")) {
+            return new ModelAndView("admin/adminhome");
+        } else if (!(request.isUserInRole("ROLE_ADMIN")) && request.getRequestURI().equals("/admin/adminhome.htm")) {
+            String message = "Du må ha administratortilgang for å gå til admin-view.";
+            modelAndView.addObject("message", message);
+            return modelAndView;
+        }
 
-        if(request.getRequestURI().equals("/login.htm")) {
+        if (request.getRequestURI().equals("/updateEmployees.htm")) {
+            return new ModelAndView("admin/updateEmployees");
+        }
+
+        if (request.getRequestURI().equals("/login.htm")) {
             return new ModelAndView("login");
         }
 
-        if(request.getRequestURI().equals("/loginError.htm")) {
-            return new ModelAndView("loginError") ;
+        if (request.getRequestURI().equals("/loginError.htm")) {
+            return new ModelAndView("loginError");
         }
+
         return modelAndView;
 
     }

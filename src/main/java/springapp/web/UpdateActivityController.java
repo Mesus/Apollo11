@@ -4,6 +4,7 @@ import com.gurilunnan.champs.model.Activity;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import com.gurilunnan.champs.persistence.ActivityRepository;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,12 +34,27 @@ public class UpdateActivityController implements Controller {
         List<Activity> activityList;
         List<Employee> employeeList;
         List<ActivityType> activityTypeList;
-        int year = Integer.parseInt(request.getParameter("Year"));
+        int year = 0;
+        String str_year = request.getParameter("Year");
+        if (str_year != null) {
+            year = Integer.parseInt(str_year);
+        }
         String month = request.getParameter("Month");
         String message = "";
-        ModelAndView modelAndView = new ModelAndView("activitiesPrMonth");
+        ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
 
-        if (request.getRequestURI().equals("/updateActivities.htm")) {
+        if (!(request.isUserInRole("ROLE_ADMIN"))) {
+            ModelAndView mav = new ModelAndView("home");
+            message = "Du m√• logge inn som administrator for √• kunne administrere aktiviteter.";
+            mav.addObject("message", message);
+            return mav;
+        }
+
+        if (year == 0 && request.isUserInRole("ROLE_ADMIN")) {
+            return new ModelAndView("admin/home");
+        }
+
+        if (request.getRequestURI().equals("/admin/updateActivities.htm")) {
             List<String> inputFromTextBoxes = new ArrayList<String>();
             activityList = activityRepository.findActivities(year, month);
             activityTypeList = activityRepository.findActivityTypes();
@@ -57,7 +73,7 @@ public class UpdateActivityController implements Controller {
                 String activityName = request.getParameter(textBoxName);
                 String[] tmp = textBoxName.split(",");
                 if (tmp.length == 5) {
-                    if (!(activityName.equals(tmp[0]))) {
+                    if (activityName != null && !(activityName.equals(tmp[0]))) {
                         message = activityRepository.deleteActivity(tmp[0], tmp[2], tmp[3], Integer.parseInt(tmp[4]));
                         boolean registered = false;
                         if (!activityName.equals("")) {
@@ -87,7 +103,7 @@ public class UpdateActivityController implements Controller {
                         }
                     }
                 }
-                if (!(activityName.equals("")) && !(activityName == null)) {
+                if (activityName != null && !(activityName.equals(""))) {
                     if (tmp.length == 4) {
                         boolean registered = false;
                         activityTypeList = activityRepository.findActivityTypes();
@@ -126,7 +142,7 @@ public class UpdateActivityController implements Controller {
             modelAndView.addObject("message", message);
         }
 
-        if (request.getRequestURI().equals("/activitiesCancel.htm")) {
+        if (request.getRequestURI().equals("/admin/activitiesCancel.htm")) {
             try {
                 activityList = activityRepository.findActivities(year, month);
                 activityTypeList = activityRepository.findActivityTypes();
@@ -143,8 +159,8 @@ public class UpdateActivityController implements Controller {
             }
         }
 
-        //Checkboxes sendes bare hvis de er checked, sÂ kan sjekke for om navnet pÂ de fins som parameter for Â se om noe skal slettes.
-        if (request.getRequestURI().equals("/updateActivityTypes.htm")) {
+        //Checkboxes sendes bare hvis de er checked, s√• kan sjekke for om navnet p√• de fins som parameter for √• se om noe skal slettes.
+        if (request.getRequestURI().equals("/admin/updateActivityTypes.htm")) {
 
             activityTypeList = activityRepository.findActivityTypes();
             List<Activity> toBeDeleted = new ArrayList<Activity>();
@@ -172,8 +188,8 @@ public class UpdateActivityController implements Controller {
             modelAndView.addObject("message", message);
         }
 
-        if (request.getRequestURI().equals("/addActivityType.htm")) {
-            if ((request.getParameter("CategoryName")) != "") {
+        if (request.getRequestURI().equals("/admin/addActivityType.htm")) {
+            if (!(request.getParameter("CategoryName")).equals("")) {
                 int isNumeric = 0;
                 int isVisible = 0;
                 if ((request.getParameter("number") != null) && (request.getParameter("number").equals("1"))) {
@@ -182,7 +198,7 @@ public class UpdateActivityController implements Controller {
                 if ((request.getParameter("visible") != null) && (request.getParameter("visible").equals("1"))) {
                     isVisible = 1;
                 }
-                message = activityRepository.addActivityType(request.getParameter("ActivityName"), request.getParameter("CategoryName"), isNumeric, isVisible);
+                message = activityRepository.addActivityType("", request.getParameter("CategoryName"), isNumeric, isVisible);
             }
             activityList = activityRepository.findActivities(year, month);
             activityTypeList = activityRepository.findActivityTypes();

@@ -106,7 +106,7 @@ public class ActivityRepository {
             t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{activityName, employeeName, month, year});
             message = "Slettet aktivitet " + activityName + " for " + employeeName + ".";
         } catch (DataIntegrityViolationException e) {
-            message = "Cannot delete " + activityName + " for employee " + employeeName + " from the database.";
+            message = "Kunne ikke slette " + activityName + " for konsulent " + employeeName + " fra databasen.";
             e.printStackTrace();
         }
         return message;
@@ -117,7 +117,7 @@ public class ActivityRepository {
             t.update("Delete from Activity where activity_name = ?", new Object[]{activityName});
             message = "Slettet aktivitet " + activityName + ".";
         } catch (DataIntegrityViolationException e) {
-            message = "Cannot delete " + activityName + " from the database.";
+            message = "Kunne ikke slette " + activityName + " fra databasen.";
             e.printStackTrace();
         }
         return message;
@@ -128,7 +128,7 @@ public class ActivityRepository {
             t.update("Delete from activity_type where act_type = ?", new Object[]{category});
             message = "Successfully deleted the category " + category + " from the database.";
         } catch (DataIntegrityViolationException e) {
-            message = "Cannot delete " + category + " from the database.";
+            message = "Kunne ikke slette " + category + " fra databasen.";
             e.printStackTrace();
         }
         return message;
@@ -140,7 +140,7 @@ public class ActivityRepository {
             t.update("Delete from employee where name = ?", new Object[] {employeeName});
             message = "Deleted " + employeeName + " from the database.";
         } catch (DataIntegrityViolationException e) {
-            message = "Cannot delete " + employeeName + " from the database.";
+            message = "Kunne ikke slette " + employeeName + " fra databasen.";
             e.printStackTrace();
         }
         return message;
@@ -149,10 +149,9 @@ public class ActivityRepository {
     public String addActivityType(String activityName, String category, int isNumeric, int isVisible) {
         try {
             t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, category, isNumeric, isVisible});
-            message = "Oppdaterte aktiviteter - la til " + activityName + ". ";
+            message = "Oppdaterte aktiviteter - la til " + category + ". ";
         } catch (DuplicateKeyException e) {
-            message = "Error - finnes allerede i databasen.";
-            e.printStackTrace();
+            message = "Feil: duplikat - finnes allerede i databasen.";
         }
         return message;
     }
@@ -162,8 +161,7 @@ public class ActivityRepository {
             t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, employeeName, month, year});
             message = "Oppdaterte activiteter - la til " + activityName + " for konsulent " + employeeName + ".";
         } catch (DuplicateKeyException e) {
-            message = "Error - finnes allerede i databasen.";
-            e.printStackTrace();
+            message = "Feil: duplikat - finnes allerede i databasen.";
         }
         return message;
     }
@@ -173,8 +171,7 @@ public class ActivityRepository {
             t.update("insert into Employee values(?)", new Object[]{employeeName});
             message = "Successfully added " + employeeName + " to Employees.";
         } catch (DuplicateKeyException e) {
-            message = "Error - finnes allerede i databasen.";
-            e.printStackTrace();
+            message = "Feil: duplikat - finnes allerede i databasen.";
         }
         return message;
     }

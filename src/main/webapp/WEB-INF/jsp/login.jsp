@@ -1,13 +1,13 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%@ page contentType="text/html; charset=ISO-8859-1" %>
 
 <html>
     <head><link rel="stylesheet" type="text/css" href="minstil.css" />
         <title>Apollo 11 - Login</title>
+       <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     </head>
     <body>
     <h1>Inmeta Champion - Login</h1>
-    <p>Vennligst logg inn!</p>
+    <p>Vennligst logg inn! </p>
         <form method="POST" action="j_security_check">
         Brukernavn: <input name="j_username" type="text">
         Passord: <input name="j_password" type="password">
