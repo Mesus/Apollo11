@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
-import sun.java2d.opengl.OGLContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

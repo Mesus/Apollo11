@@ -4,7 +4,6 @@ import com.gurilunnan.champs.model.Activity;
 import com.gurilunnan.champs.model.ActivityType;
 import com.gurilunnan.champs.model.Employee;
 import com.gurilunnan.champs.persistence.ActivityRepository;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
