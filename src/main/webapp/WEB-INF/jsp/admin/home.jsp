@@ -14,13 +14,13 @@
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
         </select>
-        <input type="SUBMIT" align="center" value="Hent aktivitetsoversikt">
+        <input type="SUBMIT"  value="Hent aktivitetsoversikt">
         </form>
         <br />
 
         <form method="POST" action="updateEmployees.htm">
         <h3>Oppdater listen over ansatte:</h3>
-        <input type="SUBMIT" align="center" value="Oppdater ansattliste">
+        <input type="SUBMIT"  value="Oppdater ansattliste">
         </form>
         <br />
         <form method ="POST" action="activitiesPrMonth.htm">
@@ -39,14 +39,14 @@
             <option value="November"> November </option>
             <option value="Desember"> Desember </option>
         </select>
-     År:
+   År:
         <select name="Year" size="1">
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
         </select>
-   <input type="SUBMIT" align="center" value="Finn aktiviteter">
-    </p>
+   <input type="SUBMIT" value="Finn aktiviteter">
+ 
     </form>
     </body>
 </html>
