@@ -6,7 +6,7 @@
     <title>Aktiviteter</title></head>
     <body>
         <h1>Aktiviteter for ${Year}</h1>
-          <p><a href="/home.htm">Til forsiden</a></p>
+            <p><a href="home.htm">Tilbake</a></p>
         <form method="POST" action="/activityList.htm" >
             <input type="hidden" name="Year" value="${Year}" />
             <table border="1">
@@ -45,7 +45,7 @@
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
         </select>
-        <input type="SUBMIT"  align="center" value="Hent aktiviteter" /> </p>
+        <input type="SUBMIT"  value="Hent aktiviteter" /> </p>
         </form> <br />
     </body>
 </html>

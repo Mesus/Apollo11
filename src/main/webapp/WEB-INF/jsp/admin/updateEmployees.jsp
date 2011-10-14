@@ -6,7 +6,7 @@
     <title>Oppdater liste over konsulenter</title></head>
     <body>
         <h2>Oppdater konsulentliste</h2>
-          <p><a href="/home.htm">Til forsiden</a></p> <br />
+          <p><a href="/admin/home.htm">Tilbake</a></p> <br />
         <p><b>Legg til konsulent:</b></p>
         <form method="POST" action="addEmployee.htm">
             Navn på konsulent: <input type="text" name="employee_name" />

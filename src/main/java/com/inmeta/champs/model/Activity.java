@@ -1,4 +1,4 @@
-package com.gurilunnan.champs.model;
+package com.inmeta.champs.model;
 
 /**
  * Created by IntelliJ IDEA.

@@ -23,24 +23,30 @@
             <url>http://repository.springsource.com/maven/bundles/external</url>
         </repository>
         <!-- EBR Spring Milestone Repository -->
-        <!--repository>
-              <id>com.springsource.repository.bundles.milestone</id>
-              <name>EBR Spring Milestone Repository</name>
-              <url>http://repository.springsource.com/maven/bundles/milestone</url>
-          </repository-->
+        <repository>
+            <id>com.springsource.repository.bundles.milestone</id>
+            <name>EBR Spring Milestone Repository</name>
+            <url>http://repository.springsource.com/maven/bundles/milestone</url>
+        </repository>
         <!-- EBR Spring Snapshot Repository -->
-        <!--repository>
-              <id>com.springsource.repository.bundles.snapshot</id>
-              <name>EBR Spring Snapshot Repository</name>
-              <url>http://repository.springsource.com/maven/bundles/snapshot</url>
-          </repository-->
+        <!--repository> <id>com.springsource.repository.bundles.snapshot</id> <name>EBR
+              Spring Snapshot Repository</name> <url>http://repository.springsource.com/maven/bundles/snapshot</url>
+              </repository -->
         <!-- Maven Central Compatible Spring Snapshot Repository -->
-        <!--repository>
-              <id>org.springframework.maven.snapshot</id>
-              <name>Maven Central Compatible Spring Snapshot Repository</name>
-              <url>http://maven.springframework.org/snapshot</url>
-          </repository-->
+        <!--repository> <id>org.springframework.maven.snapshot</id> <name>Maven
+              Central Compatible Spring Snapshot Repository</name> <url>http://maven.springframework.org/snapshot</url>
+              </repository -->
+
     </repositories>
+
+    <pluginRepositories>
+
+        <pluginRepository>
+            <id>repository.springframework.maven.milestone</id>
+            <name>Spring Framework Maven Milestone Repository</name>
+            <url>http://maven.springframework.org/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <!-- Dependencies -->
     <dependencies>
@@ -95,40 +101,50 @@
             <version>1.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cloudfoundry</groupId>
+            <artifactId>cloudfoundry-runtime</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.google.gitkit</groupId>
+          <artifactId>client-library</artifactId>
+          <version>1.0</version>
+          <scope>compile</scope>
+      </dependency>
+
+
     </dependencies>
 
     <!-- Project properties -->
     <properties>
-        <org.springframework.version>3.0.1.RELEASE</org.springframework.version>
+        <org.springframework.version>3.1.0.M1</org.springframework.version>
+        <org.cloudfoundry-version>0.6.0</org.cloudfoundry-version>
     </properties>
 
     <build>
-        <finalName>champs</finalName>
         <plugins>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.25</version>
+                <groupId>org.cloudfoundry</groupId>
+                <artifactId>cf-maven-plugin</artifactId>
+                <version>1.0.0.M1</version>
                 <configuration>
-                    <contextPath>/</contextPath>
-                    <scanIntervalSeconds>2</scanIntervalSeconds>
-                    <stopKey>foo</stopKey>
-                    <stopPort>9999</stopPort>
-                    <userRealms>
-                        <userRealm implementation="org.mortbay.jetty.security.HashUserRealm">
-                          <name>Apollo11</name>
-                          <!-- Searchs the file with the login informations in the same directory as the pom.xml:
-                            In this file you can define users with a password and their roles in the format:
-                            username: password [,rolename ...]
-                            Siehe http://jetty.codehaus.org/jetty/jetty-6/apidocs/org/mortbay/jetty/security/HashUserRealm.html
-                          -->
-                          <config>jetty-login.properties</config>
-                        </userRealm>
-                    </userRealms>
+                    <server>champs</server>
+                    <target>http://api.cloudfoundry.com</target>
+                    <url>champs.cloudfoundry.com</url>
+                    <memory>256</memory>
                 </configuration>
-
             </plugin>
         </plugins>
+        <finalName>champs</finalName>
     </build>
 
 </project>

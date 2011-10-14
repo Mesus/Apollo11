@@ -1,16 +1,17 @@
-package com.gurilunnan.champs.persistence;
+package com.inmeta.champs.persistence;
 
-import com.gurilunnan.champs.model.Activity;
-import com.gurilunnan.champs.model.ActivityResult;
-import com.gurilunnan.champs.model.ActivityType;
-import com.gurilunnan.champs.model.Employee;
+import com.inmeta.champs.model.Activity;
+import com.inmeta.champs.model.ActivityResult;
+import com.inmeta.champs.model.ActivityType;
+import com.inmeta.champs.model.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -18,38 +19,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: gurlunna
- * Date: 03.10.11
- * Time: 09:10
- * To change this template use File | Settings | File Templates.
- */
-public class ActivityRepository {
+@Repository
+public class ActivityDAO {
+
     private InitialContext initialContext;
+
+    @Autowired
     private DataSource dataSource;
-    private SimpleJdbcTemplate t;
     private List<Activity> activityList;
     private List<Employee> employeeList;
     private List<ActivityType> activityTypeList;
     private List<ActivityResult> activityResultList;
     private String message = "";
 
-    public ActivityRepository() throws ServletException, IOException {
-        try {
-            initialContext = new InitialContext();
-            dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/SimpleDS");
-
-        } catch (NamingException e) {
-            throw new ServletException(e);
-        }
-
-        t = new SimpleJdbcTemplate(dataSource);
+    public ActivityDAO() throws ServletException, IOException {
     }
 
     public List<Activity> findActivities(int year, String month) {
         try {
-            activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE a.month_name = ? and a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
+            activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE a.month_name = ? AND a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -58,7 +46,7 @@ public class ActivityRepository {
 
     public List<Activity> findActivities(String category) {
         try {
-            activityList = t.query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a left join activity_type t on a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{category});
+            activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{category});
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -67,7 +55,7 @@ public class ActivityRepository {
 
     public List<Employee> findEmployees() {
         try {
-            employeeList = t.query("SELECT name FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+            employeeList = getJdbcTemplate().query("SELECT name FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -76,7 +64,7 @@ public class ActivityRepository {
 
     public List<ActivityType> findActivityTypes() {
         try {
-            activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+            activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -85,7 +73,7 @@ public class ActivityRepository {
 
     public List<ActivityType> findActivityTypes(boolean isVisible) {
         try {
-            activityTypeList = t.query("Select act_type, isnumeric, isvisible_year from activity_type where isvisible_year = 1 group by act_type", new ActivityTypeRowMapper(), new Object[]{});
+            activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE WHERE isvisible = 1 GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -94,8 +82,8 @@ public class ActivityRepository {
 
     public List<ActivityResult> findActivityResults(int year) {
         try {
-            activityResultList = t.query("select e.name, a.month_name, t.act_type, a.activity_name, count(a.activity_name), a.the_year from employee e join activity a, activity_type t where e.name = a.employee_name and a.activity_name = t.activity_name and a.the_year = ? group by e.name, t.act_type, a.month_name", new ActivityResultRowMapper(), new Object[]{year});
-        }catch (EmptyResultDataAccessException e) {
+            activityResultList = getJdbcTemplate().query("SELECT e.name, a.month_name, t.act_type, a.activity_name, COUNT(a.activity_name), a.the_year FROM EMPLOYEE e JOIN ACTIVITY a, ACTIVITY_TYPE t WHERE e.name = a.employee_name AND a.activity_name = t.activity_name AND a.the_year = ? GROUP BY e.name, t.act_type, a.month_name", new ActivityResultRowMapper(), new Object[]{year});
+        } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
         return activityResultList;
@@ -103,7 +91,7 @@ public class ActivityRepository {
 
     public String deleteActivity(String activityName, String employeeName, String month, int year) {
         try {
-            t.update("delete from activity where activity_name = ? and employee_name = ? and month_name = ? and the_year = ?", new Object[]{activityName, employeeName, month, year});
+            getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE activity_name = ? AND employee_name = ? AND month_name = ? AND the_year = ?", new Object[]{activityName, employeeName, month, year});
             message = "Slettet aktivitet " + activityName + " for " + employeeName + ".";
         } catch (DataIntegrityViolationException e) {
             message = "Kunne ikke slette " + activityName + " for konsulent " + employeeName + " fra databasen.";
@@ -114,7 +102,7 @@ public class ActivityRepository {
 
     public String deleteActivity(String activityName) {
         try {
-            t.update("Delete from Activity where activity_name = ?", new Object[]{activityName});
+            getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE activity_name = ?", new Object[]{activityName});
             message = "Slettet aktivitet " + activityName + ".";
         } catch (DataIntegrityViolationException e) {
             message = "Kunne ikke slette " + activityName + " fra databasen.";
@@ -125,7 +113,7 @@ public class ActivityRepository {
 
     public String deleteActivityType(String category) {
         try {
-            t.update("Delete from activity_type where act_type = ?", new Object[]{category});
+            getJdbcTemplate().update("DELETE FROM ACTIVITY_TYPE WHERE act_type = ?", new Object[]{category});
             message = "Successfully deleted the category " + category + " from the database.";
         } catch (DataIntegrityViolationException e) {
             message = "Kunne ikke slette " + category + " fra databasen.";
@@ -136,8 +124,8 @@ public class ActivityRepository {
 
     public String deleteEmployee(String employeeName) {
         try {
-            t.update("Delete from activity where employee_name = ?", new Object[] {employeeName});
-            t.update("Delete from employee where name = ?", new Object[] {employeeName});
+            getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE employee_name = ?", new Object[]{employeeName});
+            getJdbcTemplate().update("DELETE FROM EMPLOYEE WHERE name = ?", new Object[]{employeeName});
             message = "Deleted " + employeeName + " from the database.";
         } catch (DataIntegrityViolationException e) {
             message = "Kunne ikke slette " + employeeName + " fra databasen.";
@@ -148,7 +136,7 @@ public class ActivityRepository {
 
     public String addActivityType(String activityName, String category, int isNumeric, int isVisible) {
         try {
-            t.update("insert into activity_type values (?, ?, ?, ?)", new Object[]{activityName, category, isNumeric, isVisible});
+            getJdbcTemplate().update("INSERT IGNORE INTO ACTIVITY_TYPE VALUES (?, ?, ?, ?)", new Object[]{activityName, category, isNumeric, isVisible});
             message = "Oppdaterte aktiviteter - la til " + category + ". ";
         } catch (DuplicateKeyException e) {
             message = "Feil: duplikat - finnes allerede i databasen.";
@@ -158,7 +146,7 @@ public class ActivityRepository {
 
     public String addActivity(String activityName, String employeeName, String month, int year) {
         try {
-            t.update("insert into activity values (?, ?, ?, ?)", new Object[]{activityName, employeeName, month, year});
+            getJdbcTemplate().update("INSERT IGNORE INTO ACTIVITY VALUES (?, ?, ?, ?)", new Object[]{activityName, employeeName, month, year});
             message = "Oppdaterte activiteter - la til " + activityName + " for konsulent " + employeeName + ".";
         } catch (DuplicateKeyException e) {
             message = "Feil: duplikat - finnes allerede i databasen.";
@@ -168,15 +156,13 @@ public class ActivityRepository {
 
     public String addEmployee(String employeeName) {
         try {
-            t.update("insert into Employee values(?)", new Object[]{employeeName});
+            getJdbcTemplate().update("INSERT IGNORE INTO EMPLOYEE VALUES(?)", new Object[]{employeeName});
             message = "Successfully added " + employeeName + " to Employees.";
         } catch (DuplicateKeyException e) {
             message = "Feil: duplikat - finnes allerede i databasen.";
         }
         return message;
     }
-
-
 
 
     class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
@@ -229,4 +215,18 @@ public class ActivityRepository {
             return activityResult;
         }
     }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    private JdbcTemplate getJdbcTemplate() {
+        return new JdbcTemplate(dataSource);
+    }
+
+
 }

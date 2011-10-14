@@ -1,11 +1,6 @@
-package com.gurilunnan.champs.model;
+package com.inmeta.champs.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * @author Glenn Bech
- */
-@XmlRootElement
 public class Employee {
 
     private String name;

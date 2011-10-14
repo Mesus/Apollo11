@@ -48,5 +48,6 @@
    <input type="SUBMIT" value="Finn aktiviteter">
  
     </form>
+    <p><a href="/home.htm">Til hovedsiden</a></p>
     </body>
 </html>

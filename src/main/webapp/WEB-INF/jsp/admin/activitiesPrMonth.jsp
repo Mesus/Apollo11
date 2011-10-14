@@ -27,10 +27,10 @@
             <option value="2010"> 2010 </option>
             <option value="2011"> 2011 </option>
             <option value="2012"> 2012 </option>
-        </select><input type="SUBMIT" align="center" value="Go"></p>
+        </select><input type="SUBMIT" value="Go"></p>
     </form>
 
-      <p><a href="/home.htm">Til forsiden</a></p>
+      <p><a href="/admin/home.htm">Tilbake</a></p>
 
     <form method ="POST" action="updateActivities.htm">
     <table border="1">
@@ -43,7 +43,6 @@
       <c:forEach items="${employeeList}" var="emp">
           <tr>
             <td><c:out value="${emp.name}" /></td>
-            </td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td>
             <c:forEach items="${activityList}" var="act">
@@ -77,6 +76,7 @@
     <br /><br />
 
     <h2>Alle aktivitetstyper:</h2>
+    <form method="POST" action="updateActivityTypes.htm">
     <table border="1">
     <tr><th>Kategori</th><th>Slett</th></tr>
     <c:forEach items="${activityTypeList}" var="acttype">
@@ -85,7 +85,6 @@
       <c:out value="${acttype.category}"/>
     </td>
     <td class="center">
-    <form method="POST" action="updateActivityTypes.htm">
    		<input type="CHECKBOX" name="Delete" value="${acttype.category}">
     	</td>
     	</tr>
@@ -94,7 +93,7 @@
     	<input type="hidden" name="Year" value="${Year}" >
     	<input type="hidden" name="Month" value="${Month}" >
     	<input type="SUBMIT" value="Slett" />
-    </form>
+   </form>
     <br /><br />
 
     <h2>Legg til kategori:</h2>
