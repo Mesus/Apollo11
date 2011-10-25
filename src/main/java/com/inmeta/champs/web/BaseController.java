@@ -12,8 +12,9 @@ import java.util.Calendar;
 public class BaseController {
     protected final String roleAdmin = "Admin";
     protected final String roleMember = "Member";
-    private int get_year = 2011;
-    protected final int current_month = 10;
+    private int get_year = Calendar.getInstance().get(Calendar.YEAR);
+    private int get_month = Calendar.getInstance().get(Calendar.MONTH);
+    protected final int current_month = get_month;
     protected final int current_year = get_year;
     protected final int start_year = 2010;
 

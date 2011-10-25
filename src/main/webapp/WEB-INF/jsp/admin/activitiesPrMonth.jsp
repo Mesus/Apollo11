@@ -108,6 +108,21 @@
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Lagre" />  </p>
     </form>
+    <br /><br />
 
+    <h2>Endre navn på kategori:</h2>
+    <form method="POST" action="changeCategoryName.htm">
+    <p>Nåværende kategorinavn: <select name="OldCategoryName" size="1">
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <option value="${acttype.category}"><c:out value="${acttype.category}"/></option>
+        </c:forEach>
+        </select>
+     <br />
+     Nytt kategorinavn: <input type="text" name="NewCategoryName"/>
+     <br />
+     <input type="hidden" name="Year" value="${Year}" >
+     <input type="hidden" name="Month" value="${Month}" >
+     <input type="SUBMIT" value="Endre navn"/>
+     </form> </p>
   </body>
 </html>

@@ -133,11 +133,12 @@ public class UpdateActivityController extends BaseController {
         if (userService.isAuthorized(request, roleAdmin)) {
             if (request.getParameter("Year") != null) {
                 year = Integer.parseInt(request.getParameter("Year"));
+            } else {
+                year = current_year;
             }
             String month = request.getParameter("Month");
-            if (year == 0) {
-                return new ModelAndView("admin/adminhome");
-            }
+            if (month == null)
+                month = activityRepository.findMonth(current_month);
 
             activityList = activityRepository.findActivities(year, month);
             activityTypeList = activityRepository.findActivityTypes();
@@ -227,6 +228,39 @@ public class UpdateActivityController extends BaseController {
             employeeList = activityRepository.findEmployees();
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
+            modelAndView.addObject(activityList);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("Month", month);
+            modelAndView.addObject("Year", year);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
+            modelAndView.addObject("message", message);
+            return modelAndView;
+        } else return new ModelAndView("permissionDenied");
+    }
+
+    @RequestMapping("/admin/changeCategoryName.htm")
+    public ModelAndView changeCategory(HttpServletRequest request, HttpServletResponse response) {
+        if (userService.isAuthorized(request, roleAdmin)) {
+            if (request.getParameter("Year") != null)
+                year = Integer.parseInt(request.getParameter("Year"));
+            else
+                year = current_year;
+            String month = request.getParameter("Month");
+            if (month == null)
+                month = activityRepository.findMonth(current_month);
+
+            String oldCategoryName = request.getParameter("OldCategoryName");
+            String newCategoryName = request.getParameter("NewCategoryName");
+
+            message = activityRepository.changeCategoryName(oldCategoryName, newCategoryName);
+
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
+            activityList = activityRepository.findActivities(year, month);
+            activityTypeList = activityRepository.findActivityTypes();
+            employeeList = activityRepository.findEmployees();
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);

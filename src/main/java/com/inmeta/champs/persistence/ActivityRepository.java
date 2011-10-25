@@ -163,6 +163,16 @@ public class ActivityRepository {
         return message;
     }
 
+    public String changeCategoryName(String oldname, String newname) {
+        try {
+            getJdbcTemplate().update("UPDATE ACTIVITY_TYPE SET act_type=? WHERE act_type=?", newname, oldname);
+            message = "Changed category name " + oldname + " to " + newname + ".";
+        }catch (Exception e) {
+            message = "Could not change the category name.";
+        }
+        return message;
+    }
+
     public String findMonth(int month) {
         try {
             return getJdbcTemplate().queryForObject("SELECT month_name FROM MONTH WHERE month_number=?", String.class, new Object[]{month});
