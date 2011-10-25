@@ -40,7 +40,15 @@ public class ViewController extends BaseController {
     @RequestMapping("/admin/home.htm")
     public ModelAndView adminHomeHandler(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
-            return new ModelAndView();
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("Current_Year", current_year);
+            String this_month = activityRepository.findMonth(current_month);
+            modelAndView.addObject("Current_Month", this_month);
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
+            return modelAndView;
         } else return new ModelAndView("permissionDenied");
 
     }
@@ -54,6 +62,9 @@ public class ViewController extends BaseController {
         }
         if (userService.isAuthorized(req, roleMember) || userService.isAuthorized(req, roleAdmin)) {
             modelAndView.addObject("user", user);
+            int[] years = getYears();
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Current_Year", current_year);
             return modelAndView;
         } else {
             return new ModelAndView("permissionDenied");

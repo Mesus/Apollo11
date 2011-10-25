@@ -11,22 +11,27 @@
 
   <form method ="POST" action="activitiesPrMonth.htm" >
     <p>Finn aktiviteter for <select name="Month" size="1">
-            <option value="Januar"> Januar </option>
-            <option value="Februar"> Februar </option>
-            <option value="Mars"> Mars </option>
-            <option value="April"> April </option>
-            <option value="Mai"> Mai </option>
-            <option value="Juni"> Juni </option>
-            <option value="Juli"> Juli </option>
-            <option value="August"> August </option>
-            <option value="September"> September </option>
-            <option value="Oktober"> Oktober </option>
-            <option value="November"> November </option>
-            <option value="Desember"> Desember </option>
+            <c:forEach items="${Months}" var="m">
+                <c:choose>
+                <c:when test="${m eq Month}">
+                    <option value="${m}" SELECTED><c:out value="${m}"/></option>
+                </c:when>
+                <c:otherwise>
+                    <option value="${m}" ><c:out value="${m}"/></option>
+                </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </select> <select name="Year" size="1">
-            <option value="2010"> 2010 </option>
-            <option value="2011"> 2011 </option>
-            <option value="2012"> 2012 </option>
+            <c:forEach items="${Years}" var="y">
+                <c:choose>
+                <c:when test="${y eq Year}">
+                    <option value="${y}" SELECTED><c:out value="${y}"/></option>
+                </c:when>
+                <c:otherwise>
+                    <option value="${y}" ><c:out value="${y}"/></option>
+                </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </select><input type="SUBMIT" value="Go"></p>
     </form>
 

@@ -3,6 +3,7 @@ package com.inmeta.champs.web;
 import com.inmeta.champs.model.ActivityResult;
 import com.inmeta.champs.model.ActivityType;
 import com.inmeta.champs.model.Employee;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,9 +34,14 @@ public class ActivityListController extends BaseController {
     public ModelAndView getActivityListView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin) || userService.isAuthorized(request, roleMember)) {
             ModelAndView modelAndView = new ModelAndView("activityList");
-
+            int year;
             List<ActivityResult> resultList = new ArrayList<ActivityResult>();
-            int year = Integer.parseInt(request.getParameter("Year"));
+            String str_year = request.getParameter("Year");
+            if (str_year == null) {
+                year = current_year;
+            } else {
+                year = Integer.parseInt(str_year);
+            }
 
             boolean isVisible = true;
             int count;

@@ -113,11 +113,16 @@ public class UpdateActivityController extends BaseController {
                 activityList = activityRepository.findActivities(year, month);
                 activityTypeList = activityRepository.findActivityTypes();
             }
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
+
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("Year", year);
             modelAndView.addObject("Month", month);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
             modelAndView.addObject("message", message);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
@@ -138,11 +143,15 @@ public class UpdateActivityController extends BaseController {
             activityTypeList = activityRepository.findActivityTypes();
             employeeList = activityRepository.findEmployees();
             message = "Canceled changes.";
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("Year", year);
             modelAndView.addObject("Month", month);
+            modelAndView.addObject("Months", months);
+            modelAndView.addObject("Years", years);
             modelAndView.addObject("message", message);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
@@ -176,12 +185,16 @@ public class UpdateActivityController extends BaseController {
             activityTypeList = activityRepository.findActivityTypes();
             activityList = activityRepository.findActivities(year, month);
             employeeList = activityRepository.findEmployees();
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
 
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("Month", month);
             modelAndView.addObject("Year", year);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
             modelAndView.addObject("message", message);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
@@ -212,11 +225,15 @@ public class UpdateActivityController extends BaseController {
             activityList = activityRepository.findActivities(year, month);
             activityTypeList = activityRepository.findActivityTypes();
             employeeList = activityRepository.findEmployees();
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("Month", month);
             modelAndView.addObject("Year", year);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
             modelAndView.addObject("message", message);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");

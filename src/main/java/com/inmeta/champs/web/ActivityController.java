@@ -19,30 +19,35 @@ import java.util.List;
 @org.springframework.stereotype.Controller
 public class ActivityController extends BaseController {
     protected final Log logger = LogFactory.getLog(getClass());
-    String message = "";
 
     @RequestMapping("/admin/activitiesPrMonth.htm")
     public ModelAndView getActivitiesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
             ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             String str_year = request.getParameter("Year");
-            int year = Integer.parseInt(str_year);
+            int year;
+            if(str_year == null) {
+                year = current_year;
+            } else {
+                year = Integer.parseInt(str_year);
+            }
             String month = request.getParameter("Month");
+            if(month == null) {
+                String this_month = activityRepository.findMonth(current_month);
+                month = this_month;
+            }
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
             modelAndView.addObject("Year", year);
             modelAndView.addObject("Month", month);
-            try {
-                List<Activity> activityList = activityRepository.findActivities(year, month);
-                List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
-                List<Employee> employeeList = activityRepository.findEmployees();
-                modelAndView.addObject(activityList);
-                modelAndView.addObject(activityTypeList);
-                modelAndView.addObject(employeeList);
-                return modelAndView;
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-                message = "Tomt resultat fra databasen.";
-            }
-            modelAndView.addObject("message", message);
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+            List<Employee> employeeList = activityRepository.findEmployees();
+            modelAndView.addObject(activityList);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
     }

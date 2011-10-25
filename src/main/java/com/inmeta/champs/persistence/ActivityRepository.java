@@ -1,14 +1,12 @@
 package com.inmeta.champs.persistence;
 
-import com.inmeta.champs.model.Activity;
-import com.inmeta.champs.model.ActivityResult;
-import com.inmeta.champs.model.ActivityType;
-import com.inmeta.champs.model.Employee;
+import com.inmeta.champs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.InitialContext;
@@ -165,6 +163,27 @@ public class ActivityRepository {
         return message;
     }
 
+    public String findMonth(int month) {
+        try {
+            return getJdbcTemplate().queryForObject("SELECT month_name FROM MONTH WHERE month_number=?", String.class, new Object[]{month});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public String[] findMonthList() {
+        try {
+             List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number ASC", new MonthRowMapper());
+            String[] strings = new String[12];
+            for(int i = 0; i<months.size(); i++) {
+                strings[i] = months.get(i).getMonth_name();
+            }
+            return strings;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 
     class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
         public Activity mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -216,6 +235,14 @@ public class ActivityRepository {
             return activityResult;
         }
     }
+
+   class MonthRowMapper implements RowMapper<MonthRepresentation> {
+       public MonthRepresentation mapRow(ResultSet resultSet, int i) throws SQLException {
+           MonthRepresentation monthRepresentation = new MonthRepresentation();
+           monthRepresentation.setMonth_name(resultSet.getString(1));
+           return monthRepresentation;
+       }
+   }
 
     public DataSource getDataSource() {
         return dataSource;

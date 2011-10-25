@@ -22,15 +22,11 @@
                         <c:forEach items="${activityTypeList}" var="acttype">
                             <td class="center">
                                 <c:forEach items="${resultList}" var="res">
-                                    <c:choose>
-                                        <c:when test="${emp.name == res.employee.name}" >
-                                            <c:choose>
-                                                <c:when test="${acttype.category == res.activityType.category}" >
+                                        <c:if test="${emp.name == res.employee.name}" >
+                                                <c:if test="${acttype.category == res.activityType.category}" >
                                                     <c:out value="${res.count}" />
-                                                </c:when>
-                                            </c:choose>
-                                        </c:when>
-                                    </c:choose>
+                                                </c:if>
+                                        </c:if>
                                 </c:forEach>
                             </td>
                         </c:forEach>
@@ -42,10 +38,11 @@
         <form method ="POST" action="/activityList.htm" > <br /> <br />
         <p> Aktiviteter for <select name="Year" size="1">
             <option value="2010"> 2010 </option>
-            <option value="2011"> 2011 </option>
+            <option value="2011" SELECTED> 2011 </option>
             <option value="2012"> 2012 </option>
         </select>
         <input type="SUBMIT"  value="Hent aktiviteter" /> </p>
         </form> <br />
+        <jsp:include page="signoutinclude.jsp"></jsp:include>
     </body>
 </html>
