@@ -6,11 +6,8 @@
     </head>
     <body>
     <h1>Inmeta Champion - Login</h1>
-    <p>Feil ved innlogging! Vennligst prøv på nytt.</p>
-    <form method="POST" action="j_security_check">
-        Brukernavn: <input name="j_username" type="text">
-        Passord: <input name="j_password" type="password">
-        <input type="SUBMIT" value="Logg inn">
-    </form>
+    <p>Feil ved innlogging!.</p>
+    <a href="/login.htm">Prøv på nytt</a> <br/>
+    <a href="/signup.htm">Registrer bruker</a>
 
 </body></html>

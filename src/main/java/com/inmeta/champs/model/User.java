@@ -1,50 +1,41 @@
 package com.inmeta.champs.model;
 
 public class User {
-	private String firstname;
-	private String lastname;
-	private String userRole;
 	private String email;
-	private String password;
-	
-	public void setFirstName(String firstname) {
-		this.firstname = firstname;
-	}
-	
-	public String getFirstName() {
-		return firstname;
-	}
-	
-	public void setLastName(String lastname) {
-		this.lastname = lastname;
-	}
+    private String userRole;
+    private boolean registered;
+    private String username;
 
-	public String getLastName() {
-		return lastname;
-	}
-	
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
-	
-	public String getUserRole() {
-		return userRole;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
 

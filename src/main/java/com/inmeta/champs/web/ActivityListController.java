@@ -16,119 +16,71 @@ import java.util.List;
 
 
 @org.springframework.stereotype.Controller
-public class ActivityListController extends BaseController{
+public class ActivityListController extends BaseController {
+    List<ActivityResult> activityResults;
+    List<Employee> employeeList;
+    List<ActivityType> activityTypeList;
+    String category;
 
-    @RequestMapping ("/admin/activityList.htm")
+    @RequestMapping("/admin/activityList.htm")
     public ModelAndView getAdminActivityListView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<ActivityResult> activityResults;
-        List<ActivityResult> resultList = new ArrayList<ActivityResult>();
-        List<Employee> employeeList;
-        List<ActivityType> activityTypeList;
-        ModelAndView modelAndView = new ModelAndView("activityList");
-        boolean isVisible = true;
-        String category;
-
-        int count;
-
-        int year = Integer.parseInt(request.getParameter("Year"));
-
-        employeeList = activityDao.findEmployees();
-        activityTypeList = activityDao.findActivityTypes(isVisible);
-        activityResults = activityDao.findActivityResults(year);
-
-        for (Employee employee : employeeList) {
-            for (ActivityType activityType : activityTypeList) {
-                if (activityType.isVisible()) {
-                    count = 0;
-                    for (ActivityResult a : activityResults) {
-                        if (employee.getName().equals(a.getEmployee().getName()) && activityType.getCategory().equals(a.getActivityType().getCategory())) {
-                            if (activityType.isNumeric()) {
-                                count = count + Integer.parseInt(a.getActivityType().getActivityName());
-                            } else {
-                                count = count + a.getCount();
-                            }
-                        }
-                    }
-
-                    ActivityResult activityResult = new ActivityResult();
-                    activityResult.setCount(count);
-                    activityResult.setActivityType(activityType);
-                    activityResult.setEmployee(employee);
-                    activityResult.setYear(year);
-                    resultList.add(activityResult);
-
-                }
-            }
-
-        }
-        category = request.getParameter("Category");
-        if (category == null) {
-            category = "Konsulent";
-        }
-        employeeList = sortResult(resultList, category);
-        modelAndView.addObject(activityTypeList);
-        modelAndView.addObject(employeeList);
-        modelAndView.addObject("resultList", resultList);
-        modelAndView.addObject("Year", year);
-        return modelAndView;
+        if (userService.isAuthorized(request, roleAdmin)) {
+            return getActivityListView(request, response);
+        } else return new ModelAndView("permissionDenied");
     }
-    @RequestMapping ("/activityList.htm")
+
+    @RequestMapping("/activityList.htm")
     public ModelAndView getActivityListView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<ActivityResult> activityResults;
-        List<ActivityResult> resultList = new ArrayList<ActivityResult>();
-        List<Employee> employeeList;
-        List<ActivityType> activityTypeList;
-        ModelAndView modelAndView = new ModelAndView("activityList");
-        boolean isVisible = true;
-        String category;
+        if (userService.isAuthorized(request, roleAdmin) || userService.isAuthorized(request, roleMember)) {
+            ModelAndView modelAndView = new ModelAndView("activityList");
 
-        int count;
+            List<ActivityResult> resultList = new ArrayList<ActivityResult>();
+            int year = Integer.parseInt(request.getParameter("Year"));
 
-        int year = Integer.parseInt(request.getParameter("Year"));
+            boolean isVisible = true;
+            int count;
 
-        employeeList = activityDao.findEmployees();
-        activityTypeList = activityDao.findActivityTypes(isVisible);
-        activityResults = activityDao.findActivityResults(year);
+            employeeList = activityRepository.findEmployees();
+            activityTypeList = activityRepository.findActivityTypes(isVisible);
+            activityResults = activityRepository.findActivityResults(year);
 
-        for (Employee employee : employeeList) {
-            for (ActivityType activityType : activityTypeList) {
-                if (activityType.isVisible()) {
-                    count = 0;
-                    for (ActivityResult a : activityResults) {
-                        if (employee.getName().equals(a.getEmployee().getName()) && activityType.getCategory().equals(a.getActivityType().getCategory())) {
-                            if (activityType.isNumeric()) {
-                                count = count + Integer.parseInt(a.getActivityType().getActivityName());
-                            } else {
-                                count = count + a.getCount();
+            for (Employee employee : employeeList) {
+                for (ActivityType activityType : activityTypeList) {
+                    if (activityType.isVisible()) {
+                        count = 0;
+                        for (ActivityResult a : activityResults) {
+                            if (employee.getName().equals(a.getEmployee().getName()) && activityType.getCategory().equals(a.getActivityType().getCategory())) {
+                                if (activityType.isNumeric()) {
+                                    count = count + Integer.parseInt(a.getActivityType().getActivityName());
+                                } else {
+                                    count = count + a.getCount();
+                                }
                             }
                         }
+                        ActivityResult activityResult = new ActivityResult();
+                        activityResult.setCount(count);
+                        activityResult.setActivityType(activityType);
+                        activityResult.setEmployee(employee);
+                        activityResult.setYear(year);
+                        resultList.add(activityResult);
                     }
-
-                    ActivityResult activityResult = new ActivityResult();
-                    activityResult.setCount(count);
-                    activityResult.setActivityType(activityType);
-                    activityResult.setEmployee(employee);
-                    activityResult.setYear(year);
-                    resultList.add(activityResult);
-
                 }
             }
-
-        }
-        category = request.getParameter("Category");
-        if (category == null) {
-            category = "Konsulent";
-        }
-        employeeList = sortResult(resultList, category);
-        modelAndView.addObject(activityTypeList);
-        modelAndView.addObject(employeeList);
-        modelAndView.addObject("resultList", resultList);
-        modelAndView.addObject("Year", year);
-        return modelAndView;
+            category = request.getParameter("Category");
+            if (category == null) {
+                category = "Konsulent";
+            }
+            employeeList = sortResult(resultList, category);
+            modelAndView.addObject(activityTypeList);
+            modelAndView.addObject(employeeList);
+            modelAndView.addObject("resultList", resultList);
+            modelAndView.addObject("Year", year);
+            return modelAndView;
+        } else return new ModelAndView("permissionDenied");
     }
 
     private List<Employee> sortResult(List<ActivityResult> unsortedList, String category) throws IOException, ServletException {
-        List<Employee> employeeList = activityDao.findEmployees();
+        employeeList = activityRepository.findEmployees();
         List<ActivityResult> temp = new ArrayList<ActivityResult>();
         List<Employee> result = new ArrayList<Employee>();
 
@@ -145,7 +97,7 @@ public class ActivityListController extends BaseController{
         for (ActivityResult activityResult : temp) {
             result.add(activityResult.getEmployee());
         }
-
         return result;
     }
 }
+

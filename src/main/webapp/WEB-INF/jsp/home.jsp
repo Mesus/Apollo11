@@ -6,7 +6,7 @@
 <head>
 <script type="text/javascript">
   var userData = {
-    email: ${email} // required
+    email: ${user.email} // required
   };
   window.google.identitytoolkit.updateSavedAccount(userData);
 </script>
@@ -16,8 +16,11 @@
 <body>
 	<h2>Inmeta Java Champion Webpage</h2>
 		<jsp:include page="homeinclude.jsp"></jsp:include>
+		<c:if test="${user.userRole eq 'Admin'}">
 		<p><a href="admin/home.htm">Administrer</a></p>
+		</c:if>
 
-		Test: ${email}
+	<jsp:include page="signoutinclude.jsp"></jsp:include>
+
 </body>
 </html>

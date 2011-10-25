@@ -20,19 +20,20 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class ActivityDAO {
+public class ActivityRepository {
 
     private InitialContext initialContext;
 
     @Autowired
     private DataSource dataSource;
+
     private List<Activity> activityList;
     private List<Employee> employeeList;
     private List<ActivityType> activityTypeList;
     private List<ActivityResult> activityResultList;
     private String message = "";
 
-    public ActivityDAO() throws ServletException, IOException {
+    public ActivityRepository() throws ServletException, IOException {
     }
 
     public List<Activity> findActivities(int year, String month) {

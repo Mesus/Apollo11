@@ -48,6 +48,12 @@
    <input type="SUBMIT" value="Finn aktiviteter">
  
     </form>
-    <p><a href="/home.htm">Til hovedsiden</a></p>
+
+    <form method="POST" action="updateUsers.htm">
+    <h3>Oppdater brukertilgang:</h3>
+    <input type="SUBMIT" value="Oppdater brukere" />
+    </form>
+    <p><a href="/home.htm">Til hovedsiden</a></p> <br />
+    <jsp:include page="../signoutinclude.jsp"></jsp:include>
     </body>
 </html>

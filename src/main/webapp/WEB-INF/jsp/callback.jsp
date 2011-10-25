@@ -8,8 +8,12 @@
   google.load("identitytoolkit", "1.0", {packages: ["notify"]});
 </script>
 <script type='text/javascript'>
-  window.google.identitytoolkit.notifyFederatedSuccess({ "email": "name@email.com", "registered": true });
+  window.google.identitytoolkit.notifyFederatedSuccess({ "email": "${email}", "registered": true });
   // use window.google.identitytoolkit.notifyFederatedError(); in case of error
 </script>
+
 </head>
+<body>
+${email}
+</body>
 </html>

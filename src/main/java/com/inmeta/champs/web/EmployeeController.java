@@ -18,40 +18,48 @@ public class EmployeeController extends BaseController {
 
     @RequestMapping("/admin/updateEmployees.htm")
     public ModelAndView getUpdatedEmployeesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (userService.isAuthorized(request, roleAdmin)) {
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            return modelAndView;
+        } else return new ModelAndView("permissionDenied");
 
-        employees = activityDao.findEmployees();
-        modelAndView.addObject("employees", employees);
-        return modelAndView;
     }
 
     @RequestMapping("/admin/addEmployee.htm")
     public ModelAndView getAddEmployeeView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("employee_name");
-        employees = activityDao.findEmployees();
-        for (Employee e : employees) {
-            if (e.getName().equalsIgnoreCase(name)) {
-                message = "Employee is already registered.";
+        if (userService.isAuthorized(request, roleAdmin)) {
+            String name = request.getParameter("employee_name");
+            employees = activityRepository.findEmployees();
+            for (Employee e : employees) {
+                if (e.getName().equalsIgnoreCase(name)) {
+                    message = "Employee is already registered.";
+                }
             }
-        }
-        message = activityDao.addEmployee(name);
-        employees = activityDao.findEmployees();
-        modelAndView.addObject("employees", employees);
-        modelAndView.addObject("message", message);
-        return modelAndView;
+            message = activityRepository.addEmployee(name);
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            modelAndView.addObject("message", message);
+            return modelAndView;
+        } else return new ModelAndView("permissionDenied");
+
     }
 
-    @RequestMapping ("/admin/deleteEmployee.htm")
+    @RequestMapping("/admin/deleteEmployee.htm")
     public ModelAndView getDeleteEmployeeView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("Delete");
-        employees = activityDao.findEmployees();
-        for (Employee e : employees) {
-            if (e.getName().equalsIgnoreCase(name)) {
-                message = activityDao.deleteEmployee(name);
+        if (userService.isAuthorized(request, roleAdmin)) {
+            String name = request.getParameter("Delete");
+            employees = activityRepository.findEmployees();
+            for (Employee e : employees) {
+                if (e.getName().equalsIgnoreCase(name)) {
+                    message = activityRepository.deleteEmployee(name);
+                }
             }
-        }
-        employees = activityDao.findEmployees();
-        modelAndView.addObject("employees", employees);
-        modelAndView.addObject("message", message);
-        return modelAndView;
+            employees = activityRepository.findEmployees();
+            modelAndView.addObject("employees", employees);
+            modelAndView.addObject("message", message);
+            return modelAndView;
+        } else return new ModelAndView("permissionDenied");
+
     }
 }
