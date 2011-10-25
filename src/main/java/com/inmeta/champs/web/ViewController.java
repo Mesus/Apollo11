@@ -49,6 +49,9 @@ public class ViewController extends BaseController {
     public ModelAndView homeHandler(HttpServletRequest req, HttpServletResponse res) {
         ModelAndView modelAndView = new ModelAndView();
         User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return new ModelAndView("login");
+        }
         if (userService.isAuthorized(req, roleMember) || userService.isAuthorized(req, roleAdmin)) {
             modelAndView.addObject("user", user);
             return modelAndView;

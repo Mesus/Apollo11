@@ -1,3 +1,3 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%-- Redirected because we can't set the welcome page to a virtual URL. --%>
-<c:redirect  url="/login.htm"></c:redirect>
+<c:redirect  url="/home.htm"></c:redirect>
