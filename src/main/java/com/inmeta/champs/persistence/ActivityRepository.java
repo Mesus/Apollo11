@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -19,8 +18,6 @@ import java.util.List;
 
 @Repository
 public class ActivityRepository {
-
-    private InitialContext initialContext;
 
     @Autowired
     private DataSource dataSource;
