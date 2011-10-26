@@ -29,7 +29,7 @@
     $("#navbar").accountChooser();
   });
 </script>
-<link rel="stylesheet" type="text/css" href="minstil.css" />
+<link rel="stylesheet" type="text/css" href="../minstil.css" />
 <title>Apollo 11 - Login</title>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 </head>

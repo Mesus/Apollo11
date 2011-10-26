@@ -2,6 +2,7 @@ package com.inmeta.champs.persistence;
 
 import com.inmeta.champs.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,11 +33,13 @@ public class UserRepository {
     public boolean isRegistered(User user) {
         try {
             User u = getJdbcTemplate().queryForObject("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), user.getEmail());
-            return true;
-        } catch (EmptyResultDataAccessException e) {
+            if (u != null) {
+                return true;
+            }
+        } catch (DataAccessException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     public List<User> getUsers() {
