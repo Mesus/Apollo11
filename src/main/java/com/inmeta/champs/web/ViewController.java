@@ -1,12 +1,16 @@
 package com.inmeta.champs.web;
 
+import com.google.apps.easyconnect.easyrp.client.basic.logic.login.LoginResponse;
 import com.inmeta.champs.model.User;
+import org.cloudfoundry.org.codehaus.jackson.JsonEncoding;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.spi.IIOServiceProvider;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @org.springframework.stereotype.Controller
@@ -18,11 +22,14 @@ public class ViewController extends BaseController {
     public ModelAndView callBack(HttpServletRequest req, HttpServletResponse res) {
         String email = req.getParameter("openid.ext1.value.attr0");
         User user = userRepository.getUser(email);
+        ModelAndView mv = new ModelAndView();
+        boolean registered = true;
         if (user == null) {
-            return new ModelAndView("loginError");
+            user = new User();
+            user.setEmail(email);
         }
         req.getSession().setAttribute("user", user);
-        ModelAndView mv = new ModelAndView();
+        mv.addObject("registered", registered);
         mv.addObject("email", email);
         return mv;
     }
@@ -57,8 +64,10 @@ public class ViewController extends BaseController {
     public ModelAndView homeHandler(HttpServletRequest req, HttpServletResponse res) {
         ModelAndView modelAndView = new ModelAndView();
         User user = (User) req.getSession().getAttribute("user");
-        if(user == null) {
+        if (user == null) {
             return new ModelAndView("login");
+        } else if (user.getUserRole() == null) {
+            return new ModelAndView("loginError");
         }
         if (userService.isAuthorized(req, roleMember) || userService.isAuthorized(req, roleAdmin)) {
             modelAndView.addObject("user", user);
@@ -107,7 +116,11 @@ public class ViewController extends BaseController {
     }
 
     @RequestMapping("/signup.htm")
-    public void signupHandler() {
+    public ModelAndView signupHandler() {
+        String message = "Vi støtter foreløpig kun gmail-kontoer.";
+        ModelAndView modelAndView = new ModelAndView("signup");
+        modelAndView.addObject("message", message);
+        return modelAndView;
     }
 
     @RequestMapping("/signout.htm")
@@ -122,6 +135,16 @@ public class ViewController extends BaseController {
     @RequestMapping("/admin/signout.htm")
     public ModelAndView signoutAdmin(HttpServletRequest request, HttpServletResponse response) {
         return signoutHandler(request, response);
+    }
+
+    @RequestMapping("/userStatus.htm")
+    public void checkUserStatus(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("application/json");
+        try {
+            response.getWriter().write("{\"registered\": false}");
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

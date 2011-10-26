@@ -31,11 +31,16 @@ public class UserRepository {
     }
 
     public boolean isRegistered(User user) {
-        users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
-        for (User u : users) {
-            if (user.getEmail().equals(u.getEmail())) {
-                user.setRegistered(true);
+        try {
+            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
+            for (User u : users) {
+                if (user.getEmail().equals(u.getEmail())) {
+                    user.setRegistered(true);
+                }
             }
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
+            return false;
         }
         return user.isRegistered();
     }
@@ -51,12 +56,18 @@ public class UserRepository {
 
     public User getUser(String email) {
         try {
-            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email}) ;
-            User user = users.get(0);
-            return user;
+            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
+            if (!users.isEmpty()) {
+                for(User u : users) {
+                    if(u.getEmail().equals(email)) {
+                        return u;
+                    }
+                }
+            }
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+        return null;
     }
 
     public List<User> getUserRequests() {
@@ -90,7 +101,7 @@ public class UserRepository {
         try {
             getJdbcTemplate().update("DELETE FROM USER WHERE EMAIL = ?", new Object[]{user.getEmail()});
             return true;
-        } catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             return false;
         }
     }

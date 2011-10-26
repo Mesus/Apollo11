@@ -12,10 +12,8 @@ import java.util.Calendar;
 public class BaseController {
     protected final String roleAdmin = "Admin";
     protected final String roleMember = "Member";
-    private int get_year = Calendar.getInstance().get(Calendar.YEAR);
-    private int get_month = Calendar.getInstance().get(Calendar.MONTH);
-    protected final int current_month = get_month;
-    protected final int current_year = get_year;
+    protected int current_month = 1 + Calendar.getInstance().get(Calendar.MONTH);       //Index of calendar.month starts at 0, not at 1.
+    protected int current_year = Calendar.getInstance().get(Calendar.YEAR);
     protected final int start_year = 2010;
 
 
