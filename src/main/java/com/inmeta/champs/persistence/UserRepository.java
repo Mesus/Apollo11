@@ -31,17 +31,12 @@ public class UserRepository {
 
     public boolean isRegistered(User user) {
         try {
-            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
-            for (User u : users) {
-                if (user.getEmail().equals(u.getEmail())) {
-                    user.setRegistered(true);
-                }
-            }
+            User u = getJdbcTemplate().queryForObject("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), user.getEmail());
+            return true;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
             return false;
         }
-        return user.isRegistered();
     }
 
     public List<User> getUsers() {
@@ -59,8 +54,7 @@ public class UserRepository {
             List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
             if (!users.isEmpty()) {
                 return users.get(0);
-            }
-            else return null;
+            } else return null;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
