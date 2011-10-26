@@ -24,15 +24,14 @@ public class UserRepository {
 
     @Autowired
     private DataSource dataSource;
-    private List<User> users;
-    private List<User> userRequests;
+
 
     public UserRepository() throws ServletException, IOException {
     }
 
     public boolean isRegistered(User user) {
         try {
-            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
+            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
             for (User u : users) {
                 if (user.getEmail().equals(u.getEmail())) {
                     user.setRegistered(true);
@@ -47,32 +46,33 @@ public class UserRepository {
 
     public List<User> getUsers() {
         try {
-            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
+            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
+            return users;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
+            return null;
         }
-        return users;
     }
 
     public User getUser(String email) {
         try {
-            users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
+            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
             if (!users.isEmpty()) {
                 return users.get(0);
             }
+            else return null;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return null;
     }
 
     public List<User> getUserRequests() {
         try {
-            userRequests = getJdbcTemplate().query("SELECT email, username FROM USER_REQUESTS", new UserRequestRowMapper(), new Object[]{});
+            List<User> userRequests = getJdbcTemplate().query("SELECT email, username FROM USER_REQUESTS", new UserRequestRowMapper(), new Object[]{});
+            return userRequests;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-        return userRequests;
     }
 
     public boolean requestAccess(String email, String username) {
