@@ -25,70 +25,72 @@ public class ActivityRepository {
     @Autowired
     private DataSource dataSource;
 
-    private List<Activity> activityList;
-    private List<Employee> employeeList;
-    private List<ActivityType> activityTypeList;
-    private List<ActivityResult> activityResultList;
-    private String message = "";
 
     public ActivityRepository() throws ServletException, IOException {
     }
 
     public List<Activity> findActivities(int year, String month) {
         try {
-            activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE a.month_name = ? AND a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
+            List<Activity> activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE a.month_name = ? AND a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
+            return activityList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return activityList;
+        return null;
     }
 
     public List<Activity> findActivities(String category) {
         try {
-            activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{category});
+            List<Activity> activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{category});
+            return activityList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return activityList;
+        return null;
     }
 
     public List<Employee> findEmployees() {
         try {
-            employeeList = getJdbcTemplate().query("SELECT name FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+            List<Employee> employeeList = getJdbcTemplate().query("SELECT name FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
+            return employeeList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return employeeList;
+        return null;
     }
 
     public List<ActivityType> findActivityTypes() {
         try {
-            activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
+            List<ActivityType> activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
+            return activityTypeList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return activityTypeList;
+        return null;
     }
 
     public List<ActivityType> findActivityTypes(boolean isVisible) {
         try {
-            activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE WHERE isvisible = 1 GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
+            List<ActivityType> activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE WHERE isvisible = 1 GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
+            return activityTypeList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return activityTypeList;
+        return null;
     }
 
     public List<ActivityResult> findActivityResults(int year) {
         try {
-            activityResultList = getJdbcTemplate().query("SELECT e.name, a.month_name, t.act_type, a.activity_name, COUNT(a.activity_name), a.the_year FROM EMPLOYEE e JOIN ACTIVITY a, ACTIVITY_TYPE t WHERE e.name = a.employee_name AND a.activity_name = t.activity_name AND a.the_year = ? GROUP BY e.name, t.act_type, a.month_name", new ActivityResultRowMapper(), new Object[]{year});
+            List<ActivityResult> activityResultList = getJdbcTemplate().query("SELECT e.name, a.month_name, t.act_type, a.activity_name, COUNT(a.activity_name), a.the_year FROM EMPLOYEE e JOIN ACTIVITY a, ACTIVITY_TYPE t WHERE e.name = a.employee_name AND a.activity_name = t.activity_name AND a.the_year = ? GROUP BY e.name, t.act_type, a.month_name", new ActivityResultRowMapper(), new Object[]{year});
+            return activityResultList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
-        return activityResultList;
+        return null;
     }
 
     public String deleteActivity(String activityName, String employeeName, String month, int year) {
+        String message = "";
         try {
             getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE activity_name = ? AND employee_name = ? AND month_name = ? AND the_year = ?", new Object[]{activityName, employeeName, month, year});
             message = "Slettet aktivitet " + activityName + " for " + employeeName + ".";
@@ -100,6 +102,7 @@ public class ActivityRepository {
     }
 
     public String deleteActivity(String activityName) {
+        String message = "";
         try {
             getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE activity_name = ?", new Object[]{activityName});
             message = "Slettet aktivitet " + activityName + ".";
@@ -111,6 +114,7 @@ public class ActivityRepository {
     }
 
     public String deleteActivityType(String category) {
+        String message = "";
         try {
             getJdbcTemplate().update("DELETE FROM ACTIVITY_TYPE WHERE act_type = ?", new Object[]{category});
             message = "Successfully deleted the category " + category + " from the database.";
@@ -122,6 +126,7 @@ public class ActivityRepository {
     }
 
     public String deleteEmployee(String employeeName) {
+        String message = "";
         try {
             getJdbcTemplate().update("DELETE FROM ACTIVITY WHERE employee_name = ?", new Object[]{employeeName});
             getJdbcTemplate().update("DELETE FROM EMPLOYEE WHERE name = ?", new Object[]{employeeName});
@@ -134,6 +139,7 @@ public class ActivityRepository {
     }
 
     public String addActivityType(String activityName, String category, int isNumeric, int isVisible) {
+        String message = "";
         try {
             getJdbcTemplate().update("INSERT IGNORE INTO ACTIVITY_TYPE VALUES (?, ?, ?, ?)", new Object[]{activityName, category, isNumeric, isVisible});
             message = "Oppdaterte aktiviteter - la til " + category + ". ";
@@ -144,6 +150,7 @@ public class ActivityRepository {
     }
 
     public String addActivity(String activityName, String employeeName, String month, int year) {
+        String message = "";
         try {
             getJdbcTemplate().update("INSERT IGNORE INTO ACTIVITY VALUES (?, ?, ?, ?)", new Object[]{activityName, employeeName, month, year});
             message = "Oppdaterte activiteter - la til " + activityName + " for konsulent " + employeeName + ".";
@@ -154,6 +161,7 @@ public class ActivityRepository {
     }
 
     public String addEmployee(String employeeName) {
+        String message = "";
         try {
             getJdbcTemplate().update("INSERT IGNORE INTO EMPLOYEE VALUES(?)", new Object[]{employeeName});
             message = "Successfully added " + employeeName + " to Employees.";
@@ -164,10 +172,11 @@ public class ActivityRepository {
     }
 
     public String changeCategoryName(String oldname, String newname) {
+        String message = "";
         try {
             getJdbcTemplate().update("UPDATE ACTIVITY_TYPE SET act_type=? WHERE act_type=?", newname, oldname);
             message = "Changed category name " + oldname + " to " + newname + ".";
-        }catch (Exception e) {
+        } catch (Exception e) {
             message = "Could not change the category name.";
         }
         return message;
@@ -183,9 +192,9 @@ public class ActivityRepository {
 
     public String[] findMonthList() {
         try {
-             List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number ASC", new MonthRowMapper());
+            List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number ASC", new MonthRowMapper());
             String[] strings = new String[12];
-            for(int i = 0; i<months.size(); i++) {
+            for (int i = 0; i < months.size(); i++) {
                 strings[i] = months.get(i).getMonth_name();
             }
             return strings;
@@ -246,13 +255,13 @@ public class ActivityRepository {
         }
     }
 
-   class MonthRowMapper implements RowMapper<MonthRepresentation> {
-       public MonthRepresentation mapRow(ResultSet resultSet, int i) throws SQLException {
-           MonthRepresentation monthRepresentation = new MonthRepresentation();
-           monthRepresentation.setMonth_name(resultSet.getString(1));
-           return monthRepresentation;
-       }
-   }
+    class MonthRowMapper implements RowMapper<MonthRepresentation> {
+        public MonthRepresentation mapRow(ResultSet resultSet, int i) throws SQLException {
+            MonthRepresentation monthRepresentation = new MonthRepresentation();
+            monthRepresentation.setMonth_name(resultSet.getString(1));
+            return monthRepresentation;
+        }
+    }
 
     public DataSource getDataSource() {
         return dataSource;
