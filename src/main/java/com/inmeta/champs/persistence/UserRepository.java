@@ -58,11 +58,7 @@ public class UserRepository {
         try {
             users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
             if (!users.isEmpty()) {
-                for(User u : users) {
-                    if(u.getEmail().equals(email)) {
-                        return u;
-                    }
-                }
+                return users.get(0);
             }
         } catch (EmptyResultDataAccessException e) {
             return null;
