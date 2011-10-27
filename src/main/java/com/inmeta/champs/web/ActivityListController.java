@@ -1,13 +1,12 @@
 package com.inmeta.champs.web;
 
-import com.inmeta.champs.model.ActivityResult;
-import com.inmeta.champs.model.ActivityType;
-import com.inmeta.champs.model.Employee;
+import com.inmeta.champs.model.*;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,10 +29,25 @@ public class ActivityListController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    @RequestMapping("/activitiesPrMonthList.htm")
+    public ModelAndView getActivitiesPrMonth(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+        if (userService.isAuthorized(request, roleAdmin) || userService.isAuthorized(request, roleMember)) {
+            return getActivityListView(request, response);
+        } else return new ModelAndView("permissionDenied");
+    }
+
+    @RequestMapping("/admin/activitiesPrMonthList.htm")
+    public ModelAndView getAdminActivitiesPrMonth(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+        if (userService.isAuthorized(request, roleAdmin)) {
+            return getActivityListView(request, response);
+        } else return new ModelAndView("permissionDenied");
+    }
+
     @RequestMapping("/activityList.htm")
     public ModelAndView getActivityListView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin) || userService.isAuthorized(request, roleMember)) {
             ModelAndView modelAndView = new ModelAndView("activityList");
+            User user = (User) request.getSession().getAttribute("user");
             int year;
             List<ActivityResult> resultList = new ArrayList<ActivityResult>();
             String str_year = request.getParameter("Year");
@@ -41,6 +55,18 @@ public class ActivityListController extends BaseController {
                 year = current_year;
             } else {
                 year = Integer.parseInt(str_year);
+            }
+            int year2;
+            String str_year2 = request.getParameter("Year2");
+            if(str_year2 == null) {
+                year2 = year;
+            }else {
+                year2 = Integer.parseInt(str_year2);
+            }
+
+            String month = request.getParameter("Month");
+            if(month == null) {
+                month = activityRepository.findMonth((current_month -1));
             }
 
             boolean isVisible = true;
@@ -76,11 +102,22 @@ public class ActivityListController extends BaseController {
             if (category == null) {
                 category = "Konsulent";
             }
+            List<Activity> activities = activityRepository.findActivities(year2, month);
+            int[] years = getYears();
+            String[] months = activityRepository.findMonthList();
             employeeList = sortResult(resultList, category);
+            List<Employee> employees = activityRepository.findEmployees();
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("resultList", resultList);
             modelAndView.addObject("Year", year);
+            modelAndView.addObject("Year2", year2);
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("Years", years);
+            modelAndView.addObject("Months", months);
+            modelAndView.addObject("Month", month);
+            modelAndView.addObject("activities", activities);
+            modelAndView.addObject("employees", employees);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
     }

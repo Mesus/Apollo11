@@ -10,7 +10,7 @@
   };
   window.google.identitytoolkit.updateSavedAccount(userData);
 </script>
-<link rel="stylesheet" type="text/css" href="minstil.css" />
+<link rel="stylesheet" type="text/css" href="../minstil.css" />
 <title>INMETA CHAMPIONS</title>
 </head>
 <body>
