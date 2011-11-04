@@ -12,25 +12,27 @@ import java.util.List;
 
 @org.springframework.stereotype.Controller
 public class EmployeeController extends BaseController {
-    private List<Employee> employees;
-    private String message = "";
-    ModelAndView modelAndView = new ModelAndView("admin/updateEmployees");
 
+    /* Returns the update Employees view, with a list of employees added as an object to the view. */
     @RequestMapping("/admin/updateEmployees.htm")
-    public ModelAndView getUpdatedEmployeesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView updateEmployeesHandler(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
-            employees = activityRepository.findEmployees();
+            ModelAndView modelAndView = new ModelAndView("admin/updateEmployees");
+            List<Employee> employees = activityRepository.findEmployees();
             modelAndView.addObject("employees", employees);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
 
     }
 
+    /* This method adds an employee to the database, and returns the updated employee list and a confirm message with the update Employee view. */
     @RequestMapping("/admin/addEmployee.htm")
-    public ModelAndView getAddEmployeeView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView addEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
             String name = request.getParameter("employee_name");
-            employees = activityRepository.findEmployees();
+            List<Employee> employees = activityRepository.findEmployees();
+            String message = "";
+            ModelAndView modelAndView = new ModelAndView("admin/updateEmployees");
             for (Employee e : employees) {
                 if (e.getName().equalsIgnoreCase(name)) {
                     message = "Employee is already registered.";
@@ -45,11 +47,14 @@ public class EmployeeController extends BaseController {
 
     }
 
+    /* This method deletes an employee from the database, and returns the updated employee list and a confirm message with the view. */
     @RequestMapping("/admin/deleteEmployee.htm")
-    public ModelAndView getDeleteEmployeeView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
             String name = request.getParameter("Delete");
-            employees = activityRepository.findEmployees();
+            List<Employee> employees = activityRepository.findEmployees();
+            String message = "";
+            ModelAndView modelAndView = new ModelAndView("admin/updateEmployees");
             for (Employee e : employees) {
                 if (e.getName().equalsIgnoreCase(name)) {
                     message = activityRepository.deleteEmployee(name);

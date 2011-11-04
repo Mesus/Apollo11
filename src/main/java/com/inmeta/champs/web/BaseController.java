@@ -10,11 +10,11 @@ import java.util.Calendar;
 
 @Controller
 public class BaseController {
-    protected final String roleAdmin = "Admin";
-    protected final String roleMember = "Member";
-    protected int current_month = 1 + Calendar.getInstance().get(Calendar.MONTH);       //Index of calendar.month starts at 0, not at 1.
-    protected int current_year = Calendar.getInstance().get(Calendar.YEAR);
-    protected final int start_year = 2010;
+    protected final String roleAdmin = "Admin";                                         //The name of the Administrator userrole
+    protected final String roleMember = "Member";                                       //The name of the Member userrole.
+    protected int current_month = 1 + Calendar.getInstance().get(Calendar.MONTH);       //Index of calendar.month starts at 0, not at 1. Returns the current month number.
+    protected int current_year = Calendar.getInstance().get(Calendar.YEAR);             //Returns the current year.
+    protected final int start_year = 2010;                                              //The first year to be displayed in the app.
 
 
     @Autowired
@@ -50,10 +50,12 @@ public class BaseController {
         this.userRepository = userRepository;
     }
 
+    /* This method returns an array of years, the first value is the start_year which is defined as a final static int in this class.
+    *  The next values is the next year and so on, the last value in the array is the current year. */
     protected int[] getYears() {
         int j = 0;
-        int[] years = new int[(current_year + 2 - start_year)];
-        for (int i = start_year; i < current_year + 2; i++) {
+        int[] years = new int[(current_year + 1 - start_year)];
+        for (int i = start_year; i < current_year + 1; i++) {
             years[j] = i;
             j++;
         }

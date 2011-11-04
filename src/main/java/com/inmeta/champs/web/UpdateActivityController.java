@@ -16,16 +16,12 @@ import java.util.List;
 @org.springframework.stereotype.Controller
 public class UpdateActivityController extends BaseController {
 
-    List<Activity> activityList;
-    List<Employee> employeeList;
-    List<ActivityType> activityTypeList;
-    ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
-    String message = "";
-    int year = 0;
 
+    /* This method gets the input from the activity table in the view, and updates the activities for the employee + category where there were changes. */
     @RequestMapping("/admin/updateActivities.htm")
     public ModelAndView getActivitiesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
+            int year = 0;
             if (request.getParameter("Year") != null) {
                 year = Integer.parseInt(request.getParameter("Year"));
             }
@@ -35,22 +31,39 @@ public class UpdateActivityController extends BaseController {
             }
 
             List<String> inputFromTextBoxes = new ArrayList<String>();
-            activityList = activityRepository.findActivities(year, month);
-            activityTypeList = activityRepository.findActivityTypes();
-            employeeList = activityRepository.findEmployees();
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+            List<Employee> employeeList = activityRepository.findEmployees();
+            String message = "";
+
+            /* The name of the empty textboxes in the view are named like this: "category,employee name,month,year"
+            *  To get the input from the textboxes, we need a list of the textbox names. */
             for (ActivityType activityType : activityTypeList) {
                 for (Employee employee : employeeList) {
                     String textBoxName = activityType.getCategory() + "," + employee.getName() + "," + month + "," + year;
                     inputFromTextBoxes.add(textBoxName);
                 }
             }
+
+            /* The name of the textboxes with values (activity names) in the view are named like this: "activity name,category,employee name,month,year"
+            *  To get the input from these textboxes as well, we need to add these names to the list */
             for (Activity a : activityList) {
                 String textBoxName = a.getActivityType().getActivityName() + "," + a.getActivityType().getCategory() + "," + a.getEmployee().getName() + "," + a.getMonth() + "," + a.getYear();
                 inputFromTextBoxes.add(textBoxName);
             }
+
+            /* For every textbox name we check if the textbox was filled with some value.*/
             for (String textBoxName : inputFromTextBoxes) {
                 String activityName = request.getParameter(textBoxName);
                 String[] tmp = textBoxName.split(",");
+
+                /* We split the textbox name into a string array, if the name has 5 parameters it's a field that already had some value (activity name).
+                *  We check that the textbox still has some value, by checking that the activityName parameter != null.
+                *  We also check that it actually has been changed, by checking that it's not equal to the first part of the textbox name.
+                *  If the value has been changed, the old value is deleted from the database.
+                *  We then check if the activity name already exists in the activity type table, if not we add it. The database needs this to determine which activity belongs to which category.
+                *  The boolean variable registered is true if the activity name already exists in the activity type table.
+                *  If the activity is not registered, we register it under the right category, and then we add it to the activity table as well.*/
                 if (tmp.length == 5) {
                     if (activityName != null && !(activityName.equals(tmp[0]))) {
                         message = activityRepository.deleteActivity(tmp[0], tmp[2], tmp[3], Integer.parseInt(tmp[4]));
@@ -82,6 +95,12 @@ public class UpdateActivityController extends BaseController {
                         }
                     }
                 }
+
+                /* If the activity name isn't empty (it has some value), and the box it was added to was an empty box:
+                *  The textbox name will have 4 parts. (tmp.lenght ==4)
+                *  If the activity name already exists in the activity type table, set registered to true.
+                *  If not, add the activity name first to the activity type table under the correct category.
+                *  Then add the activity to the activities table.*/
                 if (activityName != null && !(activityName.equals(""))) {
                     if (tmp.length == 4) {
                         boolean registered = false;
@@ -110,12 +129,12 @@ public class UpdateActivityController extends BaseController {
                         message = activityRepository.addActivity(activityName, tmp[1], month, year);
                     }
                 }
-                activityList = activityRepository.findActivities(year, month);
+                activityList = activityRepository.findActivities(year, month);      //We need an updated list to add to the view
                 activityTypeList = activityRepository.findActivityTypes();
             }
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
-
+            ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
@@ -128,9 +147,12 @@ public class UpdateActivityController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+
+    /* This method returns the activitiesPrMonth view without saving any changes made to the textboxes. */
     @RequestMapping("/admin/activitiesCancel.htm")
-    public ModelAndView getActivitiesCancelView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView cancelActivityUpdates(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
+            int year = 0;
             if (request.getParameter("Year") != null) {
                 year = Integer.parseInt(request.getParameter("Year"));
             } else {
@@ -140,12 +162,13 @@ public class UpdateActivityController extends BaseController {
             if (month == null)
                 month = activityRepository.findMonth(current_month);
 
-            activityList = activityRepository.findActivities(year, month);
-            activityTypeList = activityRepository.findActivityTypes();
-            employeeList = activityRepository.findEmployees();
-            message = "Canceled changes.";
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+            List<Employee> employeeList = activityRepository.findEmployees();
+            String message = "Canceled changes.";
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
+            ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
@@ -159,9 +182,15 @@ public class UpdateActivityController extends BaseController {
 
     }
 
+
+    /* This method checks if some activity type is marked for deletion.
+    *  Then it deletes the activities of the type from the Activites table.
+    *  Then it deletes the category from the Activity_type table.
+    *  Finally it adds the updated activity type list and activity list to the view, and returns the activitiesPrMonth view. */
     @RequestMapping("/admin/updateActivityTypes.htm")
-    public ModelAndView getUpdateActivitiesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView deleteActivityType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
+            int year = 0;
             if (request.getParameter("Year") != null) {
                 year = Integer.parseInt(request.getParameter("Year"));
             }
@@ -169,9 +198,9 @@ public class UpdateActivityController extends BaseController {
             if (year == 0) {
                 return new ModelAndView("admin/home");
             }
-            activityTypeList = activityRepository.findActivityTypes();
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
             List<Activity> toBeDeleted = new ArrayList<Activity>();
-
+            String message = "";
             for (ActivityType a : activityTypeList) {
                 if ((request.getParameter("Delete").equals(a.getCategory()))) {
                     toBeDeleted = activityRepository.findActivities(a.getCategory());
@@ -184,11 +213,11 @@ public class UpdateActivityController extends BaseController {
                 }
             }
             activityTypeList = activityRepository.findActivityTypes();
-            activityList = activityRepository.findActivities(year, month);
-            employeeList = activityRepository.findEmployees();
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<Employee> employeeList = activityRepository.findEmployees();
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
-
+            ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
@@ -201,9 +230,12 @@ public class UpdateActivityController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    /* This method adds an activity category to the database. The variable isNumeric describes if the category only has number values, which should
+    *  be added together in the activityList view. The isVisible variable describes if the category should be visible in the activityList view.*/
     @RequestMapping("/admin/addActivityType.htm")
-    public ModelAndView getAddActivityTypeView(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addActivityType(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
+            int year = 0;
             if (request.getParameter("Year") != null) {
                 year = Integer.parseInt(request.getParameter("Year"));
             }
@@ -211,7 +243,7 @@ public class UpdateActivityController extends BaseController {
             if (year == 0) {
                 return new ModelAndView("admin/home");
             }
-
+            String message = "";
             if (!(request.getParameter("CategoryName")).equals("")) {
                 int isNumeric = 0;
                 int isVisible = 0;
@@ -223,11 +255,12 @@ public class UpdateActivityController extends BaseController {
                 }
                 message = activityRepository.addActivityType("", request.getParameter("CategoryName"), isNumeric, isVisible);
             }
-            activityList = activityRepository.findActivities(year, month);
-            activityTypeList = activityRepository.findActivityTypes();
-            employeeList = activityRepository.findEmployees();
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+            List<Employee> employeeList = activityRepository.findEmployees();
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
+            ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
@@ -240,9 +273,12 @@ public class UpdateActivityController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    /* This method changes the chosen category name "OldCategoryName" to the new category name  from the textbox with the name  "NewCategoryName"
+    *  It then returns the activitiesPrMonth view. */
     @RequestMapping("/admin/changeCategoryName.htm")
     public ModelAndView changeCategory(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
+            int year = 0;
             if (request.getParameter("Year") != null)
                 year = Integer.parseInt(request.getParameter("Year"));
             else
@@ -254,13 +290,14 @@ public class UpdateActivityController extends BaseController {
             String oldCategoryName = request.getParameter("OldCategoryName");
             String newCategoryName = request.getParameter("NewCategoryName");
 
-            message = activityRepository.changeCategoryName(oldCategoryName, newCategoryName);
+            String message = activityRepository.changeCategoryName(oldCategoryName, newCategoryName);
 
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
-            activityList = activityRepository.findActivities(year, month);
-            activityTypeList = activityRepository.findActivityTypes();
-            employeeList = activityRepository.findEmployees();
+            List<Activity> activityList = activityRepository.findActivities(year, month);
+            List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+            List<Employee> employeeList = activityRepository.findEmployees();
+            ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
             modelAndView.addObject(activityList);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);

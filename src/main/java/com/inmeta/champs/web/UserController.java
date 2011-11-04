@@ -15,16 +15,15 @@ import java.util.List;
 
 @Controller
 public class UserController extends BaseController {
-    private List<User> users;
-    private List<User> userRequests;
-    private String message = "";
-    ModelAndView modelAndView = new ModelAndView("admin/updateUsers");
 
+    /* This method returns the update Users view. */
     @RequestMapping("/admin/updateUsers.htm")
     public ModelAndView updateUserHandler(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
-            users = userRepository.getUsers();
-            userRequests = userRepository.getUserRequests();
+            String message = "";
+            List<User> users = userRepository.getUsers();
+            List<User> userRequests = userRepository.getUserRequests();
+            ModelAndView modelAndView = new ModelAndView("admin/updateUsers");
             modelAndView.addObject("userRequests", userRequests);
             modelAndView.addObject("users", users);
             modelAndView.addObject("message", message);
@@ -32,6 +31,7 @@ public class UserController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    /* This method adds a user to the database */
     @RequestMapping("/admin/addUser.htm")
     public ModelAndView addUserHandler(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
@@ -40,6 +40,7 @@ public class UserController extends BaseController {
             User user = new User();
             user.setEmail(email);
             user.setUserRole(userRole);
+            String message = "";
             if (userRepository.isRegistered(user)) {
                 message = "Brukeren er allerede registrert.";
             } else {
@@ -52,8 +53,9 @@ public class UserController extends BaseController {
                 }
             }
 
-            users = userRepository.getUsers();
-            userRequests = userRepository.getUserRequests();
+            List<User> users = userRepository.getUsers();
+            List<User> userRequests = userRepository.getUserRequests();
+            ModelAndView modelAndView = new ModelAndView("admin/updateUsers");
             modelAndView.addObject("userRequests", userRequests);
             modelAndView.addObject("users", users);
             modelAndView.addObject("message", message);
@@ -61,11 +63,13 @@ public class UserController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    /* This method deletes a user from the database. */
     @RequestMapping("/admin/deleteUser.htm")
     public ModelAndView deleteUserHandler(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
             String email = request.getParameter("DeleteUser");
-            users = userRepository.getUsers();
+            List<User> users = userRepository.getUsers();
+            String message = "";
             boolean success = false;
             for (User u : users) {
                 if (u.getEmail().equals(email)) {
@@ -78,7 +82,8 @@ public class UserController extends BaseController {
                 message = "Could not delete " + email + " from users.";
             }
             users = userRepository.getUsers();
-            userRequests = userRepository.getUserRequests();
+            List<User> userRequests = userRepository.getUserRequests();
+            ModelAndView modelAndView = new ModelAndView("admin/updateUsers");
             modelAndView.addObject("users", users);
             modelAndView.addObject("userRequests", userRequests);
             modelAndView.addObject("message", message);
@@ -86,11 +91,13 @@ public class UserController extends BaseController {
         } else return new ModelAndView("permissionDenied");
     }
 
+    /* This method deletes a request for access from the database.*/
     @RequestMapping("/admin/deleteRequest.htm")
     public ModelAndView deleteRequestHandler(HttpServletRequest request, HttpServletResponse response) {
         if (userService.isAuthorized(request, roleAdmin)) {
             String email = request.getParameter("Delete");
-            userRequests = userRepository.getUserRequests();
+            List<User> userRequests = userRepository.getUserRequests();
+            String message = "";
             boolean success = false;
             for (User u : userRequests) {
                 if (u.getEmail().equals(email)) {
@@ -102,8 +109,9 @@ public class UserController extends BaseController {
             } else {
                 message = "Could not delete " + email + " from requests.";
             }
-            users = userRepository.getUsers();
+            List<User> users = userRepository.getUsers();
             userRequests = userRepository.getUserRequests();
+            ModelAndView modelAndView = new ModelAndView("admin/updateUsers");
             modelAndView.addObject("users", users);
             modelAndView.addObject("userRequests", userRequests);
             modelAndView.addObject("message", message);

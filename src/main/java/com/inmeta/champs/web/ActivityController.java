@@ -3,9 +3,6 @@ package com.inmeta.champs.web;
 import com.inmeta.champs.model.Activity;
 import com.inmeta.champs.model.ActivityType;
 import com.inmeta.champs.model.Employee;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,9 +15,14 @@ import java.util.List;
 
 @org.springframework.stereotype.Controller
 public class ActivityController extends BaseController {
-    protected final Log logger = LogFactory.getLog(getClass());
 
-    @RequestMapping("/admin/activitiesPrMonth.htm")
+    /* This method returns the activitiesPrMonth view, where the administrator can edit activities and categories.
+    *  First check if the user is authorized - if not return the permission denied view.
+    *  We use the month and year the user chose in the admin/home view, to get activities from that month and year and add to a list of activities.
+    *  If we somehow get to this view directly, use the current month and year as a default.
+    *  We add a list of activitytypes, employees and the activities for the chosen month+year, to the ModelAndView, and then return the ModelAndView. */
+
+      @RequestMapping("/admin/activitiesPrMonth.htm")
     public ModelAndView getActivitiesView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (userService.isAuthorized(request, roleAdmin)) {
             ModelAndView modelAndView = new ModelAndView("admin/activitiesPrMonth");
