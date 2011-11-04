@@ -3,10 +3,18 @@ CREATE TABLE IF NOT EXISTS EMPLOYEE (
 );
 
 CREATE TABLE IF NOT EXISTS MONTH (
-	month_name varchar(10) not null primary key
-				check(month_name in ('Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember')),
+	month_name varchar(10) not null primary key,
 	month_number int not null unique
 );
+
+CREATE TABLE IF NOT EXISTS ACTIVITY_TYPE (
+	activity_name varchar(100) not null,
+	act_type varchar(100) not null,
+	isnumeric boolean,
+	isvisible boolean,
+	primary key(activity_name, act_type)
+);
+
 
 CREATE TABLE IF NOT EXISTS ACTIVITY (
 	activity_name varchar(100) not null,
@@ -22,13 +30,6 @@ CREATE TABLE IF NOT EXISTS ACTIVITY (
 	primary key (activity_name, employee_name, month_name, the_year)
 );
 
-CREATE TABLE IF NOT EXISTS ACTIVITY_TYPE (
-	activity_name varchar(100) not null,
-	act_type varchar(100) not null,
-	isnumeric boolean,
-	isvisible boolean,
-	primary key(activity_name, act_type)
-);
 
 
 CREATE TABLE IF NOT EXISTS USER (
@@ -43,7 +44,6 @@ CREATE TABLE IF NOT EXISTS USER_REQUESTS (
 );
 
 
-INSERT IGNORE INTO USER VALUES('glenn.bech@gmail.com', 'Admin', 'Glenn Bech');
 INSERT IGNORE INTO USER VALUES('gurilunnan@gmail.com', 'Admin', 'Guri Lunnan');
 
 INSERT IGNORE INTO MONTH VALUES ('Januar', 1);

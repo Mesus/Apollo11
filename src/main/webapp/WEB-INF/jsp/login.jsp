@@ -14,7 +14,7 @@
     window.google.identitytoolkit.setConfig({
         developerKey: "AIzaSyAFkyiRu8zivbjQzNtu1Gmf9-pr5AEaMJE",
         companyName: "Inmeta",
-        callbackUrl: "http://champs.cloudfoundry.com/callback.htm",
+        callbackUrl: "${CallbackUrl}",
         realm: "",
         userStatusUrl: "/userStatus.htm",
         loginUrl: "/login.htm",

@@ -32,8 +32,8 @@ public class ActivityRepository {
             return activityList;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public List<Activity> findActivities(String category) {
@@ -190,6 +190,19 @@ public class ActivityRepository {
     public String[] findMonthList() {
         try {
             List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number ASC", new MonthRowMapper());
+            String[] strings = new String[12];
+            for (int i = 0; i < months.size(); i++) {
+                strings[i] = months.get(i).getMonth_name();
+            }
+            return strings;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public String[] findReverseMonthList() {
+        try {
+            List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number DESC", new MonthRowMapper());
             String[] strings = new String[12];
             for (int i = 0; i < months.size(); i++) {
                 strings[i] = months.get(i).getMonth_name();

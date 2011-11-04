@@ -3,6 +3,7 @@ package com.inmeta.champs.web;
 import com.google.apps.easyconnect.easyrp.client.basic.logic.login.LoginResponse;
 import com.inmeta.champs.model.User;
 import org.cloudfoundry.org.codehaus.jackson.JsonEncoding;
+import org.cloudfoundry.runtime.env.CloudEnvironment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -82,7 +83,19 @@ public class ViewController extends BaseController {
     }
 
     @RequestMapping("/login.htm")
-    public void loginHandler() {
+    public ModelAndView loginHandler(HttpServletRequest request, HttpServletResponse response) {
+        CloudEnvironment env = new CloudEnvironment();
+        if (env.getInstanceInfo() != null) {
+            String cloudCallback = "http://champs.cloudfoundry.com/callback.htm";
+            request.getSession().setAttribute("CallbackUrl", cloudCallback);
+        } else {
+            String localCallback = "http://localhost:8080/callback.htm";
+            request.getSession().setAttribute("CallbackUrl", localCallback);
+        }
+        String url = (String) request.getSession().getAttribute("CallbackUrl");
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject("CallbackUrl", url);
+        return modelAndView;
     }
 
     @RequestMapping("/loginError.htm")
@@ -129,7 +142,7 @@ public class ViewController extends BaseController {
         if (request.getSession().getAttribute("user") != null) {
             request.getSession().setAttribute("user", null);
         }
-        return new ModelAndView("login");
+        return loginHandler(request, response);
     }
 
     @RequestMapping("/admin/signout.htm")

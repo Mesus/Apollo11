@@ -10,8 +10,6 @@
             <p><a href="home.htm">Tilbake</a></p>
         </c:if>
         <form method ="POST" action="/activityList.htm" > <br />
-        <input type="hidden" name="Year2" value="${Year2}" />
-        <input type="hidden" name="Month" value="${Month}" />
          Aktiviteter for <select name="Year" size="1">
             <c:forEach items="${Years}" var="y">
                 <c:choose>
@@ -28,8 +26,6 @@
         </form> <br />
         <form method="POST" action="/activityList.htm" >
             <input type="hidden" name="Year" value="${Year}" />
-            <input type="hidden" name="Year2" value="${Year2}" />
-            <input type="hidden" name="Month" value="${Month}" />
             <table border="1">
                 <tr>
                     <th><input type="SUBMIT" name="Category" value="Konsulent" /></th>
@@ -57,34 +53,9 @@
         </form>
         <br /> <br />
 
-        <h1>Aktiviteter for ${Month} ${Year2}</h1>
-        <form method ="POST" action="activitiesPrMonthList.htm" >
-        <input type="hidden" name="Year" value="${Year}" />
-    <p>Finn aktiviteter for <select name="Month" size="1">
-            <c:forEach items="${Months}" var="m">
-                <c:choose>
-                <c:when test="${m eq Month}">
-                    <option value="${m}" SELECTED><c:out value="${m}"/></option>
-                </c:when>
-                <c:otherwise>
-                    <option value="${m}" ><c:out value="${m}"/></option>
-                </c:otherwise>
-                </c:choose>
-            </c:forEach>
-        </select> <select name="Year2" size="1">
-            <c:forEach items="${Years}" var="y">
-                <c:choose>
-                <c:when test="${y eq Year2}">
-                    <option value="${y}" SELECTED><c:out value="${y}"/></option>
-                </c:when>
-                <c:otherwise>
-                    <option value="${y}" ><c:out value="${y}"/></option>
-                </c:otherwise>
-                </c:choose>
-            </c:forEach>
-        </select><input type="SUBMIT" value="Go"></p>
-    </form>
-
+    <c:forEach items="${Months}" var="mnd">
+        <c:if test="${mnd eq 'Desember' && decemberActivities[0] != null}">
+        <h1>Aktiviteter for Desember </h1>
 
     <table border="1">
       <tr>
@@ -98,7 +69,7 @@
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
-            <c:forEach items="${activities}" var="act">
+            <c:forEach items="${decemberActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
 
@@ -114,6 +85,370 @@
         </c:forEach>
     </table>
     <br />
+    </c:if>
+    <c:if test="${mnd eq 'November' && novemberActivities[0] != null}">
+        <h1>Aktiviteter for November </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${novemberActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Oktober' && octoberActivities[0] != null}">
+        <h1>Aktiviteter for Oktober </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${octoberActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'September' && septemberActivities[0] != null}">
+        <h1>Aktiviteter for September </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${septemberActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'August' && augustActivities[0] != null}">
+        <h1>Aktiviteter for August </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${augustActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Juli' && julyActivities[0] != null}">
+        <h1>Aktiviteter for Juli </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${julyActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Juni' && juneActivities[0] != null}">
+        <h1>Aktiviteter for Juni </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${juneActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Mai' && mayActivities[0] != null}">
+        <h1>Aktiviteter for Mai </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${mayActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'April' && aprilActivities[0] != null}">
+        <h1>Aktiviteter for April </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${aprilActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Mars' && marchActivities[0] != null}">
+        <h1>Aktiviteter for Mars </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${marchActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Februar' && februaryActivities[0] != null}">
+        <h1>Aktiviteter for Februar </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${februaryActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+
+    <c:if test="${mnd eq 'Januar' && januaryActivities[0] != null}">
+        <h1>Aktiviteter for Januar </h1>
+
+    <table border="1">
+      <tr>
+        <th>Konsulent</th>
+        <c:forEach items="${activityTypeList}" var="acttype">
+            <th><c:out value="${acttype.category}" /></th>
+        </c:forEach>
+      </tr>
+      <c:forEach items="${employees}" var="emp">
+          <tr>
+            <td><c:out value="${emp.name}" /></td>
+            <c:forEach items="${activityTypeList}" var="acttype">
+            <td class="center">
+            <c:forEach items="${januaryActivities}" var="act">
+
+            <c:if test="${emp.name == act.employee.name}" >
+
+                <c:if test="${acttype.category == act.activityType.category && act.activityType.activityName != '' }" >
+                    <c:out value="${act.activityType.activityName}" />  <br />
+                </c:if>
+
+            </c:if>
+            </c:forEach>
+            </td>
+            </c:forEach>
+          </tr>
+        </c:forEach>
+    </table>
+    <br />
+    </c:if>
+    </c:forEach>
 
 
 

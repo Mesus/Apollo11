@@ -102,21 +102,43 @@ public class ActivityListController extends BaseController {
             if (category == null) {
                 category = "Konsulent";
             }
-            List<Activity> activities = activityRepository.findActivities(year2, month);
+            List<Activity> januaryActivities = activityRepository.findActivities(year, "Januar");
+            List<Activity> februaryActivities = activityRepository.findActivities(year, "Februar");
+            List<Activity> marchActivities = activityRepository.findActivities(year, "Mars");
+            List<Activity> aprilActivities = activityRepository.findActivities(year, "April");
+            List<Activity> mayActivities = activityRepository.findActivities(year, "Mai");
+            List<Activity> juneActivities = activityRepository.findActivities(year, "Juni");
+            List<Activity> julyActivities = activityRepository.findActivities(year, "Juli");
+            List<Activity> augustActivities = activityRepository.findActivities(year, "August");
+            List<Activity> septemberActivities = activityRepository.findActivities(year, "September");
+            List<Activity> octoberActivities = activityRepository.findActivities(year, "Oktober");
+            List<Activity> novemberActivities = activityRepository.findActivities(year, "November");
+            List<Activity> decemberActivities = activityRepository.findActivities(year, "December");
+
             int[] years = getYears();
-            String[] months = activityRepository.findMonthList();
+            String[] months = activityRepository.findReverseMonthList();
             employeeList = sortResult(resultList, category);
             List<Employee> employees = activityRepository.findEmployees();
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("resultList", resultList);
             modelAndView.addObject("Year", year);
-            modelAndView.addObject("Year2", year2);
             modelAndView.addObject("user", user);
             modelAndView.addObject("Years", years);
             modelAndView.addObject("Months", months);
             modelAndView.addObject("Month", month);
-            modelAndView.addObject("activities", activities);
+            modelAndView.addObject("januaryActivities", januaryActivities);
+            modelAndView.addObject("februaryActivities", februaryActivities);
+            modelAndView.addObject("marchActivities", marchActivities);
+            modelAndView.addObject("aprilActivities", aprilActivities);
+            modelAndView.addObject("mayActivities", mayActivities);
+            modelAndView.addObject("juneActivities", juneActivities);
+            modelAndView.addObject("julyActivities", julyActivities);
+            modelAndView.addObject("augustActivities", augustActivities);
+            modelAndView.addObject("septemberActivities", septemberActivities);
+            modelAndView.addObject("octoberActivities", octoberActivities);
+            modelAndView.addObject("novemberActivities", novemberActivities);
+            modelAndView.addObject("decemberActivities", decemberActivities);
             modelAndView.addObject("employees", employees);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
