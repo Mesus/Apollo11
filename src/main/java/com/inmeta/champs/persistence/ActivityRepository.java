@@ -26,6 +26,7 @@ public class ActivityRepository {
     public ActivityRepository() throws ServletException, IOException {
     }
 
+    /* This method returns a list with all the activities for the given month+year. */
     public List<Activity> findActivities(int year, String month) {
         try {
             List<Activity> activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE a.month_name = ? AND a.the_year = ?", new ActivityRowMapper(), new Object[]{month, year});
@@ -36,6 +37,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This method returns all the activities with the given category. */
     public List<Activity> findActivities(String category) {
         try {
             List<Activity> activityList = getJdbcTemplate().query("SELECT t.act_type, a.activity_name, a.employee_name, a.month_name, a.the_year FROM ACTIVITY a LEFT JOIN ACTIVITY_TYPE t ON a.activity_name = t.activity_name WHERE t.act_type = ?", new ActivityRowMapper(), new Object[]{category});
@@ -46,6 +48,7 @@ public class ActivityRepository {
         return null;
     }
 
+    /* This method returns a list of all the employees. */
     public List<Employee> findEmployees() {
         try {
             List<Employee> employeeList = getJdbcTemplate().query("SELECT name FROM EMPLOYEE", new EmployeeRowMapper(), new Object[]{});
@@ -56,6 +59,7 @@ public class ActivityRepository {
         return null;
     }
 
+    /* This method returns a list of all the activity categories. */
     public List<ActivityType> findActivityTypes() {
         try {
             List<ActivityType> activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
@@ -66,6 +70,7 @@ public class ActivityRepository {
         return null;
     }
 
+    /* This method returns a list of categories with visible=1, which means they should be visible in the activityList view.*/
     public List<ActivityType> findActivityTypes(boolean isVisible) {
         try {
             List<ActivityType> activityTypeList = getJdbcTemplate().query("SELECT act_type, isnumeric, isvisible FROM ACTIVITY_TYPE WHERE isvisible = 1 GROUP BY act_type", new ActivityTypeRowMapper(), new Object[]{});
@@ -76,6 +81,7 @@ public class ActivityRepository {
         return null;
     }
 
+    /* This method returns a list of activityresults, for a given year. */
     public List<ActivityResult> findActivityResults(int year) {
         try {
             List<ActivityResult> activityResultList = getJdbcTemplate().query("SELECT e.name, a.month_name, t.act_type, a.activity_name, COUNT(a.activity_name), a.the_year FROM EMPLOYEE e JOIN ACTIVITY a, ACTIVITY_TYPE t WHERE e.name = a.employee_name AND a.activity_name = t.activity_name AND a.the_year = ? GROUP BY e.name, t.act_type, a.month_name", new ActivityResultRowMapper(), new Object[]{year});
@@ -86,6 +92,7 @@ public class ActivityRepository {
         return null;
     }
 
+    /* This method deletes an activity with given name for given employee, month and year, and returns a status message. */
     public String deleteActivity(String activityName, String employeeName, String month, int year) {
         String message = "";
         try {
@@ -98,6 +105,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method deletes an activity with given name and returns a status message. */
     public String deleteActivity(String activityName) {
         String message = "";
         try {
@@ -110,6 +118,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method deletes a category with given name and returns a status message. */
     public String deleteActivityType(String category) {
         String message = "";
         try {
@@ -122,6 +131,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method deletes an employee with given name, and all related activities. The method returns a status message. */
     public String deleteEmployee(String employeeName) {
         String message = "";
         try {
@@ -146,6 +156,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method adds an activity to the database and returns a status message. */
     public String addActivity(String activityName, String employeeName, String month, int year) {
         String message = "";
         try {
@@ -157,6 +168,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method adds an employee to the database and returns a status message. */
     public String addEmployee(String employeeName) {
         String message = "";
         try {
@@ -168,6 +180,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method changes the name of a category, and returns a status message. */
     public String changeCategoryName(String oldname, String newname) {
         String message = "";
         try {
@@ -179,6 +192,7 @@ public class ActivityRepository {
         return message;
     }
 
+    /* This method returns the month name for given month number. */
     public String findMonth(int month) {
         try {
             return getJdbcTemplate().queryForObject("SELECT month_name FROM MONTH WHERE month_number=?", String.class, new Object[]{month});
@@ -187,6 +201,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This method returns a list of month names sorted from january to december. */
     public String[] findMonthList() {
         try {
             List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number ASC", new MonthRowMapper());
@@ -200,6 +215,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This method returns a list of month names sorted from december and backwards to january. */
     public String[] findReverseMonthList() {
         try {
             List<MonthRepresentation> months = getJdbcTemplate().query("SELECT month_name FROM MONTH ORDER BY month_number DESC", new MonthRowMapper());
@@ -213,7 +229,7 @@ public class ActivityRepository {
         }
     }
 
-
+    /* This class maps rows in the result set to Activity objects. */
     class ActivityRowMapper implements org.springframework.jdbc.core.RowMapper<Activity> {
         public Activity mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityType activityType = new ActivityType();
@@ -225,6 +241,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This class maps rows in the result set to ActivityType objects.*/
     class ActivityTypeRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityType> {
         public ActivityType mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityType activityType = new ActivityType();
@@ -243,6 +260,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This class maps rows in the result set to Employee objects. */
     class EmployeeRowMapper implements org.springframework.jdbc.core.RowMapper<Employee> {
         public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
             Employee e = new Employee(resultSet.getString(1));
@@ -250,6 +268,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This class maps rows in the result set to ActivityResult objects. */
     class ActivityResultRowMapper implements org.springframework.jdbc.core.RowMapper<ActivityResult> {
         public ActivityResult mapRow(ResultSet resultSet, int i) throws SQLException {
             ActivityResult activityResult = new ActivityResult();
@@ -265,6 +284,7 @@ public class ActivityRepository {
         }
     }
 
+    /* This class maps rows in the result set to MonthRepresentation objects. */
     class MonthRowMapper implements RowMapper<MonthRepresentation> {
         public MonthRepresentation mapRow(ResultSet resultSet, int i) throws SQLException {
             MonthRepresentation monthRepresentation = new MonthRepresentation();

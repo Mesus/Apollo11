@@ -30,6 +30,7 @@ public class UserRepository {
     public UserRepository() throws ServletException, IOException {
     }
 
+    /* This method checks if the user is registered in the database. Returns true if the user is registered. */
     public boolean isRegistered(User user) {
         try {
             User u = getJdbcTemplate().queryForObject("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), user.getEmail());
@@ -42,6 +43,7 @@ public class UserRepository {
         return false;
     }
 
+    /* This method returns a list of all the users. */
     public List<User> getUsers() {
         try {
             List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
@@ -52,6 +54,7 @@ public class UserRepository {
         }
     }
 
+    /* This method returns the user with given email address. (The method returns null if it can't find any such user.)*/
     public User getUser(String email) {
         try {
             List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
@@ -63,6 +66,7 @@ public class UserRepository {
         }
     }
 
+    /* This method returns a list of users who have requested access to the webpage.*/
     public List<User> getUserRequests() {
         try {
             List<User> userRequests = getJdbcTemplate().query("SELECT email, username FROM USER_REQUESTS", new UserRequestRowMapper(), new Object[]{});
@@ -72,6 +76,7 @@ public class UserRepository {
         }
     }
 
+    /* This method stores a request for access in the database, and returns true if successful. */
     public boolean requestAccess(String email, String username) {
         try {
             getJdbcTemplate().update("INSERT IGNORE INTO USER_REQUESTS VALUES (?, ?)", new Object[]{email, username});
@@ -81,6 +86,7 @@ public class UserRepository {
         }
     }
 
+    /* This method adds a user to the database and returns true if successful. */
     public boolean addUser(User user) {
         try {
             getJdbcTemplate().update("INSERT IGNORE INTO USER VALUES (?, ?, ?)", new Object[]{user.getEmail(), user.getUserRole(), user.getUsername()});
@@ -90,6 +96,7 @@ public class UserRepository {
         }
     }
 
+    /* This method deletes a user from the database and returns true if successful. */
     public boolean deleteUser(User user) {
         try {
             getJdbcTemplate().update("DELETE FROM USER WHERE EMAIL = ?", new Object[]{user.getEmail()});
@@ -99,6 +106,7 @@ public class UserRepository {
         }
     }
 
+    /* This method deletes a request for access from the database and returns true if successful. */
     public boolean deleteRequest(User user) {
         try {
             getJdbcTemplate().update("DELETE FROM USER_REQUESTS WHERE EMAIL = ?", new Object[]{user.getEmail()});
@@ -108,6 +116,7 @@ public class UserRepository {
         }
     }
 
+    /* This class maps a row in the result set to a User object. */
     class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
             User user = new User();
@@ -119,6 +128,7 @@ public class UserRepository {
         }
     }
 
+    /* This class maps a row in the result set to a User object, use this mapper if the user role is undetermined. */
     class UserRequestRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
             User user = new User();

@@ -17,6 +17,7 @@ public class ActivityResult implements Comparable<ActivityResult> {
         return employee;
     }
 
+    /* This method compares the count variable of this.count and activityResult.count */
     public int compareTo(ActivityResult activityResult) {
         if(this.count < activityResult.getCount()) {
             return 1;
