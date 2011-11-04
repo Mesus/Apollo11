@@ -1,9 +1,0 @@
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Klaus Myrseth', 'Oktober', '2010');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Stein Morten Hugubakken', 'November', '2010');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Yngve Nilsen Bakken', 'Desember', '2010');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Frode Nilsen', 'Januar', '2011');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Ragnar Westad', 'Januar', '2011');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Bjorn Erik Pedersen', 'April', '2011');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Ragnar Westad', 'Mai', '2011');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Stein Morten Hugubakken', 'Juni', '2011');
-INSERT INTO ACTIVITY values ('Maanedens Champ', 'Bjorn Erik Pedersen', 'August', '2011');
