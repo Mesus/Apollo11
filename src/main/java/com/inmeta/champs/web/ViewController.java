@@ -66,7 +66,7 @@ public class ViewController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
-            return new ModelAndView("login");
+            return loginHandler(req, res);
         } else if (user.getUserRole() == null) {
             return new ModelAndView("loginError");
         }
