@@ -34,8 +34,10 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 </head>
 <body>
-	<h1>Inmeta Champion - Login</h1>
-	<p>Vennligst logg inn!</p>
+<center>
+	<h1>Welcome Inmeta Champion!</h1>
+     <img src="img/trophy.png" />
 	 <div id="navbar"></div>
+</center>
 </body>
 </html>

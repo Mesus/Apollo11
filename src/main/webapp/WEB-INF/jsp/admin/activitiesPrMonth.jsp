@@ -103,7 +103,10 @@
 
     <h2>Legg til kategori:</h2>
     <form method="POST" action="addActivityType.htm">
-    <p>Kategori: <input type="text" name="CategoryName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" /> Synlig i årsoversikt? <input type="checkbox" name="visible" value="1" />
+    <p>Kategori: <input type="text" name="CategoryName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" />
+
+    Synlig i årsoversikt? <input type="checkbox" name="visible" value="1" checked="checked"/>
+
     <input type="hidden" name="Year" value="${Year}" >
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Lagre" />  </p>

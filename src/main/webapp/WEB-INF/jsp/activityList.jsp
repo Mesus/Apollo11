@@ -4,13 +4,72 @@
     <head>
     <link rel="stylesheet" type="text/css" href="../minstil.css" />
     <title>Aktiviteter</title></head>
+
+    <style>
+        body {
+            font-size: 9pt;
+            background: url('img/stripe.png') repeat ;
+
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        h1 {
+            text-align : center;
+        }
+
+        table {
+
+            width: 90%;
+            table-layout: fixed;
+            margin-left: auto ;
+            margin-right: auto;
+
+        }
+
+        tr.odd {
+            background: #EEEEFF;
+        }
+
+        tr.even {
+            background: #e0e0FF;
+        }
+
+        th {
+            background: #FFFFFF;
+        }
+
+        body {
+            margin-left: 10% ;
+            margin-right: 10%;
+         }
+
+        #bodycontainer {
+            background : #E5E5e5;
+
+        }
+
+        #monthselector {
+            margin-left: auto;
+            float: right;
+        }
+
+    </style>
+
+    </head>
+
+
     <body>
-        <h1>Aktiviteter for ${Year}</h1>
+    <div id="bodycontainer">
+
         <c:if test="${user.userRole eq 'Admin'}">
             <p><a href="home.htm">Tilbake</a></p>
         </c:if>
-        <form method ="POST" action="/activityList.htm" > <br />
-         Aktiviteter for <select name="Year" size="1">
+        <div id="monthselector" >
+        <form id="method ="POST" action="/activityList.htm" > <br />
+        Aktiviteter for <select name="Year" size="1">
             <c:forEach items="${Years}" var="y">
                 <c:choose>
                 <c:when test="${y eq Year}">
@@ -23,18 +82,19 @@
             </c:forEach>
         </select>
         <input type="SUBMIT"  value="Hent aktiviteter" />
-        </form> <br />
-        <form method="POST" action="/activityList.htm" >
+        </form></div><br />
+
+         <form method="POST" id="activityListForm" action="/activityList.htm" >
             <input type="hidden" name="Year" value="${Year}" />
             <table border="1">
                 <tr>
-                    <th><input type="SUBMIT" name="Category" value="Konsulent" /></th>
+                    <th> <input type="SUBMIT" name="Category" value="Konsulent" /></th>
                     <c:forEach items="${activityTypeList}" var="acttype">
-                        <th><input type="SUBMIT" name="Category" value="${acttype.category}" /></th>
+                          <th><input type="SUBMIT" name="Category" value="${acttype.category}" /></th>
                     </c:forEach>
                 </tr>
-                <c:forEach items="${employeeList}" var="emp">
-                    <tr>
+                <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+                    <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
                         <td><c:out value="${emp.name}" /></td>
                         <c:forEach items="${activityTypeList}" var="acttype">
                             <td class="center">
@@ -64,8 +124,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+        <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -96,8 +156,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -129,8 +189,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -162,8 +222,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -195,8 +255,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -228,8 +288,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -261,8 +321,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -294,8 +354,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -327,8 +387,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -360,8 +420,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -393,8 +453,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -426,8 +486,8 @@
             <th><c:out value="${acttype.category}" /></th>
         </c:forEach>
       </tr>
-      <c:forEach items="${employees}" var="emp">
-          <tr>
+      <c:forEach items="${employeeList}" var="emp" varStatus="loopStatus">
+          <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
             <td class="center">
@@ -449,9 +509,7 @@
     <br />
     </c:if>
     </c:forEach>
-
-
-
-        <jsp:include page="signoutinclude.jsp"></jsp:include>
+            <jsp:include page="signoutinclude.jsp"></jsp:include>
+    </div>
     </body>
 </html>
