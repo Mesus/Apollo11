@@ -2,6 +2,7 @@
 
 <html>
 <head>
+
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js"></script>
@@ -29,7 +30,14 @@
     $("#navbar").accountChooser();
   });
 </script>
-<link rel="stylesheet" type="text/css" href="../minstil.css" />
+<style>
+   body {
+            font-size: 9pt;
+            background: url('img/stripe.png') repeat ;
+        }
+</style>
+
+
 <title>Apollo 11 - Login</title>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 </head>

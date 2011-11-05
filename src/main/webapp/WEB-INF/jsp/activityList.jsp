@@ -9,24 +9,13 @@
         body {
             font-size: 9pt;
             background: url('img/stripe.png') repeat ;
-
-        }
-
-        td {
-            padding: 5px;
-        }
-
-        h1 {
-            text-align : center;
         }
 
         table {
-
             width: 90%;
             table-layout: fixed;
             margin-left: auto ;
             margin-right: auto;
-
         }
 
         tr.odd {
@@ -37,8 +26,22 @@
             background: #e0e0FF;
         }
 
+        td, th {
+            padding: 5px;
+            text-align:left;
+        }
+
         th {
-            background: #FFFFFF;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+
+        h1 {
+            text-align : center;
         }
 
         body {
@@ -97,7 +100,7 @@
                     <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
                         <td><c:out value="${emp.name}" /></td>
                         <c:forEach items="${activityTypeList}" var="acttype">
-                            <td class="center">
+                            <td>
                                 <c:forEach items="${resultList}" var="res">
                                         <c:if test="${emp.name == res.employee.name}" >
                                                 <c:if test="${acttype.category == res.activityType.category}" >
@@ -128,7 +131,7 @@
         <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${decemberActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -160,7 +163,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${novemberActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -193,7 +196,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${octoberActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -226,7 +229,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${septemberActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -259,7 +262,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${augustActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -292,7 +295,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${julyActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -325,7 +328,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${juneActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -358,7 +361,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${mayActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -391,7 +394,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${aprilActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -424,7 +427,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${marchActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -457,7 +460,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${februaryActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >
@@ -490,7 +493,7 @@
           <tr class="${loopStatus.index % 2 == 0 ? 'odd' : 'even'}">
             <td><c:out value="${emp.name}" /></td>
             <c:forEach items="${activityTypeList}" var="acttype">
-            <td class="center">
+            <td>
             <c:forEach items="${januaryActivities}" var="act">
 
             <c:if test="${emp.name == act.employee.name}" >

@@ -21,7 +21,7 @@
         <beans profile="default">
             <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/inmetachamp"/>
+                <property name="url" value="jdbc:mysql://localhost:6666/inmetachamps"/>
                 <property name="username" value="user"/>
                 <property name="password" value="user"/>
             </bean>
