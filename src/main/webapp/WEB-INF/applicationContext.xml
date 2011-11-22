@@ -12,6 +12,10 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <cloud:data-source id="dataSource"/>
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="classpath:sql/ddl.sql"/>
+    </jdbc:initialize-database>
 
     <beans>
         <beans profile="default">
@@ -27,10 +31,7 @@
         </beans>
 
         <beans profile="cloud">
-            <cloud:data-source id="dataSource"/>
-            <jdbc:initialize-database data-source="dataSource">
-                <jdbc:script location="classpath:sql/ddl.sql"/>
-            </jdbc:initialize-database>
+
         </beans>
 
     </beans>
