@@ -33,7 +33,9 @@ public class UserRepository {
     /* This method checks if the user is registered in the database. Returns true if the user is registered. */
     public boolean isRegistered(User user) {
         try {
-            User u = getJdbcTemplate().queryForObject("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), user.getEmail());
+            JdbcTemplate jdbcTemplate = getJdbcTemplate();
+            jdbcTemplate.setQueryTimeout(30);
+            User u = jdbcTemplate.queryForObject("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), user.getEmail());
             if (u != null) {
                 return true;
             }
@@ -46,7 +48,9 @@ public class UserRepository {
     /* This method returns a list of all the users. */
     public List<User> getUsers() {
         try {
-            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
+            JdbcTemplate jdbcTemplate = getJdbcTemplate();
+            jdbcTemplate.setQueryTimeout(30);
+            List<User> users = jdbcTemplate.query("SELECT email, userrole, username FROM USER", new UserRowMapper(), new Object[]{});
             return users;
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
@@ -57,7 +61,9 @@ public class UserRepository {
     /* This method returns the user with given email address. (The method returns null if it can't find any such user.)*/
     public User getUser(String email) {
         try {
-            List<User> users = getJdbcTemplate().query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
+            JdbcTemplate jdbcTemplate = getJdbcTemplate();
+            jdbcTemplate.setQueryTimeout(30);
+            List<User> users = jdbcTemplate.query("SELECT email, userrole, username FROM USER WHERE email = ?", new UserRowMapper(), new Object[]{email});
             if (!users.isEmpty()) {
                 return users.get(0);
             } else return null;
@@ -69,7 +75,9 @@ public class UserRepository {
     /* This method returns a list of users who have requested access to the webpage.*/
     public List<User> getUserRequests() {
         try {
-            List<User> userRequests = getJdbcTemplate().query("SELECT email, username FROM USER_REQUESTS", new UserRequestRowMapper(), new Object[]{});
+            JdbcTemplate jdbcTemplate = getJdbcTemplate();
+            jdbcTemplate.setQueryTimeout(30);
+            List<User> userRequests = jdbcTemplate.query("SELECT email, username FROM USER_REQUESTS", new UserRequestRowMapper(), new Object[]{});
             return userRequests;
         } catch (EmptyResultDataAccessException e) {
             return null;

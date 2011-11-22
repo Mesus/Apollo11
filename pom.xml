@@ -137,6 +137,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>0.9.7</version>
+        </dependency>
+
 
     </dependencies>
 
