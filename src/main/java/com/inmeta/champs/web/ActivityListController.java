@@ -73,21 +73,15 @@ public class ActivityListController extends BaseController {
             if (category == null) {                                                                     //We use the category to sort the result, if no category is chosen we sort on "Konsulent"
                 category = "Konsulent";
             }
-            List<Activity> januaryActivities = activityRepository.findActivities(year, "Januar");
-            List<Activity> februaryActivities = activityRepository.findActivities(year, "Februar");
-            List<Activity> marchActivities = activityRepository.findActivities(year, "Mars");
-            List<Activity> aprilActivities = activityRepository.findActivities(year, "April");
-            List<Activity> mayActivities = activityRepository.findActivities(year, "Mai");
-            List<Activity> juneActivities = activityRepository.findActivities(year, "Juni");
-            List<Activity> julyActivities = activityRepository.findActivities(year, "Juli");
-            List<Activity> augustActivities = activityRepository.findActivities(year, "August");
-            List<Activity> septemberActivities = activityRepository.findActivities(year, "September");
-            List<Activity> octoberActivities = activityRepository.findActivities(year, "Oktober");
-            List<Activity> novemberActivities = activityRepository.findActivities(year, "November");
-            List<Activity> decemberActivities = activityRepository.findActivities(year, "December");
+
+            String[] months = activityRepository.findReverseMonthList();
+            List<List<Activity>> monthActivitites = new ArrayList<List<Activity>>();
+            for(String mnd : months) {
+                monthActivitites.add(activityRepository.findActivities(year, mnd));
+            }
 
             int[] years = getYears();
-            String[] months = activityRepository.findReverseMonthList();
+
             employeeList = sortResult(resultList, category);
             List<Employee> employees = activityRepository.findEmployees();
             modelAndView.addObject(activityTypeList);
@@ -97,18 +91,7 @@ public class ActivityListController extends BaseController {
             modelAndView.addObject("user", user);
             modelAndView.addObject("Years", years);
             modelAndView.addObject("Months", months);
-            modelAndView.addObject("januaryActivities", januaryActivities);
-            modelAndView.addObject("februaryActivities", februaryActivities);
-            modelAndView.addObject("marchActivities", marchActivities);
-            modelAndView.addObject("aprilActivities", aprilActivities);
-            modelAndView.addObject("mayActivities", mayActivities);
-            modelAndView.addObject("juneActivities", juneActivities);
-            modelAndView.addObject("julyActivities", julyActivities);
-            modelAndView.addObject("augustActivities", augustActivities);
-            modelAndView.addObject("septemberActivities", septemberActivities);
-            modelAndView.addObject("octoberActivities", octoberActivities);
-            modelAndView.addObject("novemberActivities", novemberActivities);
-            modelAndView.addObject("decemberActivities", decemberActivities);
+            modelAndView.addObject("monthActivities", monthActivitites);
             modelAndView.addObject("employees", employees);
             return modelAndView;
         } else return new ModelAndView("permissionDenied");
