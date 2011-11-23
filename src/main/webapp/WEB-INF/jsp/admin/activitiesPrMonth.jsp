@@ -2,15 +2,16 @@
 
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="../minstil.css" />
+    <link rel="stylesheet" type="text/css" href="../nyStil.css" />
   <title>Activities</title></head>
   <body>
 
   <h2>Aktiviteter ${Month} ${Year}</h2>
   <p><c:out value="${message}" /> </p>
 
-  <form method ="POST" action="activitiesPrMonth.htm" >
-    <p>Finn aktiviteter for <select name="Month" size="1">
+  <form method ="POST" action="activitiesPrMonth.htm" class="center" >
+    <p>Finn aktiviteter for
+        <select name="Month" size="1">
             <c:forEach items="${Months}" var="m">
                 <c:choose>
                 <c:when test="${m eq Month}">
@@ -32,13 +33,15 @@
                 </c:otherwise>
                 </c:choose>
             </c:forEach>
-        </select><input type="SUBMIT" value="Go"></p>
+        </select>
+        <input type="SUBMIT" value="Go">
+     </p>
     </form>
 
       <p><a href="/admin/home.htm">Tilbake</a></p>
 
-    <form method ="POST" action="updateActivities.htm">
-    <table border="1">
+    <form method ="POST" action="updateActivities.htm" class="center">
+    <table border="1" class="narrow">
       <tr>
         <th>Konsulent</th>
         <c:forEach items="${activityTypeList}" var="acttype">
@@ -73,16 +76,16 @@
     <input type="hidden" name="Month" value="${Month}" />
     <input type="SUBMIT" value="Lagre" />
     </form>
-    <form method="POST" action="activitiesCancel.htm">
+    <form method="POST" action="activitiesCancel.htm" class="center">
     <input type="hidden" name="Year" value="${Year}" />
     <input type="hidden" name="Month" value="${Month}" />
     <input type="SUBMIT" value="Avbryt" />
     </form>
-    <br /><br />
+    <br /><br /> <br /> <br />
 
     <h2>Alle aktivitetstyper:</h2>
-    <form method="POST" action="updateActivityTypes.htm">
-    <table border="1">
+    <form method="POST" action="updateActivityTypes.htm" class="center">
+    <table border="1" class="narrow">
     <tr><th>Kategori</th><th>Slett</th></tr>
     <c:forEach items="${activityTypeList}" var="acttype">
     <tr>
@@ -102,7 +105,7 @@
     <br /><br />
 
     <h2>Legg til kategori:</h2>
-    <form method="POST" action="addActivityType.htm">
+    <form method="POST" action="addActivityType.htm" class="center">
     <p>Kategori: <input type="text" name="CategoryName" /> Kun tallverdier? <input type="checkbox" name="number" value="1" />
 
     Synlig i årsoversikt? <input type="checkbox" name="visible" value="1" checked="checked"/>
@@ -111,10 +114,10 @@
     <input type="hidden" name="Month" value="${Month}" >
     <input type="SUBMIT" value="Lagre" />  </p>
     </form>
-    <br /><br />
+    <br /><br /> <br /> <br />
 
     <h2>Endre navn på kategori:</h2>
-    <form method="POST" action="changeCategoryName.htm">
+    <form method="POST" action="changeCategoryName.htm" class="center">
     <p>Nåværende kategorinavn: <select name="OldCategoryName" size="1">
         <c:forEach items="${activityTypeList}" var="acttype">
             <option value="${acttype.category}"><c:out value="${acttype.category}"/></option>

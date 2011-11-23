@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
 <html>
-    <head><link rel="stylesheet" type="text/css" href="../minstil.css" />
+    <head><link rel="stylesheet" type="text/css" href="../nyStil.css" />
         <title>Apollo 11 - Login</title>
     </head>
     <body>

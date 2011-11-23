@@ -30,14 +30,7 @@
     $("#navbar").accountChooser();
   });
 </script>
-<style>
-   body {
-            font-size: 9pt;
-            background: url('img/stripe.png') repeat ;
-        }
-</style>
-
-
+<link rel="stylesheet" type="text/css" href="../nyStil.css" />
 <title>Apollo 11 - Login</title>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 </head>
