@@ -8,9 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @org.springframework.stereotype.Controller
@@ -76,14 +74,24 @@ public class ActivityListController extends BaseController {
 
             String[] months = activityRepository.findReverseMonthList();
             List<List<Activity>> monthActivitites = new ArrayList<List<Activity>>();
-            for(String mnd : months) {
+            for (String mnd : months) {
                 monthActivitites.add(activityRepository.findActivities(year, mnd));
             }
 
             int[] years = getYears();
 
-            employeeList = sortResult(resultList, category);
+            Map<String,List<Champion>> topResults = new HashMap<String, List<Champion>>();
+
+            for (ActivityType activityType : activityTypeList) {
+                topResults.put(activityType.getCategory(), getTopList(resultList, activityType.getCategory(), 3));
+            }
             List<Employee> employees = activityRepository.findEmployees();
+            int employeeSize = employees.size();
+            List<Champion> topThreeTotal = findTopThreeTotal(resultList, employeeSize);
+
+            employeeList = sortResult(resultList, category);
+            modelAndView.addObject("topThreeTotal", topThreeTotal);
+            modelAndView.addObject("topResults", topResults);
             modelAndView.addObject(activityTypeList);
             modelAndView.addObject(employeeList);
             modelAndView.addObject("resultList", resultList);
@@ -117,6 +125,88 @@ public class ActivityListController extends BaseController {
         Collections.sort(temp);
         for (ActivityResult activityResult : temp) {
             result.add(activityResult.getEmployee());
+        }
+        return result;
+    }
+
+    /* This method takes a list of ActivityResults, a category and how many to show (top 3? 4? etc). First we get the activityresults that
+    *  match the given category. Then we sort that array based on the count paramater, which tells us how many activities are registered.
+    *  Then we make a list of Champions, where we set the count, the name of the contestant, the score (which is the place - 1st, 2nd etc)
+    *  and the points this place gives. If two champions have the same count of activities, they get the same score and pointsum.
+    *  We add the champions to the result, and return it. */
+    private List<Champion> getTopList(List<ActivityResult> unsortedList, String category, int toShow) throws IOException, ServletException {
+        List<ActivityResult> temp = new ArrayList<ActivityResult>();
+        List<Champion> result = new ArrayList<Champion>();
+
+        for (ActivityResult a : unsortedList) {
+            if (a.getActivityType().getCategory().equals(category) && a.getCount() > 0 && !(a.getEmployee().getName().equals("Glenn"))) {
+                temp.add(a);
+            }
+        }
+
+        Collections.sort(temp);
+
+        for (int i = 1; i <= temp.size() && i <= toShow; i++) {
+            Champion c = new Champion();
+            c.setCount(temp.get(i - 1).getCount());
+            c.setName(temp.get(i - 1).getEmployee().getName());
+            c.setScore(i);
+            c.setPoints((toShow-i+1));
+            result.add(i - 1, c);
+            int j = i;
+            while (j < temp.size() && temp.get(i - 1).getCount() == temp.get(j).getCount()) {
+                Champion c2 = new Champion();
+                c2.setName(temp.get(j).getEmployee().getName());
+                c2.setCount(temp.get(j).getCount());
+                c2.setScore(i);
+                c2.setPoints((toShow-i+1));
+                result.add(j, c2);
+                j++;
+            }
+            i = j;
+        }
+        return result;
+    }
+
+    /* This method finds the three champions which have the overall highest scores, by adding scores for each category and sorting. Returns top 3 champions. */
+    private List<Champion> findTopThreeTotal(List<ActivityResult> unsortedList, int numberOfContestants) throws IOException, ServletException {
+        List<ActivityType> activityTypeList = activityRepository.findActivityTypes();
+        List<Champion> championResultList = new ArrayList<Champion>();
+        Map<String, List<Champion>> championLists = new HashMap<String, List<Champion>>();
+        List<Champion> result = new ArrayList<Champion>();
+
+        for(ActivityType activityType : activityTypeList) {
+            championLists.put(activityType.getCategory(), getTopList(unsortedList, activityType.getCategory(), numberOfContestants));
+        }
+
+        boolean isInResult;
+        for(ActivityType activityType : activityTypeList) {
+            for(Champion champion : championLists.get(activityType.getCategory())) {
+                isInResult = false;
+                for(Champion c : championResultList) {
+                    if(c.getName().equals(champion.getName())) {
+                        isInResult = true;
+                        c.setPoints((c.getPoints() + champion.getPoints()));
+                    }
+                }
+                if(isInResult == false) {
+                    championResultList.add(champion);
+                }
+            }
+        }
+
+        Collections.sort(championResultList);
+
+        for(int i = 1; i <= championResultList.size() && i <= 3; i++) {
+            championResultList.get(i-1).setScore(i);
+            result.add(i-1, championResultList.get(i-1));
+            int j = i;
+            while(j < championResultList.size() && championResultList.get(i-1).getPoints() == championResultList.get(j).getPoints()) {
+                championResultList.get(j).setScore(i);
+                result.add(j, championResultList.get(j));
+                j++;
+            }
+            i = j;
         }
         return result;
     }

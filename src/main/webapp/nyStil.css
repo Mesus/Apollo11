@@ -99,3 +99,8 @@ td {
 .center {
    text-align: center;
 }
+
+.champion {
+    font-size:16pt;
+    color: #8B1A1A;
+}

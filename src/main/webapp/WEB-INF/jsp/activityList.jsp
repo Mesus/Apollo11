@@ -12,7 +12,41 @@
             <c:if test="${user.userRole eq 'Admin'}">
                 <p><a href="home.htm">Tilbake</a></p>
             </c:if>
+            <br /> <br />
 
+            <h1>TOP 3 CHAMPIONS ${Year}</h1> <br />
+
+            <img src="img/trophy.png" align="right"/>
+            <img src="img/trophy.png" align="left"/>
+            <br /> <br /> <br /> <br /> <br />
+            <c:forEach items="${topThreeTotal}" var="top" varStatus="topStatus">
+                <p class="champion"><b> ${top.score}. ${top.name} (${top.points} poeng) </b></p>
+            </c:forEach>
+
+            <BR CLEAR="all">
+
+            <h2>TOP 3 - KATEGORIER</h2> <br/>
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+            <c:forEach items="${activityTypeList}" var="actType" varStatus="outerStatus">
+                <td>
+                    <table border="1">
+                        <tr>
+                            <th><c:out value="${actType.category}" /></th>
+                        </tr>
+                        <c:forEach items="${topResults[actType.category]}" var="top3" varStatus="loopStatus">
+                                <tr class="odd">
+                                    <td>${top3.score}. ${top3.name} (${top3.count})</td>
+                                </tr>
+                        </c:forEach>
+                    </table>
+                 </td>
+             </c:forEach>
+            </table>
+            <br /> <br /> <br /> <br />
+
+
+            <h1>ÅRSOVERSIKT</h1>
             <div id="monthselector" >
                 <form id="method ="POST" action="/activityList.htm" > <br />
                     Aktiviteter for <select name="Year" size="1">
@@ -30,7 +64,6 @@
                     <input type="SUBMIT"  value="Hent aktiviteter" />
                 </form>
             </div>
-            <br />
 
             <form method="POST" id="activityListForm" action="/activityList.htm" >
                 <input type="hidden" name="Year" value="${Year}" />
