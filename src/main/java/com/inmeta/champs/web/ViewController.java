@@ -1,5 +1,6 @@
 package com.inmeta.champs.web;
 
+import com.inmeta.champs.model.Employee;
 import com.inmeta.champs.model.User;
 import org.cloudfoundry.runtime.env.CloudEnvironment;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 
 @org.springframework.stereotype.Controller
@@ -54,6 +56,8 @@ public class ViewController extends BaseController {
             modelAndView.addObject("Current_Month", this_month);
             int[] years = getYears();
             String[] months = activityRepository.findMonthList();
+            List<Employee> employees = activityRepository.findEmployees();
+            modelAndView.addObject("Employees", employees);
             modelAndView.addObject("Years", years);
             modelAndView.addObject("Months", months);
             return modelAndView;

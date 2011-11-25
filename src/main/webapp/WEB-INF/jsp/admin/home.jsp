@@ -71,6 +71,73 @@
         </form>
         <br /> <br />
 
+        <form method="POST" action="saveData.htm"  class="center">
+            <h3>Eksporter data</h3>
+            <b>Eksporter data for: </b>
+            <select name="EmployeeName" size="1">
+                <option value="All data - månedsview" SELECTED>All data - månedsview</option>
+                <option value="Alle ansatte">Alle ansatte</option>
+                <c:forEach items="${Employees}" var="emp">
+                    <option value="${emp.name}"><c:out value="${emp.name}"/></option>
+                </c:forEach>
+            </select>
+            <br />
+            <b>Fra:</b>
+            <select name="FromMonth" size="1">
+                <c:forEach items="${Months}" var="m">
+                    <c:choose>
+                        <c:when test="${m eq Current_Month}">
+                            <option value="${m}" SELECTED><c:out value="${m}"/></option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${m}" ><c:out value="${m}"/></option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </select>
+            <select name="FromYear" size="1">
+                <c:forEach items="${Years}" var="y">
+                    <c:choose>
+                        <c:when test="${y eq Current_Year}">
+                            <option value="${y}" SELECTED><c:out value="${y}"/></option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${y}" ><c:out value="${y}"/></option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </select>
+            <br />
+            <b>Til:</b>
+            <select name="ToMonth" size="1">
+                <c:forEach items="${Months}" var="m">
+                    <c:choose>
+                        <c:when test="${m eq Current_Month}">
+                            <option value="${m}" SELECTED><c:out value="${m}"/></option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${m}" ><c:out value="${m}"/></option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </select>
+            <select name="ToYear" size="1">
+                <c:forEach items="${Years}" var="y">
+                    <c:choose>
+                        <c:when test="${y eq Current_Year}">
+                            <option value="${y}" SELECTED><c:out value="${y}"/></option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${y}" ><c:out value="${y}"/></option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </select>
+            <br />
+            <input type="SUBMIT" value="Lagre data til fil" />
+         </form>
+         <br /> <br />
+
         <p><a href="/home.htm">Til hovedsiden</a></p>
         <br /><br />
         <center><jsp:include page="../signoutinclude.jsp"></jsp:include></center>

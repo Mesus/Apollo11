@@ -143,6 +143,12 @@
             <version>0.9.7</version>
         </dependency>
 
+        <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>3.0.1-FINAL</version>
+      </dependency>
+
 
     </dependencies>
 
