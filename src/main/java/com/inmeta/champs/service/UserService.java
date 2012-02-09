@@ -11,14 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserService {
 
-    public UserService() {};
+	public UserService() {
+	};
 
-    /* This method checks if a user has the required userrole */
-    public boolean isAuthorized(HttpServletRequest request, String userRole) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null && user.getUserRole().equals(userRole)) {
-            return true;
-        }
-        else return false;
-    }
+	/* This method checks if a user has the required userrole */
+	public boolean isAuthorized(HttpServletRequest request, String userRole) {
+		User user = (User) request.getSession().getAttribute("user");
+		if (user != null && user.getUsername() != null) {
+			return user.getUserRole().equals(userRole);
+		}
+		return false;
+	}
 }
