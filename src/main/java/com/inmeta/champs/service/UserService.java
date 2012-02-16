@@ -17,7 +17,7 @@ public class UserService {
 	/* This method checks if a user has the required userrole */
 	public boolean isAuthorized(HttpServletRequest request, String userRole) {
 		User user = (User) request.getSession().getAttribute("user");
-		if (user != null && user.getUsername() != null) {
+		if (user != null && user.getUserRole() != null) {
 			return user.getUserRole().equals(userRole);
 		}
 		return false;

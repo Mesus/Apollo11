@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -70,19 +71,9 @@ public class UserRepository {
 	 * returns null if it can't find any such user.)
 	 */
 	public User getUser(String email) {
-		try {
-			JdbcTemplate jdbcTemplate = getJdbcTemplate();
-			jdbcTemplate.setQueryTimeout(30);
-			List<User> users = jdbcTemplate
-					.query("SELECT email, userrole, username FROM USER WHERE email = ?",
-							new UserRowMapper(), new Object[] { email });
-			if (!users.isEmpty()) {
-				return users.get(0);
-			} else
-				return null;
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
+		return DataAccessUtils.uniqueResult(getJdbcTemplate().query(
+				"SELECT email, userrole, username FROM USER WHERE email = ?",
+				new UserRowMapper(), new Object[] { email }));
 	}
 
 	/*
