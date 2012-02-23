@@ -21,10 +21,11 @@
 	<beans>
 		<beans profile="default">
 			<bean id="dataSource"
-				class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+				class="org.apache.commons.dbcp.BasicDataSource"
+				destroy-method="close">
 				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 				<property name="url"
-					value="jdbc:mysql://localhost:3306/inmetachamp?autoReconnect=true" />
+					value="jdbc:mysql://localhost:3306/inmetachamp" />
 				<property name="username" value="user" />
 				<property name="password" value="user" />
 			</bean>
